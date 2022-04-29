@@ -3,15 +3,25 @@ import React from 'react';
 import './Header.css';
 
 // Header for the entire App
-const Header = () => {
+const Header = (props) => {
     return (
         <section className="header">
-            <li className="header_logo">Bruin Study</li>
-            <ul className='header_group'>
-                <li className='header_option'>Login</li>
-                <li className='header_option'>Logout</li>
-                <li className='header_option'>Profile Pics/DropDown</li>
-            </ul>
+            <h1 className="header__logo">Bruin Study</h1>
+            <div className="header__group">
+                <a className="header__option" href="">
+                    Login
+                </a>
+                <a className="header__option" href="">
+                    Logout
+                </a>
+                <a className="header__option" href="">
+                    <img
+                        className="header__user_image"
+                        src="https://cdn1.iconfinder.com/data/icons/user-pictures/100/unknown-512.png"
+                        alt="user_icon"
+                    />
+                </a>
+            </div>
         </section>
     );
 };
