@@ -1,0 +1,13 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+    list-style: none;
+}
+
+.header_group {
+    display: flex;
+    justify-content: space-evenly;
+    font-size: 1rem;
+    list-style: none;
+}
