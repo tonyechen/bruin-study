@@ -1,8 +1,0 @@
-import React from "react";
-
-// Header for the entire App
-const Header = () => {
-  return <div>Header</div>;
-};
-
-export default Header;
