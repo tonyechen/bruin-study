@@ -1,19 +1,11 @@
 const express = require('express');
 const app = express();
 const pool = require('./db');
+const routes = require('./database.router');
 
 app.use(express.json());
 
-app.get('/user/:uid', async (req, res) => {
-    try {
-        const {uid} = req.params;
-        console.log(uid)
-        const student = await pool.query("SELECT * FROM students WHERE uid = ($1)", [uid]);
-        res.json(student);
-    } catch (err) {
-        console.error(err.message);
-    }
-});
+app.use('/api/v1', routes)
 
 app.get('/', (req, res) => {
     res.end('<h1>Hello World!</h1>');
