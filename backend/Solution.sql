@@ -9,13 +9,11 @@ DROP TABLE IF EXISTS FAILED CASCADE;
 DROP TABLE IF EXISTS Messages CASCADE;
 DROP TABLE IF EXISTS Introduction CASCADE;
 **/
-CREATE TYPE MajorList AS ENUM ('Computer Science', 'Mathematics', 'Electrical Engineering','Mechanical Engineering'); 
 CREATE TABLE IF NOT EXISTS Student(
 	email varchar(40) PRIMARY KEY,
 	Name varchar(100) NOT NULL,
 	username varchar(30) UNIQUE NOT NULL,
 	password varchar(30) NOT NULL,
-	major MajorList NOT NULL
 	);
 CREATE TABLE IF NOT EXISTS CourseList(
 	Abbreviation varchar(30) PRIMARY KEY
