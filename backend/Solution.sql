@@ -1,15 +1,21 @@
-﻿DROP TYPE MajorList CASCADE;
-DROP TABLE IF EXISTS Student CASCADE;
+﻿/**
+Test code to test our create table operation
+DROP TYPE IF EXISTS MajorList CASCADE;
 DROP TABLE IF EXISTS CourseList CASCADE;
+DROP TABLE IF EXISTS Student CASCADE;
 DROP TABLE IF EXISTS Took CASCADE;
-DROP TABLE IF EXISTS FAILED;
+DROP TABLE IF EXISTS Taking CASCADE;
+DROP TABLE IF EXISTS FAILED CASCADE;
+DROP TABLE IF EXISTS Messages CASCADE;
+DROP TABLE IF EXISTS Introduction CASCADE;
+**/
 CREATE TYPE MajorList AS ENUM ('Computer Science', 'Mathematics', 'Electrical Engineering','Mechanical Engineering'); 
 CREATE TABLE IF NOT EXISTS Student(
 	email varchar(40) PRIMARY KEY,
 	Name varchar(100) NOT NULL,
 	username varchar(30) UNIQUE NOT NULL,
 	password varchar(30) NOT NULL,
-	Major MajorList NOT NULL
+	major MajorList NOT NULL
 	);
 CREATE TABLE IF NOT EXISTS CourseList(
 	Abbreviation varchar(30) PRIMARY KEY
@@ -19,6 +25,11 @@ CREATE TABLE IF NOT EXISTS Took(
 	course varchar(100) REFERENCES CourseList(Abbreviation) ON UPDATE CASCADE,
 	PRIMARY KEY(email, course)
 	);
+CREATE TABLE IF NOT EXISTS Taking(
+	email varchar(100) REFERENCES Student(email) ON UPDATE CASCADE,
+	course varchar(100) REFERENCES CourseList(Abbreviation) ON UPDATE CASCADE,
+	PRIMARY KEY(email, course)
+);
 CREATE TABLE IF NOT EXISTS FAILED(
 	email1 varchar(100) REFERENCES Student(email) ON UPDATE CASCADE,
 	email2 varchar(100) REFERENCES Student(email) ON UPDATE CASCADE,
@@ -29,8 +40,14 @@ CREATE TABLE IF NOT EXISTS Messages(
 	email2 varchar(100) REFERENCES Student(email) ON UPDATE CASCADE,
 	content text,
 	stamp timestamptz,
-	PRIMARY KEY (email1,email2,stamp);
+	PRIMARY KEY (email1,email2,stamp)
 	);
+CREATE TABLE IF NOT EXISTS Introduction(
+	email varchar(100) REFERENCES Student(email) PRIMARY KEY,
+	Introduction text
+	);
+/**
+Sample data:
 insert into Student (email, name, major, username, password) values ('zidane@g.ucla.edu', 'Zidane Tribal','Computer Science','zidane','123456' );
 insert into Student (email, name, major, username, password) values ('garnet@g.ucla.edu', 'Garnet Til Alexandros XVII', 'Mathematics', 'Garnet','123456');
 insert into Student (email, name, major, username, password) values ('steiner@g.ucla.edu', 'Adelbert Steiner','Mechanical Engineering','Adelbert', '123456');
@@ -123,16 +140,4 @@ insert into Failed (email1, email2) values ('armarant@g.ucla.edu', 'zidane@g.ucl
 insert into Failed (email1, email2) values ('zidane@g.ucla.edu','freya@g.ucla.edu');
 insert into Failed (email1, email2) values ('armarant@g.ucla.edu','freya@g.ucla.edu');
 insert into Failed (email1, email2) values ('armarant@g.ucla.edu','garnet@g.ucla.edu');
-
-/**
-To find out people that you do not want to match, run the following query
-SELECT email, count
-FROM 
-	(SELECTED b.email, COUNT(b.course)
-	 FROM Took AS A 
-	 INNER JOIN TOOK AS B 
-	 ON (A.course = B.course) AND (A.email = {}) AND (B.email != {})
-	 GROUP BY b.email ) AS C 
-LEFT JOIN FAILED AS D 
-ON ((email = D.email1) AND ({} = D.email2)) OR ((email = D.email2) AND ({} = D.email1))
-WHERE D.email1 IS NULL;
+**/
