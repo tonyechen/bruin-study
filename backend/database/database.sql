@@ -1,16 +1,14 @@
 -- \i /Projects/bruin-study/backend/database/database.sql
 -- admin username : bruinstudy
 -- admin password: bsforever2022!
+CREATE TYPE MajorList AS ENUM ('MATH', 'COMPUTER SCIENCE', 'ELECTRICAL ENGINEER');
 CREATE TABLE IF NOT EXISTS students (
-    uid varchar(9) NOT NULL PRIMARY KEY,
-    email varchar(50) NOT NULL,
+    uid numeric(9,0) PRIMARY KEY,
+    email varchar(50) NOT NULL UNIQUE,
     first_name varchar(30) NOT NULL,
     last_name varchar(30) NOT NULL,
     password varchar NOT NULL,
-    major varchar,
-    oldcourses varchar[],
-    currcourses varchar[],
-    UNIQUE (email)
+    major MajorList
 );
 
 CREATE TABLE IF NOT EXISTS courseslist (
@@ -18,20 +16,30 @@ CREATE TABLE IF NOT EXISTS courseslist (
 );
 
 CREATE TABLE IF NOT EXISTS coursestaken (
-    uid varchar(9) REFERENCES students(uid) NOT NULL,
-    course varchar REFERENCES courseslist(courseabbrev) NOT NULL
+    uid numeric(9,0) REFERENCES students(uid) NOT NULL,
+    course varchar REFERENCES courseslist(courseabbrev) NOT NULL,
+	PRIMARY KEY(uid,course)
 
 );
 
 CREATE TABLE IF NOT EXISTS coursestaking (
-    uid varchar(9) REFERENCES students(uid) NOT NULL,
-    course varchar REFERENCES courseslist(courseabbrev) NOT NULL
+    uid numeric(9,0) REFERENCES students(uid) NOT NULL,
+    course varchar REFERENCES courseslist(courseabbrev) NOT NULL,
+	PRIMARY KEY(uid,course)
 );
 
 CREATE TABLE IF NOT EXISTS matches (
-    uid varchar(9) NOT NULL PRIMARY KEY,
-    matched_ids BIGINT[]
+    uid numeric(9,0) REFERENCES students(uid) NOT NULL PRIMARY KEY,
+    matched_ids numeric(9,0) REFERENCES student(uid),
+	PRIMARY KEY(uid,matched_ids)
 );
+CREATE TABLE IF NOT EXISTS Messages(
+	email1 varchar(100) REFERENCES Student(email) ON UPDATE CASCADE,
+	email2 varchar(100) REFERENCES Student(email) ON UPDATE CASCADE,
+	content text,
+	stamp timestamptz,
+	PRIMARY KEY (email1,email2,stamp);
+	);
 
 insert into students (uid, email, first_name, last_name, major, password, oldcourses, currcourses) values ('034437703', 'mchristoforou0@cargocollective.com', 'Michele', 'Christoforou', null, 'FZCMWO3G5', ARRAY ['CompSci 1', 'CompSci 2'] , null);
 insert into students (uid, email, first_name, last_name, major, password, oldcourses, currcourses) values ('382032768', 'kstandbrooke1@nps.gov', 'Kristofer', 'Standbrooke', null, 'R62DAYCHD', null, null);
