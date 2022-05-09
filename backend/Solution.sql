@@ -116,3 +116,16 @@ insert into Failed (email1, email2) values ('armarant@g.ucla.edu', 'zidane@g.ucl
 insert into Failed (email1, email2) values ('zidane@g.ucla.edu','freya@g.ucla.edu');
 insert into Failed (email1, email2) values ('armarant@g.ucla.edu','freya@g.ucla.edu');
 insert into Failed (email1, email2) values ('armarant@g.ucla.edu','garnet@g.ucla.edu');
+
+/**
+To find out people that you do not want to match, run the following query
+SELECT email, count
+FROM 
+	(SELECTED b.email, COUNT(b.course)
+	 FROM Took AS A 
+	 INNER JOIN TOOK AS B 
+	 ON (A.course = B.course) AND (A.email = {}) AND (B.email != {})
+	 GROUP BY b.email ) AS C 
+LEFT JOIN FAILED AS D 
+ON ((email = D.email1) AND ({} = D.email2)) OR ((email = D.email2) AND ({} = D.email1))
+WHERE D.email1 IS NULL;
