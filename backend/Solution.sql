@@ -1,24 +1,34 @@
-﻿CREATE TYPE IF NOT EXIST MajorList AS ENUM ('Computer Science', 'Mathematics', 'Electrical Engineering'); 
-CREATE TABLE IF NOT EXIST Student(
+﻿DROP TYPE MajorList CASCADE;
+DROP TABLE IF EXISTS Student CASCADE;
+DROP TABLE IF EXISTS CourseList CASCADE;
+DROP TABLE IF EXISTS Took CASCADE;
+DROP TABLE IF EXISTS FAILED;
+CREATE TYPE MajorList AS ENUM ('Computer Science', 'Mathematics', 'Electrical Engineering','Mechanical Engineering'); 
+CREATE TABLE IF NOT EXISTS Student(
 	email varchar(40) PRIMARY KEY,
 	Name varchar(100) NOT NULL,
 	username varchar(30) UNIQUE NOT NULL,
 	password varchar(30) NOT NULL,
-	Major majorlist NOT NULL
+	Major MajorList NOT NULL
 	);
-CREATE TABLE IF NOT EXIST CourseList(
-	Abbreviation varchar(30) PRIMARY KEY ON UPDATE CASCADE,
+CREATE TABLE IF NOT EXISTS CourseList(
+	Abbreviation varchar(30) PRIMARY KEY
 	);
-CREATE TABLE IF NOT EXIST CourseTook(
-	email varchar(100) REFERENCES Student.email,
-	Taken varchar(100) REFERENCES CourseList.Abbreviation
+CREATE TABLE IF NOT EXISTS Took(
+	email varchar(100) REFERENCES Student(email) ON UPDATE CASCADE,
+	course varchar(100) REFERENCES CourseList(Abbreviation) ON UPDATE CASCADE,
+	PRIMARY KEY(email, course)
 	);
-
+CREATE TABLE IF NOT EXISTS FAILED(
+	email1 varchar(100) REFERENCES Student(email) ON UPDATE CASCADE,
+	email2 varchar(100) REFERENCES Student(email) ON UPDATE CASCADE,
+	PRIMARY KEY (email1, email2)
+	);
 insert into Student (email, name, major, username, password) values ('zidane@g.ucla.edu', 'Zidane Tribal','Computer Science','zidane','123456' );
-insert into Student (email, name, major, username, password) values ('garnet@garnet@g.ucla.edu', 'Garnet Til Alexandros XVII', 'Garnet','123456');
-insert into Student (email, name, major, username, password) values ('steiner@g.ucla.edu', 'Adelbert Steiner','Adelbert', '123456');
-insert into Student (email, name, major, username, password) values ('freya@g.ucla.edu', 'Freya Crescent','Freya','123456');
-insert into Student (email, name, major, username, password) values ('armarant@g.ucla.edu', 'Amarant Coral','armarant', '123456');
+insert into Student (email, name, major, username, password) values ('garnet@g.ucla.edu', 'Garnet Til Alexandros XVII', 'Mathematics', 'Garnet','123456');
+insert into Student (email, name, major, username, password) values ('steiner@g.ucla.edu', 'Adelbert Steiner','Mechanical Engineering','Adelbert', '123456');
+insert into Student (email, name, major, username, password) values ('freya@g.ucla.edu', 'Freya Crescent','Computer Science','Freya','123456');
+insert into Student (email, name, major, username, password) values ('armarant@g.ucla.edu', 'Amarant Coral','Mathematics','armarant', '123456');
 
 insert into CourseList (Abbreviation) values ('MATH 1');
 insert into CourseList (Abbreviation) values ('MATH 31A');
@@ -71,33 +81,38 @@ insert into CourseList (Abbreviation) values ('EC ENGR 112');
 insert into CourseList (Abbreviation) values ('EC ENGR 113');
 insert into CourseList (Abbreviation) values ('EC ENGR 113DA');
 
-insert into CourseTook (email, course) values ('zidane@g.ucla.edu','COM SCI M148');
-insert into CourseTook (email, course) values ('zidane@g.ucla.edu','COM SCI 152B');
-insert into CourseTook (email, course) values ('zidane@g.ucla.edu','COM SCI 131');
-insert into CourseTook (email, course) values ('zidane@g.ucla.edu','COM SCI 17A');
-insert into CourseTook (email, course) values ('zidane@g.ucla.edu','EC ENGR 10H');
-insert into CourseTook (email, course) values ('zidane@g.ucla.edu','MATH 110A');
-insert into CourseTook (email, course) values ('garnet@garnet@g.ucla.edu','MATH 110A' );
-insert into CourseTook (email, course) values ('garnet@garnet@g.ucla.edu','EC ENGR 100' );
-insert into CourseTook (email, course) values ('garnet@garnet@g.ucla.edu', 'COM SCI 161');
-insert into CourseTook (email, course) values ('garnet@garnet@g.ucla.edu', 'COM SCI 143');
-insert into CourseTook (email, course) values ('garnet@garnet@g.ucla.edu', 'COM SCI 131');
-insert into CourseTook (email, course) values ('garnet@garnet@g.ucla.edu', 'COM SCI CM124');
-insert into CourseTook (email, course) values ('freya@g.ucla.edu', 'MATH 110A');
-insert into CourseTook (email, course) values ('freya@g.ucla.edu', 'COM SCI 131');
-insert into CourseTook (email, course) values ('freya@g.ucla.edu','COM SCI 143');
-insert into CourseTook (email, course) values ('freya@g.ucla.edu','EC ENGR 3');
-insert into CourseTook (email, course) values ('freya@g.ucla.edu', 'COM SCI M151B');
-insert into CourseTook (email, course) values ('freya@g.ucla.edu', 'COM SCI 174A');
-insert into CourseTook (email, course) values ('armarant@g.ucla.edu','MATH 110A');
-insert into CourseTook (email, course) values ('armarant@g.ucla.edu','MATH 110B');
-insert into CourseTook (email, course) values ('armarant@g.ucla.edu','COM SCI M119');
-insert into CourseTook (email, course) values ('armarant@g.ucla.edu','EC ENGR 100');
-insert into CourseTook (email, course) values ('armarant@g.ucla.edu','COM SCI 131');
-insert into CourseTook (email, course) values ('armarant@g.ucla.edu','COM SCI M148');
-insert into CourseTook (email, course) values ('armarant@g.ucla.edu', 'EC ENGR 113DA');
-insert into CourseTook (email, course) values ('garnet@garnet@g.ucla.edu', 'COM SCI 132');
-insert into CourseTook (email, course) values ('zidane@g.ucla.edu','MATH 95');
-insert into CourseTook (email, course) values ('freya@g.ucla.edu', 'MATH 110B');
-insert into CourseTook (email, course) values ('freya@g.ucla.edu', 'COM SCI M152A');
-insert into CourseTook (email, course) values ('armarant@g.ucla.edu', 'COM SCI 97');
+insert into Took (email, course) values ('zidane@g.ucla.edu','COM SCI M148');
+insert into Took (email, course) values ('zidane@g.ucla.edu','COM SCI 152B');
+insert into Took (email, course) values ('zidane@g.ucla.edu','COM SCI 131');
+insert into Took (email, course) values ('zidane@g.ucla.edu','COM SCI 174A');
+insert into Took (email, course) values ('zidane@g.ucla.edu','EC ENGR 10H');
+insert into Took (email, course) values ('zidane@g.ucla.edu','MATH 110A');
+insert into Took (email, course) values ('garnet@g.ucla.edu','MATH 110A' );
+insert into Took (email, course) values ('garnet@g.ucla.edu','EC ENGR 100' );
+insert into Took (email, course) values ('garnet@g.ucla.edu', 'COM SCI 161');
+insert into Took (email, course) values ('garnet@g.ucla.edu', 'COM SCI 143');
+insert into Took (email, course) values ('garnet@g.ucla.edu', 'COM SCI 131');
+insert into Took (email, course) values ('garnet@g.ucla.edu', 'COM SCI CM124');
+insert into Took (email, course) values ('freya@g.ucla.edu', 'MATH 110A');
+insert into Took (email, course) values ('freya@g.ucla.edu', 'COM SCI 131');
+insert into Took (email, course) values ('freya@g.ucla.edu','COM SCI 143');
+insert into Took (email, course) values ('freya@g.ucla.edu','EC ENGR 3');
+insert into Took (email, course) values ('freya@g.ucla.edu', 'COM SCI M151B');
+insert into Took (email, course) values ('freya@g.ucla.edu', 'COM SCI 174A');
+insert into Took (email, course) values ('armarant@g.ucla.edu','MATH 110A');
+insert into Took (email, course) values ('armarant@g.ucla.edu','MATH 110B');
+insert into Took (email, course) values ('armarant@g.ucla.edu','COM SCI M119');
+insert into Took (email, course) values ('armarant@g.ucla.edu','EC ENGR 100');
+insert into Took (email, course) values ('armarant@g.ucla.edu','COM SCI 131');
+insert into Took (email, course) values ('armarant@g.ucla.edu','COM SCI M148');
+insert into Took (email, course) values ('armarant@g.ucla.edu', 'EC ENGR 113DA');
+insert into Took (email, course) values ('garnet@g.ucla.edu', 'COM SCI 132');
+insert into Took (email, course) values ('zidane@g.ucla.edu','MATH 95');
+insert into Took (email, course) values ('freya@g.ucla.edu', 'MATH 110B');
+insert into Took (email, course) values ('freya@g.ucla.edu', 'COM SCI M152A');
+insert into Took (email, course) values ('armarant@g.ucla.edu', 'COM SCI 97');
+
+insert into Failed (email1, email2) values ('armarant@g.ucla.edu', 'zidane@g.ucla.edu');
+insert into Failed (email1, email2) values ('zidane@g.ucla.edu','freya@g.ucla.edu');
+insert into Failed (email1, email2) values ('armarant@g.ucla.edu','freya@g.ucla.edu');
+insert into Failed (email1, email2) values ('armarant@g.ucla.edu','garnet@g.ucla.edu');
