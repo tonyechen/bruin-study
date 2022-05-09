@@ -24,6 +24,13 @@ CREATE TABLE IF NOT EXISTS FAILED(
 	email2 varchar(100) REFERENCES Student(email) ON UPDATE CASCADE,
 	PRIMARY KEY (email1, email2)
 	);
+CREATE TABLE IF NOT EXISTS Messages(
+	email1 varchar(100) REFERENCES Student(email) ON UPDATE CASCADE,
+	email2 varchar(100) REFERENCES Student(email) ON UPDATE CASCADE,
+	content text,
+	stamp timestamptz,
+	PRIMARY KEY (email1,email2,stamp);
+	);
 insert into Student (email, name, major, username, password) values ('zidane@g.ucla.edu', 'Zidane Tribal','Computer Science','zidane','123456' );
 insert into Student (email, name, major, username, password) values ('garnet@g.ucla.edu', 'Garnet Til Alexandros XVII', 'Mathematics', 'Garnet','123456');
 insert into Student (email, name, major, username, password) values ('steiner@g.ucla.edu', 'Adelbert Steiner','Mechanical Engineering','Adelbert', '123456');

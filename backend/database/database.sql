@@ -33,6 +33,13 @@ CREATE TABLE IF NOT EXISTS matches (
     matched_ids numeric(9,0) REFERENCES student(uid),
 	PRIMARY KEY(uid,matched_ids)
 );
+CREATE TABLE IF NOT EXISTS Messages(
+	email1 varchar(100) REFERENCES Student(email) ON UPDATE CASCADE,
+	email2 varchar(100) REFERENCES Student(email) ON UPDATE CASCADE,
+	content text,
+	stamp timestamptz,
+	PRIMARY KEY (email1,email2,stamp);
+	);
 
 insert into students (uid, email, first_name, last_name, major, password, oldcourses, currcourses) values ('034437703', 'mchristoforou0@cargocollective.com', 'Michele', 'Christoforou', null, 'FZCMWO3G5', ARRAY ['CompSci 1', 'CompSci 2'] , null);
 insert into students (uid, email, first_name, last_name, major, password, oldcourses, currcourses) values ('382032768', 'kstandbrooke1@nps.gov', 'Kristofer', 'Standbrooke', null, 'R62DAYCHD', null, null);
