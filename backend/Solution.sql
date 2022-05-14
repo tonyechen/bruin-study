@@ -1419,6 +1419,7 @@ insert into CourseList (Abbreviation) values ('GERMAN 2');
 insert into CourseList (Abbreviation) values ('ITALIAN 2');
 insert into CourseList (Abbreviation) values ('MATH 170E');
 
+<<<<<<< HEAD
 
 insert into Failed (id1, id2) values (555555555, 111111111);
 insert into Failed (id1, id2) values (111111111,444444444);
