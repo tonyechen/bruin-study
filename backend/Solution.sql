@@ -1,5 +1,6 @@
 ﻿/**
-Test code to test our create table operation
+This code is used to delete previous instance in order to initalize a new instance on DATABASE
+
 DROP TYPE IF EXISTS MajorList CASCADE;
 DROP TABLE IF EXISTS CourseList CASCADE;
 DROP TABLE IF EXISTS Student CASCADE;
@@ -9,7 +10,7 @@ DROP TABLE IF EXISTS FAILED CASCADE;
 DROP TABLE IF EXISTS Messages CASCADE;
 DROP TABLE IF EXISTS Introduction CASCADE;
 **/
-CREATE TYPE MajorList AS ENUM =('Mathematics','Computer Science','Electrical Engineering','Physics');
+CREATE TYPE MajorList AS ENUM ('Mathematics','Computer Science','Electrical Engineering','Physics','Mechanical Engineering');
 CREATE TABLE IF NOT EXISTS Student(
 	id numeric(9,0) PRIMARY KEY,
 	email varchar(40) UNIQUE NOT NULL,
@@ -45,15 +46,15 @@ CREATE TABLE IF NOT EXISTS Messages(
 	);
 CREATE TABLE IF NOT EXISTS Introduction(
 	id  numeric(9,0) REFERENCES Student(id) PRIMARY KEY,
-	Introduction text
+	Intro text
 	);
 /**
 Sample data:
-insert into Student (email, name, major, username, password) values ('zidane@g.ucla.edu', 'Zidane Tribal','Computer Science','zidane','123456' );
-insert into Student (email, name, major, username, password) values ('garnet@g.ucla.edu', 'Garnet Til Alexandros XVII', 'Mathematics', 'Garnet','123456');
-insert into Student (email, name, major, username, password) values ('steiner@g.ucla.edu', 'Adelbert Steiner','Mechanical Engineering','Adelbert', '123456');
-insert into Student (email, name, major, username, password) values ('freya@g.ucla.edu', 'Freya Crescent','Computer Science','Freya','123456');
-insert into Student (email, name, major, username, password) values ('armarant@g.ucla.edu', 'Amarant Coral','Mathematics','armarant', '123456');
+insert into Student (id,email, name, major, username, password) values (111111111,'zidane@g.ucla.edu', 'Zidane Tribal','Computer Science','zidane','123456' );
+insert into Student (id,email, name, major, username, password) values (222222222,'garnet@g.ucla.edu', 'Garnet Til Alexandros XVII', 'Mathematics', 'Garnet','123456');
+insert into Student (id,email, name, major, username, password) values (333333333,'steiner@g.ucla.edu', 'Adelbert Steiner','Mechanical Engineering','Adelbert', '123456');
+insert into Student (id,email, name, major, username, password) values (444444444,'freya@g.ucla.edu', 'Freya Crescent','Computer Science','Freya','123456');
+insert into Student (id,email, name, major, username, password) values (555555555,'armarant@g.ucla.edu', 'Amarant Coral',NULL,'armarant', '123456');
 
 insert into CourseList (Abbreviation) values ('MATH 1');
 insert into CourseList (Abbreviation) values ('MATH 31A');
@@ -106,39 +107,46 @@ insert into CourseList (Abbreviation) values ('EC ENGR 112');
 insert into CourseList (Abbreviation) values ('EC ENGR 113');
 insert into CourseList (Abbreviation) values ('EC ENGR 113DA');
 
-insert into Took (email, course) values ('zidane@g.ucla.edu','COM SCI M148');
-insert into Took (email, course) values ('zidane@g.ucla.edu','COM SCI 152B');
-insert into Took (email, course) values ('zidane@g.ucla.edu','COM SCI 131');
-insert into Took (email, course) values ('zidane@g.ucla.edu','COM SCI 174A');
-insert into Took (email, course) values ('zidane@g.ucla.edu','EC ENGR 10H');
-insert into Took (email, course) values ('zidane@g.ucla.edu','MATH 110A');
-insert into Took (email, course) values ('garnet@g.ucla.edu','MATH 110A' );
-insert into Took (email, course) values ('garnet@g.ucla.edu','EC ENGR 100' );
-insert into Took (email, course) values ('garnet@g.ucla.edu', 'COM SCI 161');
-insert into Took (email, course) values ('garnet@g.ucla.edu', 'COM SCI 143');
-insert into Took (email, course) values ('garnet@g.ucla.edu', 'COM SCI 131');
-insert into Took (email, course) values ('garnet@g.ucla.edu', 'COM SCI CM124');
-insert into Took (email, course) values ('freya@g.ucla.edu', 'MATH 110A');
-insert into Took (email, course) values ('freya@g.ucla.edu', 'COM SCI 131');
-insert into Took (email, course) values ('freya@g.ucla.edu','COM SCI 143');
-insert into Took (email, course) values ('freya@g.ucla.edu','EC ENGR 3');
-insert into Took (email, course) values ('freya@g.ucla.edu', 'COM SCI M151B');
-insert into Took (email, course) values ('freya@g.ucla.edu', 'COM SCI 174A');
-insert into Took (email, course) values ('armarant@g.ucla.edu','MATH 110A');
-insert into Took (email, course) values ('armarant@g.ucla.edu','MATH 110B');
-insert into Took (email, course) values ('armarant@g.ucla.edu','COM SCI M119');
-insert into Took (email, course) values ('armarant@g.ucla.edu','EC ENGR 100');
-insert into Took (email, course) values ('armarant@g.ucla.edu','COM SCI 131');
-insert into Took (email, course) values ('armarant@g.ucla.edu','COM SCI M148');
-insert into Took (email, course) values ('armarant@g.ucla.edu', 'EC ENGR 113DA');
-insert into Took (email, course) values ('garnet@g.ucla.edu', 'COM SCI 132');
-insert into Took (email, course) values ('zidane@g.ucla.edu','MATH 95');
-insert into Took (email, course) values ('freya@g.ucla.edu', 'MATH 110B');
-insert into Took (email, course) values ('freya@g.ucla.edu', 'COM SCI M152A');
-insert into Took (email, course) values ('armarant@g.ucla.edu', 'COM SCI 97');
+insert into Took (id, course) values (111111111,'COM SCI M148');
+insert into Took (id, course) values (111111111,'COM SCI 152B');
+insert into Took (id, course) values (111111111,'COM SCI 131');
+insert into Took (id, course) values (111111111,'COM SCI 174A');
+insert into Took (id, course) values (111111111,'EC ENGR 10H');
+insert into Took (id, course) values (111111111,'MATH 110A');
+insert into Took (id, course) values (222222222,'MATH 110A' );
+insert into Took (id, course) values (222222222,'EC ENGR 100' );
+insert into Took (id, course) values (222222222, 'COM SCI 161');
+insert into Took (id, course) values (222222222, 'COM SCI 143');
+insert into Took (id, course) values (222222222, 'COM SCI 131');
+insert into Took (id, course) values (222222222, 'COM SCI CM124');
+insert into Took (id, course) values (444444444, 'MATH 110A');
+insert into Took (id, course) values (444444444, 'COM SCI 131');
+insert into Took (id, course) values (444444444,'COM SCI 143');
+insert into Took (id, course) values (444444444,'EC ENGR 3');
+insert into Took (id, course) values (444444444, 'COM SCI M151B');
+insert into Took (id, course) values (444444444, 'COM SCI 174A');
+insert into Took (id, course) values (555555555,'MATH 110A');
+insert into Took (id, course) values (555555555,'MATH 110B');
+insert into Took (id, course) values (555555555,'COM SCI M119');
+insert into Took (id, course) values (555555555,'EC ENGR 100');
+insert into Took (id, course) values (555555555,'COM SCI 131');
+insert into Took (id, course) values (555555555,'COM SCI M148');
+insert into Took (id, course) values (555555555, 'EC ENGR 113DA');
+insert into Took (id, course) values (222222222, 'COM SCI 132');
+insert into Took (id, course) values (111111111,'MATH 95');
+insert into Took (id, course) values (444444444, 'MATH 110B');
+insert into Took (id, course) values (444444444, 'COM SCI M152A');
+insert into Took (id, course) values (555555555, 'COM SCI 97');
 
-insert into Failed (email1, email2) values ('armarant@g.ucla.edu', 'zidane@g.ucla.edu');
-insert into Failed (email1, email2) values ('zidane@g.ucla.edu','freya@g.ucla.edu');
-insert into Failed (email1, email2) values ('armarant@g.ucla.edu','freya@g.ucla.edu');
-insert into Failed (email1, email2) values ('armarant@g.ucla.edu','garnet@g.ucla.edu');
+
+insert into Failed (id1, id2) values (555555555, 111111111);
+insert into Failed (id1, id2) values (111111111,444444444);
+insert into Failed (id1, id2) values (555555555,444444444);
+insert into Failed (id1, id2) values (555555555,222222222);
+
+insert into Introduction (id, Intro) values (111111111,'Zidane Tribal is the main protagonist of Final Fantasy IX. He is a thief who works for the Tantalus Theater Troupe set to kidnap the princess of Alexandria, an event that escalates to a quest to protect the planet of Gaia.');
+insert into Introduction (id, Intro) values (222222222,'Garnet Til Alexandros XVII, alias Dagger and birth name Sarah, is the deuteragonist of Final Fantasy IX, and the heir of Alexandria in the 17th generation. Garnet notices a change in her mother, Queen Brahne, and seeks to escape Alexandria Castle.');
+insert into Introduction (id, Intro) values (333333333,'Captain Adelbert Steiner is a playable character in Final Fantasy IX. He leads the Knights of Pluto and is assigned to protect Princess Garnet.');
+insert into Introduction (id, Intro) values (444444444, NULL);
+insert into Introduction (id, Intro) values (555555555, 'Amarant Coral (known as Salamander Coral in the Japanese version) is a playable character from Final Fantasy IX. He is introduced to the player as Red-headed Man');
 **/
