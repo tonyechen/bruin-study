@@ -1439,18 +1439,18 @@ insert into CourseList (Abbreviation) values ('SOCIOL 101');
 insert into CourseList (Abbreviation) values ('SOCIOL 102');
 insert into CourseList (Abbreviation) values ('SPAN 1');
 insert into CourseList (Abbreviation) values ('SPAN 119');
-insert into CourseList (Abbreviation) values ('STATS 100B')
-insert into CourseList (Abbreviation) values ('STATS 102A')
-insert into CourseList (Abbreviation) values ('THEATER 106')
-insert into CourseList (Abbreviation) values ('THEATER 1B')
-insert into CourseList (Abbreviation) values ('THEATER 20')
-insert into CourseList (Abbreviation) values ('THEATER 30')
-insert into CourseList (Abbreviation) values ('VIETMSE 2')
-insert into CourseList (Abbreviation) values ('COM SCI 35L')
-insert into CourseList (Abbreviation) values ('ENGCOMP 2')
-insert into CourseList (Abbreviation) values ('ENGL 4W')
-insert into CourseList (Abbreviation) values ('FRNCH 1')
-insert into CourseList (Abbreviation) values ('FRNCH 2')
-insert into CourseList (Abbreviation) values ('GERMAN 2')
-insert into CourseList (Abbreviation) values ('ITALIAN 2')
-insert into CourseList (Abbreviation) values ('MATH 170E')
+insert into CourseList (Abbreviation) values ('STATS 100B');
+insert into CourseList (Abbreviation) values ('STATS 102A');
+insert into CourseList (Abbreviation) values ('THEATER 106');
+insert into CourseList (Abbreviation) values ('THEATER 1B');
+insert into CourseList (Abbreviation) values ('THEATER 20');
+insert into CourseList (Abbreviation) values ('THEATER 30');
+insert into CourseList (Abbreviation) values ('VIETMSE 2');
+insert into CourseList (Abbreviation) values ('COM SCI 35L');
+insert into CourseList (Abbreviation) values ('ENGCOMP 2');
+insert into CourseList (Abbreviation) values ('ENGL 4W');
+insert into CourseList (Abbreviation) values ('FRNCH 1');
+insert into CourseList (Abbreviation) values ('FRNCH 2');
+insert into CourseList (Abbreviation) values ('GERMAN 2');
+insert into CourseList (Abbreviation) values ('ITALIAN 2');
+insert into CourseList (Abbreviation) values ('MATH 170E');
