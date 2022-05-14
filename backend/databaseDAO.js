@@ -20,7 +20,19 @@ class API {
             console.error(err.message);
         }
     }
-
+	
+	// Return the a profile 
+	// input: username, password
+	static async Authentication(req, res){
+		try {
+			const { username, password } = req.query;
+			const id = await pool.query("SELECT id FROM Student WHERE username='" + username + "' AND password='" + password + "';--"); 
+			res.json(courseTaking.rows[0]);
+		} catch (err) { 
+			console.error(err.message);
+		}
+	}
+	
     // create student profile;
     // input: id, email, name, major, username, password
     static async createStudent(req, res) {
