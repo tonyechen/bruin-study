@@ -1,3 +1,4 @@
+const e = require('express');
 const express = require('express');
 
 const pool = require('./db');
@@ -7,18 +8,28 @@ class API {
     // input: id
     static async getStudent(req, res) {
         try {
-            const { id } = req.params;
+            const { id } = req.query;
 
             // Fetch all except password from student table
             // input: id
-            const student = await pool
-                .query
-                // ADD QUERY INSIDE PARENTHESIS, DELETE THIS COMMENT
-                ();
+            const student = await pool.query(
+                'SELECT id, email, name, major, username FROM Student WHERE id=' +
+                    id +
+                    ';'
+            );
 
-            res.json(student.rows[0]);
+            // make sure the id exists
+            if (student.rows[0]) {
+                res.json(student.rows[0]);
+            } else {
+                res.json({
+                    success: false,
+                    error: `User with id = ${id} does not exists.`,
+                });
+            }
         } catch (err) {
             console.error(err.message);
+            res.json({ success: false, error: err.message });
         }
     }
 
@@ -30,12 +41,26 @@ class API {
 
             // insert into Student
             // input: id, email, name, major, username, password
-            await pool
-                .query
-                // ADD QUERY INSIDE PARENTHESIS, DELETE THIS COMMENT
-                ();
+            await pool.query(
+                'INSERT INTO Student (id, email, name, major, username, password) VALUES(' +
+                    id +
+                    ",'" +
+                    email +
+                    "','" +
+                    name +
+                    "','" +
+                    major +
+                    "','" +
+                    username +
+                    "','" +
+                    password +
+                    "');--"
+            );
+
+            res.json({ success: true });
         } catch (err) {
             console.error(err.message);
+            res.json({ success: false, error: err.message });
         }
     }
 
@@ -47,12 +72,26 @@ class API {
 
             // update existing student:
             // input: id, email, name, major, username, password
-            await pool
-                .query
-                // ADD QUERY INSIDE PARENTHESIS, DELETE THIS COMMENT
-                ();
+            await pool.query(
+                "UPDATE Student SET email='" +
+                    email +
+                    "',name='" +
+                    name +
+                    "', Major='" +
+                    major +
+                    "', username='" +
+                    username +
+                    "',password='" +
+                    password +
+                    "' WHERE id=" +
+                    id +
+                    ';'
+            );
+
+            res.json({ success: true });
         } catch (err) {
             console.error(err.message);
+            res.json({ success: false, error: err.message });
         }
     }
 
@@ -60,18 +99,29 @@ class API {
     // input: id
     static async getCourseTook(req, res) {
         try {
-            const { id } = req.params;
+            const { id } = req.query;
 
             // fetch all courses taken by a student
             // input: id
-            const courseTook = await pool
-                .query
-                // ADD QUERY INSIDE PARENTHESIS, DELETE THIS COMMENT
-                ();
+            const courseTook = await pool.query(
+                'SELECT course FROM Took WHERE id=' + id + ';'
+            );
 
-            res.json(courseTook.rows[0]);
+            if (courseTook) {
+                // organize courses into one list
+                const courses = courseTook.rows.map((course) => {
+                    return course.course;
+                });
+                res.json(courses);
+            } else {
+                res.json({
+                    success: false,
+                    error: `User with id = ${id} does not exists.`,
+                });
+            }
         } catch (err) {
             console.error(err.message);
+            res.json({ success: false, error: err.message });
         }
     }
 
@@ -83,12 +133,21 @@ class API {
 
             // add a course taken by a student
             // input: id, course
-            await pool
-                .query
-                // ADD QUERY INSIDE PARENTHESIS, DELETE THIS COMMENT
-                ();
+            await pool.query(
+                'INSERT INTO Took(id, course) values (' +
+                    id +
+                    ",'" +
+                    course +
+                    "');"
+            );
+
+            res.json({ success: true });
         } catch (err) {
             console.error(err.message);
+            res.json({
+                success: false,
+                error: err.message,
+            });
         }
     }
 
@@ -100,11 +159,18 @@ class API {
 
             // delete a course taken by a student
             // input: id, course
-            await pool
-                .query // ADD QUERY INSIDE PARENTHESIS, DELETE THIS COMMENT
-                ();
+            await pool.query(
+                'DELETE FROM Took WHERE id=' +
+                    id +
+                    "AND course='" +
+                    course +
+                    "';"
+            );
+
+            res.json({ success: true });
         } catch (err) {
             console.error(err.message);
+            res.json({ success: false, error: err.message });
         }
     }
 
@@ -112,18 +178,29 @@ class API {
     // input: id
     static async getCourseTaking(req, res) {
         try {
-            const { id } = req.params;
+            const { id } = req.query;
 
             // fetch all courses a student is taking
             // input: id
-            const courseTaking = await pool
-                .query
-                // ADD QUERY INSIDE PARENTHESIS, DELETE THIS COMMENT
-                ();
+            const courseTaking = await pool.query(
+                'SELECT course FROM Taking WHERE id=' + id + ';'
+            );
 
-            res.json(courseTaking.rows[0]);
+            if (courseTaking) {
+                // organize courses into one list
+                const courses = courseTaking.rows.map((course) => {
+                    return course.course;
+                });
+                res.json(courses);
+            } else {
+                res.json({
+                    success: false,
+                    error: `User with id = ${id} does not exists.`,
+                });
+            }
         } catch (err) {
             console.error(err.message);
+            res.json({ success: false, error: err.message });
         }
     }
 
@@ -135,12 +212,21 @@ class API {
 
             // Add a course the student is taking
             // input: id, course
-            await pool
-                .query
-                // ADD QUERY INSIDE PARENTHESIS, DELETE THIS COMMENT
-                ();
+            await pool.query(
+                'INSERT INTO Taking(id, course) values (' +
+                    id +
+                    ",'" +
+                    course +
+                    "');"
+            );
+
+            res.json({ success: true });
         } catch (err) {
             console.error(err.message);
+            res.json({
+                success: false,
+                error: err.message,
+            });
         }
     }
 
@@ -152,11 +238,18 @@ class API {
 
             // delete a course the student is taking
             // input: id, course
-            await pool
-                .query // ADD QUERY INSIDE PARENTHESIS, DELETE THIS COMMENT
-                ();
+            await pool.query(
+                'DELETE FROM Taking WHERE id=' +
+                    id +
+                    "AND course='" +
+                    course +
+                    "';"
+            );
+
+            res.json({ success: true });
         } catch (err) {
             console.error(err.message);
+            res.json({ success: false, error: err.message });
         }
     }
 
@@ -164,17 +257,32 @@ class API {
     // input: id
     static async getFailedMatch(req, res) {
         try {
-            const { id } = req.params;
+            const { id } = req.query;
 
             // get all failed matches of the student
             // input: id
-            const failed = await pool
-                .query // ADD QUERY INSIDE PARENTHESIS, DELETE THIS COMMENT
-                ();
+            const failed = await pool.query(
+                'SELECT id2 AS id FROM Failed WHERE id1=' +
+                    id +
+                    ' UNION SELECT id1 AS id FROM FAILED WHERE id2=' +
+                    id +
+                    ';'
+            );
 
-            res.json(failed)
+            if (failed.rows[0]) {
+                const failedMatches = failed.rows.map((fail) => {
+                    return fail.id;
+                });
+                res.json(failedMatches);
+            } else {
+                res.json({
+                    success: false,
+                    error: 'There is no failed matches, or the ID does not exist',
+                });
+            }
         } catch (err) {
             console.error(err.message);
+            res.json({ success: false, error: err.message });
         }
     }
 
@@ -186,11 +294,14 @@ class API {
 
             // Insert a failed match of the student(id1)
             // input: id1, id2
-            await pool
-                .query // ADD QUERY INSIDE PARENTHESIS, DELETE THIS COMMENT
-                ();
+            await pool.query(
+                'INSERT INTO Failed (id1,id2) values (' + id1 + ',' + id2 + ');'
+            );
+
+            res.json({ success: true });
         } catch (err) {
             console.error(err.message);
+            res.json({ success: false, error: err.message });
         }
     }
 
@@ -198,17 +309,22 @@ class API {
     // input: id
     static async getIntroduction(req, res) {
         try {
-            const { id } = req.params;
+            const { id } = req.query;
 
             // get the introudciont of the student
             // input: id
-            const intro = pool
-                .query // ADD QUERY INSIDE PARENTHESIS, DELETE THIS COMMENT
-                ();
+            const intro = await pool.query(
+                'SELECT Intro FROM Introduction WHERE id=' + id + ';'
+            );
 
-            res.json(intro)
+            if (intro.rows[0]) {
+                res.json(intro.rows[0].intro);
+            } else {
+                res.json({ success: false, error: 'ID does not exist' });
+            }
         } catch (err) {
             console.error(err.message);
+            res.json({ success: false, error: err.message });
         }
     }
 
@@ -220,11 +336,18 @@ class API {
 
             // add the introduction of the student
             // input: id, text
-            const intro = pool
-                .query // ADD QUERY INSIDE PARENTHESIS, DELETE THIS COMMENT
-                ();
+            await pool.query(
+                'INSERT INTO Introduction (id, Intro) values (' +
+                    id +
+                    ",'" +
+                    text +
+                    "');"
+            );
+
+            res.json({ success: true });
         } catch (err) {
             console.error(err.message);
+            res.json({ success: false, error: err.message });
         }
     }
 
@@ -232,15 +355,21 @@ class API {
     // input: id, text
     static async updateIntroduction(req, res) {
         try {
-            const { id, text } = req.params;
+            const { id, text } = req.query;
 
             // update the intro of the student
             // input: id, text
-            const intro = pool
-                .query // ADD QUERY INSIDE PARENTHESIS, DELETE THIS COMMENT
-                ();
+            await pool.query(
+                "UPDATE Introduction SET Intro='" +
+                    text +
+                    "' WHERE id=" +
+                    id +
+                    ';'
+            );
+            res.json({ success: true });
         } catch (err) {
             console.error(err.message);
+            res.json({ success: false, error: err.message });
         }
     }
 }
