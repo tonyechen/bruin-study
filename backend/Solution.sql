@@ -1,4 +1,4 @@
-﻿-- Schema
+﻿-- database schema
 CREATE TYPE MajorList AS ENUM ('Mathematics','Computer Science','Electrical Engineering','Physics','Mechanical Engineering');
 CREATE TABLE IF NOT EXISTS Student(
 	id numeric(9,0) PRIMARY KEY,
@@ -36,4 +36,4 @@ CREATE TABLE IF NOT EXISTS Messages(
 CREATE TABLE IF NOT EXISTS Introduction(
 	id  numeric(9,0) REFERENCES Student(id) PRIMARY KEY,
 	Intro text
-	);
+);

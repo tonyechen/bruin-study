@@ -12,14 +12,14 @@ DROP TABLE IF EXISTS Messages CASCADE;
 DROP TABLE IF EXISTS Introduction CASCADE;
 
 -- database schema / create database
-CREATE TYPE MajorList AS ENUM ('Mathematics','Computer Science','Electrical Engineering','Physics','Mechanical Engineering');
+CREATE TYPE MajorList AS ENUM ('Mathematics','Computer Science','Electrical Engineering','Physics','Mechanical Engineering', '');
 CREATE TABLE IF NOT EXISTS Student(
 	id numeric(9,0) PRIMARY KEY,
 	email varchar(40) UNIQUE NOT NULL,
 	Name varchar(100) NOT NULL,
 	major MajorList,
 	username varchar(30) UNIQUE NOT NULL,
-	password varchar(30) NOT NULL,
+	password varchar(30) NOT NULL
 	);
 CREATE TABLE IF NOT EXISTS CourseList(
 	Abbreviation varchar(30) PRIMARY KEY
@@ -1421,7 +1421,67 @@ insert into CourseList (Abbreviation) values ('GERMAN 2');
 insert into CourseList (Abbreviation) values ('ITALIAN 2');
 insert into CourseList (Abbreviation) values ('MATH 170E');
 
-<<<<<<< HEAD
+insert into Took (id, course) values (111111111,'COM SCI M148');
+insert into Took (id, course) values (111111111,'COM SCI 152B');
+insert into Took (id, course) values (111111111,'COM SCI 131');
+insert into Took (id, course) values (111111111,'COM SCI 174A');
+insert into Took (id, course) values (111111111,'EC ENGR 10H');
+insert into Took (id, course) values (111111111,'MATH 110A');
+insert into Took (id, course) values (222222222,'MATH 110A' );
+insert into Took (id, course) values (222222222,'EC ENGR 100' );
+insert into Took (id, course) values (222222222, 'COM SCI 161');
+insert into Took (id, course) values (222222222, 'COM SCI 143');
+insert into Took (id, course) values (222222222, 'COM SCI 131');
+insert into Took (id, course) values (222222222, 'COM SCI CM124');
+insert into Took (id, course) values (444444444, 'MATH 110A');
+insert into Took (id, course) values (444444444, 'COM SCI 131');
+insert into Took (id, course) values (444444444,'COM SCI 143');
+insert into Took (id, course) values (444444444,'EC ENGR 3');
+insert into Took (id, course) values (444444444, 'COM SCI M151B');
+insert into Took (id, course) values (444444444, 'COM SCI 174A');
+insert into Took (id, course) values (555555555,'MATH 110A');
+insert into Took (id, course) values (555555555,'MATH 110B');
+insert into Took (id, course) values (555555555,'COM SCI M119');
+insert into Took (id, course) values (555555555,'EC ENGR 100');
+insert into Took (id, course) values (555555555,'COM SCI 131');
+insert into Took (id, course) values (555555555,'COM SCI M148');
+insert into Took (id, course) values (555555555, 'EC ENGR 113DA');
+insert into Took (id, course) values (222222222, 'COM SCI 132');
+insert into Took (id, course) values (111111111,'MATH 95');
+insert into Took (id, course) values (444444444, 'MATH 110B');
+insert into Took (id, course) values (444444444, 'COM SCI M152A');
+insert into Took (id, course) values (555555555, 'COM SCI 97');
+
+insert into Taking (id, course) values (111111111,'COM SCI M148');
+insert into Taking (id, course) values (111111111,'COM SCI 152B');
+insert into Taking (id, course) values (111111111,'COM SCI 131');
+insert into Taking (id, course) values (111111111,'COM SCI 174A');
+insert into Taking (id, course) values (111111111,'EC ENGR 10H');
+insert into Taking (id, course) values (111111111,'MATH 110A');
+insert into Taking (id, course) values (222222222,'MATH 110A' );
+insert into Taking (id, course) values (222222222,'EC ENGR 100' );
+insert into Taking (id, course) values (222222222, 'COM SCI 161');
+insert into Taking (id, course) values (222222222, 'COM SCI 143');
+insert into Taking (id, course) values (222222222, 'COM SCI 131');
+insert into Taking (id, course) values (222222222, 'COM SCI CM124');
+insert into Taking (id, course) values (444444444, 'MATH 110A');
+insert into Taking (id, course) values (444444444, 'COM SCI 131');
+insert into Taking (id, course) values (444444444,'COM SCI 143');
+insert into Taking (id, course) values (444444444,'EC ENGR 3');
+insert into Taking (id, course) values (444444444, 'COM SCI M151B');
+insert into Taking (id, course) values (444444444, 'COM SCI 174A');
+insert into Taking (id, course) values (555555555,'MATH 110A');
+insert into Taking (id, course) values (555555555,'MATH 110B');
+insert into Taking (id, course) values (555555555,'COM SCI M119');
+insert into Taking (id, course) values (555555555,'EC ENGR 100');
+insert into Taking (id, course) values (555555555,'COM SCI 131');
+insert into Taking (id, course) values (555555555,'COM SCI M148');
+insert into Taking (id, course) values (555555555, 'EC ENGR 113DA');
+insert into Taking (id, course) values (222222222, 'COM SCI 132');
+insert into Taking (id, course) values (111111111,'MATH 95');
+insert into Taking (id, course) values (444444444, 'MATH 110B');
+insert into Taking (id, course) values (444444444, 'COM SCI M152A');
+insert into Taking (id, course) values (555555555, 'COM SCI 97');
 
 insert into Failed (id1, id2) values (555555555, 111111111);
 insert into Failed (id1, id2) values (111111111,444444444);
