@@ -1,9 +1,10 @@
 import React, { Component, useState } from 'react'
 import * as EmailValidator from 'email-validator';
 import './Profile.css'
+import Classes from './Classes';
 
 
-class ClassLine extends Component
+/*class ClassLine extends Component
 {
     state = {
         ClassName: this.props.ClassName,
@@ -22,6 +23,7 @@ class ClassLine extends Component
               <input type="text" 
                      name="ClassName"
                      placeholder= "Class Name " 
+                     ClassName="class_input"
                      value={ClassName} 
                      onChange={this.handleChange}/>
                <button onClick={()=>this.props.onDelete(this.props.id)} type="button">
@@ -30,6 +32,71 @@ class ClassLine extends Component
                <label>{this.props.error}</label>
             </div>
         );
+    }
+}*/
+class ClassLine extends Component
+{
+    constructor(props)
+    {
+        super(props)
+        this.items=Classes;
+        this.state=
+        {
+            suggestions: [],
+            ClassName: this.props.ClassName
+        }
+    }
+    handleChange  = (e) =>
+    {
+      const value=e.target.value;
+      let suggestions=[];
+      if (value.length>0)
+      {
+          const regex = new RegExp(`^${value}`,'i');
+          suggestions=this.items.sort().filter(v => regex.test(v));
+      }
+      this.setState({
+          suggestions: suggestions,
+          ClassName: value})   
+    }
+    suggestionSelected(value)
+    {
+        this.setState({
+           ClassName: value,
+           suggestions: [],
+            })
+    }
+    renderSuggestions()
+    {
+        const {suggestions}=this.state
+        if (suggestions.length === 0)
+        {
+            return null;
+        }
+        return(
+            <ul>
+                {suggestions.map((item) => <li onClick={() => this.suggestionSelected(item)}>{item}</li>)}
+            </ul>
+        )
+    }
+    render ()
+    {
+    const {ClassName}=this.state
+    return(
+        <div>
+            {this.props.children}
+            <input type="text" 
+                    name="ClassName"
+                    placeholder= "Class Name" 
+                     value={ClassName} 
+                     onChange={this.handleChange}/>
+            {this.renderSuggestions()}
+            <button onClick={()=>this.props.onDelete(this.props.id)} type="button">
+                   Delete Class
+               </button>
+               <label>{this.props.error}</label>
+        </div>
+    )
     }
 }
 
@@ -52,7 +119,7 @@ PreviousClassList: [
     {id: 3, cn: "", error: ""},
     {id: 4, cn: "", error: ""}
 ]
-    };
+};
 
 
 
@@ -166,34 +233,36 @@ class editProfile extends Component
         const {ClassName}=this.state;
         return(
             
-            <div>
-            <h1>Edit Profile</h1>
+            <div className='center'>
+            <h1 className='header_1'>Edit Profile</h1>
             <form onSubmit={this.handleSubmit}>
                 <div>
-                    <label>UID: 999999999</label>
+                    <label className='label_1'>UID: 999999999</label>
                     <br/>
-                    <label>Name: Aditya Mehta</label>
+                    <label className='label_1'>Name: Aditya Mehta</label>
                     <br/>
-                    <label>Email: </label>
+                    <label className='label_1'>Email: </label>
                     <input type="text" value={this.state.email} onChange={this.handleEmailChange}/>
-                    <div>{this.state.emailError}</div>
+                    <label>{this.state.emailError}</label>
                     <br/>
-                    <label>Bio: </label>
-                    <textarea  value={this.state.bio} onChange={this.handleBioChange}/>
-                    <div>{this.state.bioError}</div>
 
-                    <dl>Current Classes</dl>
+                    <dl className='class_headers'>Current Classes</dl>
                     {this.state.CurrentClassList.map(cl => <ClassLine key={cl.id} id={cl.id} onDelete={this.handleCurrentDelete} ClassName={cl.cn} error={cl.error}>
-                    <label>Class {cl.id}: </label> </ClassLine>)}
-                    <button onClick={this.handleCurrentAdd} type="button">Add Another Class</button>
+                    <label className='label_1'>Class {cl.id}: </label> </ClassLine>)}
+                    <button className='add_button' onClick={this.handleCurrentAdd} type="button">Add Another Class</button>
                     <br/>
 
-                    <dl>Previous Classes</dl>   
+                    <dl className='class_headers'>Previous Classes</dl>   
                     {this.state.PreviousClassList.map(cl => <ClassLine key={cl.id} id={cl.id} onDelete={this.handlePreviousDelete} ClassName={cl.cn} error={cl.error}>
-                    <label>Class {cl.id}: </label> </ClassLine>)}
-                    <button onClick={this.handlePreviousAdd} type="button">Add Another Class</button>
+                    <label className='label_1'>Class {cl.id}: </label> </ClassLine>)}
+                    <button className='add_button'onClick={this.handlePreviousAdd} type="button">Add Another Class</button>
                     <br/>
 
+                    <label className='label_1'>Bio: </label>
+                    <textarea  value={this.state.bio} onChange={this.handleBioChange}/>
+                    <label>{this.state.emailError}</label>
+
+                    <br/>
                     <button type="submit">Submit </button>
                 </div>
             </form>
