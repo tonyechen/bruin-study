@@ -1,0 +1,30 @@
+.header_1 {
+  font-size: 25px;
+  text-decoration: underline;
+}
+.center {
+  border: 3px solid rgb(0, 0, 0);
+}
+.label_1 {
+  
+  margin-right: 10px;
+}
+.add_button {
+  margin-top: 7px;
+  margin-bottom: 7px;
+}
+.class_headers
+{
+  font-weight: bold;
+  margin-top: 7px;
+}
+.class_input
+{
+  width: 100%;
+  margin-right: 10px;
+}
+.class_ul
+{
+  list-style-type: none;
+
+}
