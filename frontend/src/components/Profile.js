@@ -1,7 +1,7 @@
 import React, { Component, useState } from 'react'
 import * as EmailValidator from 'email-validator';
 import './Profile.css'
-import Classes from './Classes';
+import Classes from '../data/Classes';
 
 class ClassLine extends Component
 {
@@ -75,8 +75,16 @@ let initialState=
 {
 email: '',
 bio:'',
+username: '',
+password: '',
+name: '',
+
 emailError:'',
+usernameError: '',
 bioError: '',
+nameError: '',
+passwordError:'',
+
 CurrentClassList:[
     {id: 1,  cn: "", error: ""},
     {id: 2, cn: "", error: ""},
@@ -95,7 +103,20 @@ PreviousClassList: [
 
 class editProfile extends Component
 {
-    state=initialState
+    state=initialState;
+
+    handleUsernameChange =(e) =>
+    {
+        this.setState({username: e.target.value});
+    }
+    handlePasswordChange =(e) =>
+    {
+        this.setState({password: e.target.value});
+    }
+    handleNameChange =(e) =>
+    {
+        this.setState({name: e.target.value});
+    }
 
     handleEmailChange = (e) =>
     {
@@ -144,17 +165,32 @@ class editProfile extends Component
             let PreviousClassList = this.state.PreviousClassList.concat({id: x, cn:"", error:""});
             this.setState({PreviousClassList: PreviousClassList});
     }
+    //Validates information on submit
     validate = () => 
     {
         var check=true;
+
+        let passwordError="";
+        if (this.state.password=="")
+        {
+            passwordError="Must enter a password";
+            check=false;
+        }
+        let nameError ="";
+        if (this.state.name=="")
+        {
+            nameError="Must fill in a name";
+            check=false;
+        }
+        console.log(nameError)
         let bioError="";
-        if (this.state.bio==="")
+        if (this.state.bio=="")
         {
             bioError="Must fill in a bio";
             check=false;
         }
         let emailError="";
-        if (this.state.email==="")
+        if (this.state.email=="")
         {
             emailError="Must fill in email";
             check=false;
@@ -174,7 +210,7 @@ class editProfile extends Component
             }
             else if (!Classes.includes(this.state.PreviousClassList[i].cn))
             {
-                this.state.PreviousClassList[i].error="Class not in list";
+                this.state.PreviousClassList[i].error="Not a UCLA class";
                 check=false;
             }
             else
@@ -203,6 +239,8 @@ class editProfile extends Component
         this.setState({
             emailError: emailError,
             bioError: bioError,
+            nameError: nameError,
+            passwordError: passwordError
         });
         return check;
     }
@@ -237,15 +275,27 @@ class editProfile extends Component
                 <div>
                     <label className='label_1'>UID: 999999999</label>
                     <br/>
-                    <label className='label_1'>Name: Aditya Mehta</label>
+
+                    <label className='label_1'>Name: </label>
+                    <input type="text" value={this.state.name} onChange={this.handleNameChange}/>
+                    <label>{this.state.nameError}</label>
                     <br/>
+
                     <label className='label_1'>Email: </label>
                     <input type="text" value={this.state.email} onChange={this.handleEmailChange}/>
                     <label>{this.state.emailError}</label>
                     <br/>
 
-                    <dl className='class_headers'>Current Classes</dl>
+                    <label className='label_1'>Username: </label>
+                    <input type="text" value={this.state.username} onChange={this.handleUsernameChange}/>
+                    <br/>
 
+                    <label className='label_1'>New Password: </label>
+                    <input type="password" value={this.state.password} onChange={this.handlePasswordChange}/>
+                    <label>{this.state.passwordError}</label>
+                    <br/>
+
+                    <dl className='class_headers'>Current Classes</dl>
                     {this.state.CurrentClassList.map(cl => <ClassLine key={cl.id} id={cl.id} onDelete={this.handleCurrentDelete} ClassName={cl.cn} error={cl.error} setClass={this.setCurrClass}>
                     <label className='label_1'>Class {cl.id}: </label> </ClassLine>)}
                     <button className='add_button' onClick={this.handleCurrentAdd} type="button">Add Another Class</button>
@@ -262,7 +312,7 @@ class editProfile extends Component
 
                     <label className='label_1'>Bio: </label>
                     <textarea  value={this.state.bio} onChange={this.handleBioChange}/>
-                    <label>{this.state.emailError}</label>
+                    <label>{this.state.bioError}</label>
 
                     <br/>
                     <button type="submit">Submit </button>
