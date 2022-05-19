@@ -384,6 +384,53 @@ class API {
             res.json({ success: false, error: err.message });
         }
     }
-}
+	// Add a one-sided matches from id1 to id2 (id1 want to match with id2)
+	// input: id1, id2
+	static async Match(req, res) {
+        try {
+            const { id1, id2 } = req.query;
+            await pool.query(
+                'INSERT INTO Matches (id1,id2) values (' + id1 + ',' + id2 + ');'
+            );
 
+            res.json({ success: true });
+        } catch (err) {
+            console.error(err.message);
+            res.json({ success: false, error: err.message });
+        }
+    }
+	// Print out the number of 1 sided matches between id1 and id2
+	// input: id1, id2
+		static async MatchList(req, res) {
+        try {
+            const { id1, id2 } = req.query;
+            const matches = await pool.query(
+				'SELECT * FROM Matches WHERE ((id1=' + id1 + ') AND (id2=' + id2 + ')) OR ((id1=' + id2 + ') AND (id2=' + id1 + '));--')
+            );
+
+            res.json({ success: true });
+        } catch (err) {
+            console.error(err.message);
+            res.json({ success: false, error: err.message });
+        }
+    }
+	// Delete the single Matches between id1 and id2 (due to eiter rejection or a successful 2-sided match)
+	// input: id1, id2
+	static async deleteMatch(req, res) {
+        try {
+            const { id, course } = req.query;
+
+            // delete a course taken by a student
+            // input: id, course
+            await pool.query(
+                'DELETE FROM Matches WHERE ((id1=' + id1 + ') AND (id2=' + id2 + ')) OR ((id1=' + id2 + ') AND (id2=' + id1 + '));--'
+            );
+            res.json({ success: true });
+        } catch (err) {
+            console.error(err.message);
+            res.json({ success: false, error: err.message });
+        }
+}
+	
+	
 module.exports = API;
