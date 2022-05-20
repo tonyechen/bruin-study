@@ -7,10 +7,9 @@ DROP TABLE IF EXISTS CourseList CASCADE;
 DROP TABLE IF EXISTS Student CASCADE;
 DROP TABLE IF EXISTS Took CASCADE;
 DROP TABLE IF EXISTS Taking CASCADE;
-DROP TABLE IF EXISTS FAILED CASCADE;
-DROP TABLE IF EXISTS Messages CASCADE;
+DROP TABLE IF EXISTS Ignore CASCADE;
 DROP TABLE IF EXISTS Introduction CASCADE;
-DROP TABLE IF EXISTS Matches CASCADE;
+DROP TABLE IF EXISTS potentialMatches CASCADE;
 
 -- database schema / create database
 CREATE TYPE MajorList AS ENUM (
@@ -217,26 +216,19 @@ CREATE TABLE IF NOT EXISTS Taking(
 	course varchar(100) REFERENCES CourseList(Abbreviation) ON UPDATE CASCADE,
 	PRIMARY KEY(id, course)
 );
-CREATE TABLE IF NOT EXISTS FAILED(
+CREATE TABLE IF NOT EXISTS potentialMatches(
+	id1 numeric(9,0) REFERENCES Student(id) ON UPDATE CASCADE,
+	id2 numeric(9,0) REFERENCES Student(id) ON UPDATE CASCADE
+	);
+CREATE TABLE IF NOT EXISTS Ignore(
 	id1 numeric(9,0) REFERENCES Student(id) ON UPDATE CASCADE,
 	id2 numeric(9,0) REFERENCES Student(id) ON UPDATE CASCADE,
 	PRIMARY KEY (id1, id2)
 	);
-CREATE TABLE IF NOT EXISTS Matches(
-	id1 numeric(9,0) REFERENCES Student(id) ON UPDATE CASCADE,
-	id2 numeric(9,0) REFERENCES Student(id) ON UPDATE CASCADE
-	);
-CREATE TABLE IF NOT EXISTS Messages(
-	id1 numeric(9,0) REFERENCES Student(id) ON UPDATE CASCADE,
-	id2 numeric(9,0) REFERENCES Student(id) ON UPDATE CASCADE,
-	content text,
-	stamp timestamptz,
-	PRIMARY KEY (id1,id2,stamp)
-	);
 CREATE TABLE IF NOT EXISTS Introduction(
 	id  numeric(9,0) REFERENCES Student(id) PRIMARY KEY,
 	Intro text
-	);
+);
 
 
 -- sample data
@@ -310,10 +302,10 @@ insert into Taking (id, course) values (444444444, 'MATH 110B');
 insert into Taking (id, course) values (444444444, 'COM SCI M152A');
 insert into Taking (id, course) values (555555555, 'COM SCI 97');
 
-insert into Failed (id1, id2) values (555555555, 111111111);
-insert into Failed (id1, id2) values (111111111,444444444);
-insert into Failed (id1, id2) values (555555555,444444444);
-insert into Failed (id1, id2) values (555555555,222222222);
+insert into Ignore (id1, id2) values (555555555, 111111111);
+insert into Ignore (id1, id2) values (111111111,444444444);
+insert into Ignore (id1, id2) values (555555555,444444444);
+insert into Ignore (id1, id2) values (555555555,222222222);
 
 insert into Introduction (id, Intro) values (111111111,'Zidane Tribal is the main protagonist of Final Fantasy IX. He is a thief who works for the Tantalus Theater Troupe set to kidnap the princess of Alexandria, an event that escalates to a quest to protect the planet of Gaia.');
 insert into Introduction (id, Intro) values (222222222,'Garnet Til Alexandros XVII, alias Dagger and birth name Sarah, is the deuteragonist of Final Fantasy IX, and the heir of Alexandria in the 17th generation. Garnet notices a change in her mother, Queen Brahne, and seeks to escape Alexandria Castle.');
@@ -321,6 +313,6 @@ insert into Introduction (id, Intro) values (333333333,'Captain Adelbert Steiner
 insert into Introduction (id, Intro) values (444444444, NULL);
 insert into Introduction (id, Intro) values (555555555, 'Amarant Coral (known as Salamander Coral in the Japanese version) is a playable character from Final Fantasy IX. He is introduced to the player as Red-headed Man');
 
-insert into Matches (id1,id2) values (111111111,222222222);
-insert into Matches (id1,id2) values (222222222,111111111);
-insert into Matches (id1,id2) values (555555555,111111111);
+insert into potentialMatches (id1,id2) values (111111111,222222222);
+insert into potentialMatches (id1,id2) values (222222222,111111111);
+insert into potentialMatches (id1,id2) values (555555555,111111111);
