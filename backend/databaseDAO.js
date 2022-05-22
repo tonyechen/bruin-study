@@ -1,4 +1,3 @@
-const e = require('express');
 const express = require('express');
 
 const pool = require('./db');
@@ -32,19 +31,25 @@ class API {
             res.json({ success: false, error: err.message });
         }
     }
-	
-	// Return the a profile 
-	// input: username, password
-	static async Authentication(req, res){
-		try {
-			const { username, password } = req.query;
-			const id = await pool.query("SELECT id FROM Student WHERE username='" + username + "' AND password='" + password + "';--"); 
-			res.json(courseTaking.rows[0]);
-		} catch (err) { 
-			console.error(err.message);
-		}
-	}
-	
+
+    // Return the a profile
+    // input: username, password
+    static async Authentication(req, res) {
+        try {
+            const { username, password } = req.query;
+            const id = await pool.query(
+                "SELECT id FROM Student WHERE username='" +
+                    username +
+                    "' AND password='" +
+                    password +
+                    "';--"
+            );
+            res.json(courseTaking.rows[0]);
+        } catch (err) {
+            console.error(err.message);
+        }
+    }
+
     // create student profile;
     // input: id, email, name, major, username, password
     static async createStudent(req, res) {
@@ -384,13 +389,18 @@ class API {
             res.json({ success: false, error: err.message });
         }
     }
-	// Add a one-sided matches from id1 to id2 (id1 want to match with id2)
-	// input: id1, id2
-	static async Match(req, res) {
+
+    // Add a one-sided matches from id1 to id2 (id1 want to match with id2)
+    // input: id1, id2
+    static async addMatch(req, res) {
         try {
             const { id1, id2 } = req.query;
             await pool.query(
-                'INSERT INTO Matches (id1,id2) values (' + id1 + ',' + id2 + ');'
+                'INSERT INTO Matches (id1,id2) values (' +
+                    id1 +
+                    ',' +
+                    id2 +
+                    ');'
             );
 
             res.json({ success: true });
@@ -399,31 +409,49 @@ class API {
             res.json({ success: false, error: err.message });
         }
     }
-	// Print out the number of 1 sided matches between id1 and id2
-	// input: id1, id2
-		static async MatchList(req, res) {
+
+    // Print out the number of 1 sided matches between id1 and id2
+    // input: id1, id2
+    static async getMatchOneToTwo(req, res) {
         try {
             const { id1, id2 } = req.query;
             const matches = await pool.query(
-				'SELECT * FROM Matches WHERE ((id1=' + id1 + ') AND (id2=' + id2 + ')) OR ((id1=' + id2 + ') AND (id2=' + id1 + '));--')
+                'SELECT * FROM Matches WHERE ((id1=' +
+                    id1 +
+                    ') AND (id2=' +
+                    id2 +
+                    ')) OR ((id1=' +
+                    id2 +
+                    ') AND (id2=' +
+                    id1 +
+                    '));--'
             );
 
-            res.json({ success: true });
+            res.json(matches.rows);
         } catch (err) {
             console.error(err.message);
             res.json({ success: false, error: err.message });
         }
     }
-	// Delete the single Matches between id1 and id2 (due to eiter rejection or a successful 2-sided match)
-	// input: id1, id2
-	static async deleteMatch(req, res) {
+
+    // Delete the single Matches between id1 and id2 (due to eiter rejection or a successful 2-sided match)
+    // input: id1, id2
+    static async deleteMatch(req, res) {
         try {
             const { id, course } = req.query;
 
             // delete a course taken by a student
             // input: id, course
             await pool.query(
-                'DELETE FROM Matches WHERE ((id1=' + id1 + ') AND (id2=' + id2 + ')) OR ((id1=' + id2 + ') AND (id2=' + id1 + '));--'
+                'DELETE FROM Matches WHERE ((id1=' +
+                    id1 +
+                    ') AND (id2=' +
+                    id2 +
+                    ')) OR ((id1=' +
+                    id2 +
+                    ') AND (id2=' +
+                    id1 +
+                    '));--'
             );
             res.json({ success: true });
         } catch (err) {
@@ -431,37 +459,53 @@ class API {
             res.json({ success: false, error: err.message });
         }
     }
-	// Print out the potential matches for a person with id based on the classes that 2 people took (excluding the matches in FAILED) with the person with highest match first
-	// an unadjusted matching score  
-	// input: id
-	static async Took-Took(req, res) {
-		try {
+
+    // Print out the potential matches for a person with id based on the classes that 2 people took (excluding the matches in FAILED) with the person with highest match first
+    // and unadjusted matching score
+    // input: id
+    static async getPotentialMatchFromTook(req, res) {
+        try {
             const { id } = req.query;
             const matches = await pool.query(
-				'SELECT id, count FROM (SELECT b.id AS ID, COUNT (b.course) FROM Took AS A INNER JOIN Took AS B ON (a.course = b.course) AND (a.id =' + id + ') AND (b.id !=' + id +') GROUP BY b.id) AS C LEFT JOIN Failed AS D ON ((D.id1 =' + id + ') AND (C.id = D.id2)) OR ((D.id2 =' + id + ') AND (C.id = D.id1)) WHERE D.id1 IS NULL ORDER BY count DESC;--')
+                'SELECT id, count FROM (SELECT b.id AS ID, COUNT (b.course) FROM Took AS A INNER JOIN Took AS B ON (a.course = b.course) AND (a.id =' +
+                    id +
+                    ') AND (b.id !=' +
+                    id +
+                    ') GROUP BY b.id) AS C LEFT JOIN Failed AS D ON ((D.id1 =' +
+                    id +
+                    ') AND (C.id = D.id2)) OR ((D.id2 =' +
+                    id +
+                    ') AND (C.id = D.id1)) WHERE D.id1 IS NULL ORDER BY count DESC;--'
             );
             res.json({ success: true });
         } catch (err) {
             console.error(err.message);
             res.json({ success: false, error: err.message });
         }
-	}
-	// Print out the potential matches for a person with id based on the classes that 2 people taking (excluding the matches in FAILED) with the person with highest match first
-	// an unadjusted matching score  
-	// input: id
-	static async Taking-Taking(req, res) {
-		try {
+    }
+    // Print out the potential matches for a person with id based on the classes that 2 people taking (excluding the matches in FAILED) with the person with highest match first
+    // an unadjusted matching score
+    // input: id
+    static async getPotentialMatchFromTaking(req, res) {
+        try {
             const { id } = req.query;
             const matches = await pool.query(
-				'SELECT id, count FROM (SELECT b.id AS ID, COUNT (b.course) FROM Taking AS A INNER JOIN Taking AS B ON (a.course = b.course) AND (a.id =' + id + ') AND (b.id !=' + id +') GROUP BY b.id) AS C LEFT JOIN Failed AS D ON ((D.id1 =' + id + ') AND (C.id = D.id2)) OR ((D.id2 =' + id + ') AND (C.id = D.id1)) WHERE D.id1 IS NULL ORDER BY count DESC;--')
+                'SELECT id, count FROM (SELECT b.id AS ID, COUNT (b.course) FROM Taking AS A INNER JOIN Taking AS B ON (a.course = b.course) AND (a.id =' +
+                    id +
+                    ') AND (b.id !=' +
+                    id +
+                    ') GROUP BY b.id) AS C LEFT JOIN Failed AS D ON ((D.id1 =' +
+                    id +
+                    ') AND (C.id = D.id2)) OR ((D.id2 =' +
+                    id +
+                    ') AND (C.id = D.id1)) WHERE D.id1 IS NULL ORDER BY count DESC;--'
             );
             res.json({ success: true });
         } catch (err) {
             console.error(err.message);
             res.json({ success: false, error: err.message });
         }
-	}
+    }
 }
-	
-	
+
 module.exports = API;
