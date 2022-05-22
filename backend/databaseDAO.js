@@ -430,6 +430,37 @@ class API {
             console.error(err.message);
             res.json({ success: false, error: err.message });
         }
+    }
+	// Print out the potential matches for a person with id based on the classes that 2 people took (excluding the matches in FAILED) with the person with highest match first
+	// an unadjusted matching score  
+	// input: id
+	static async Took-Took(req, res) {
+		try {
+            const { id } = req.query;
+            const matches = await pool.query(
+				'SELECT id, count FROM (SELECT b.id AS ID, COUNT (b.course) FROM Took AS A INNER JOIN Took AS B ON (a.course = b.course) AND (a.id =' + id + ') AND (b.id !=' + id +') GROUP BY b.id) AS C LEFT JOIN Failed AS D ON ((D.id1 =' + id + ') AND (C.id = D.id2)) OR ((D.id2 =' + id + ') AND (C.id = D.id1)) WHERE D.id1 IS NULL ORDER BY count DESC;--')
+            );
+            res.json({ success: true });
+        } catch (err) {
+            console.error(err.message);
+            res.json({ success: false, error: err.message });
+        }
+	}
+	// Print out the potential matches for a person with id based on the classes that 2 people taking (excluding the matches in FAILED) with the person with highest match first
+	// an unadjusted matching score  
+	// input: id
+	static async Taking-Taking(req, res) {
+		try {
+            const { id } = req.query;
+            const matches = await pool.query(
+				'SELECT id, count FROM (SELECT b.id AS ID, COUNT (b.course) FROM Taking AS A INNER JOIN Taking AS B ON (a.course = b.course) AND (a.id =' + id + ') AND (b.id !=' + id +') GROUP BY b.id) AS C LEFT JOIN Failed AS D ON ((D.id1 =' + id + ') AND (C.id = D.id2)) OR ((D.id2 =' + id + ') AND (C.id = D.id1)) WHERE D.id1 IS NULL ORDER BY count DESC;--')
+            );
+            res.json({ success: true });
+        } catch (err) {
+            console.error(err.message);
+            res.json({ success: false, error: err.message });
+        }
+	}
 }
 	
 	
