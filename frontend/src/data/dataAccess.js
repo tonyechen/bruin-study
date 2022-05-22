@@ -1,5 +1,14 @@
 import http from './http';
 import axios from 'axios';
+
+async function checkID(id) {
+    // check if the id exists
+    const profile = await http.get(`/user?id=${id}`);
+    if (profile.data.error) {
+        return profile.data;
+    }
+    return null;
+}
 class db {
     /**
      * Get the full profile information associated with the user id
@@ -80,6 +89,12 @@ class db {
         intro,
         password
     ) {
+        const error = await checkID(id);
+        if (error) {
+            return error;
+        }
+
+        // update student table
         let response = await http.put(
             `user?id=${id}&email=${email}&name=${name}&major=${major}&username=${username}&password=${password}`
         );
@@ -89,8 +104,10 @@ class db {
             return response.data;
         }
 
+        // fetch from intro table
         response = await http.put(`introduction?id=${id}&text=${intro}`);
 
+        // auto error checking here
         return response.data;
     }
 
@@ -100,20 +117,61 @@ class db {
      * @returns a list of all the courses that the student with id is taking. If the list is empty, either the user does not exist or the student is not taking any courses.
      */
     static async getCourseTaking(id) {
+        const error = await checkID(id);
+        if (error) {
+            return error;
+        }
+
         let response = await http.get(`courseTaking?id=${id}`);
         return response.data;
     }
 
     /**
-     * Add a course that the student with id is taking
+     * Take in a list of course that the student is TAKING. Add the new courses and remove the deleted courses.
      * @param {int} id
-     * @param {string} course
+     * @param {string[]} courses
      * @returns a JS object indicating success or failure. Success: { success: true }, Failure: { success: false, error: "error message"}
      */
-    static async addCourseTaking(id, course) {
-        let response = await http.post(
-            `courseTaking?id=${id}&course=${course}`
+    static async updateCourseTaking(id, courses) {
+        const courseTaking = await this.getCourseTaking(id);
+        if (courseTaking.error) return courseTaking;
+
+        // add new
+        // find new courses added
+        const newCourses = courses.filter(
+            (course) => !courseTaking.includes(course)
         );
+        console.log('add: ', newCourses);
+
+        let response;
+        for (let course of newCourses) {
+            response = await http.post(
+                `courseTaking?id=${id}&course=${course}`
+            );
+
+            // error checking
+            if (response.data.error) return response.data;
+        }
+
+        // delete deleted courses
+        // find dleted courses
+        const deletedCourses = courseTaking.filter(
+            (course) => !courses.includes(course)
+        );
+        console.log('delete:', deletedCourses);
+
+        for (let course of deletedCourses) {
+            response = await http.delete(
+                `courseTaking?id=${id}&course=${course}`
+            );
+
+            if (response.data.error) return response.data;
+        }
+
+        // there is nothing to add or delete, response is empty
+        if (!response) {
+            return { success: true };
+        }
         return response.data;
     }
 
@@ -123,18 +181,59 @@ class db {
      * @returns a list of all courses that the student with id has taken. If the list is empty, either the user does not exist or the student has not taken any courses.
      */
     static async getCourseTook(id) {
+        const error = await checkID(id);
+        if (error) {
+            return error;
+        }
+
         let response = await http.get(`courseTook?id=${id}`);
         return response.data;
     }
 
     /**
-     * Add a course that the student with id has taken
+     * Take in a list of course that the student TOOK. Add the new courses and remove the deleted courses.
      * @param {int} id
-     * @param {string} course
+     * @param {string[]} courses
      * @returns a JS object indicating success or failure. Success: { success: true }, Failure: { success: false, error: "error message"}
      */
-    static async addCourseTook(id, course) {
-        let response = await http.post(`courseTook?id=${id}&course=${course}`);
+    static async updateCourseTook(id, courses) {
+        const courseTook = await this.getCourseTook(id);
+        if (courseTook.error) return courseTook;
+
+        // add new
+        // find new courses added
+        const newCourses = courses.filter(
+            (course) => !courseTook.includes(course)
+        );
+        console.log('add: ', newCourses);
+
+        let response;
+        for (let course of newCourses) {
+            response = await http.post(`courseTook?id=${id}&course=${course}`);
+
+            // error checking
+            if (response.data.error) return response.data;
+        }
+
+        // delete deleted courses
+        // find dleted courses
+        const deletedCourses = courseTook.filter(
+            (course) => !courses.includes(course)
+        );
+        console.log('delete:', deletedCourses);
+
+        for (let course of deletedCourses) {
+            response = await http.delete(
+                `courseTook?id=${id}&course=${course}`
+            );
+
+            if (response.data.error) return response.data;
+        }
+
+        // there is nothing to add or delete, response is empty
+        if (!response) {
+            return { success: true };
+        }
         return response.data;
     }
 }
