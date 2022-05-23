@@ -9,7 +9,8 @@ DROP TABLE IF EXISTS Took CASCADE;
 DROP TABLE IF EXISTS Taking CASCADE;
 DROP TABLE IF EXISTS FAILED CASCADE;
 DROP TABLE IF EXISTS Introduction CASCADE;
-DROP TABLE IF EXISTS Matches CASCADE;
+DROP TABLE IF EXISTS potentialMatches CASCADE;
+DROP TABLE IF EXISTS successfulMatches CASCADE;
 
 -- database schema / create database
 CREATE TYPE MajorList AS ENUM (
@@ -216,7 +217,11 @@ CREATE TABLE IF NOT EXISTS Taking(
 	course varchar(100) REFERENCES CourseList(Abbreviation) ON UPDATE CASCADE,
 	PRIMARY KEY(id, course)
 );
-CREATE TABLE IF NOT EXISTS Matches(
+CREATE TABLE IF NOT EXISTS potentialMatches(
+	id1 numeric(9,0) REFERENCES Student(id) ON UPDATE CASCADE,
+	id2 numeric(9,0) REFERENCES Student(id) ON UPDATE CASCADE
+	);
+CREATE TABLE IF NOT EXISTS successfulMatches(
 	id1 numeric(9,0) REFERENCES Student(id) ON UPDATE CASCADE,
 	id2 numeric(9,0) REFERENCES Student(id) ON UPDATE CASCADE
 	);
@@ -313,6 +318,6 @@ insert into Introduction (id, Intro) values (333333333,'Captain Adelbert Steiner
 insert into Introduction (id, Intro) values (444444444, NULL);
 insert into Introduction (id, Intro) values (555555555, 'Amarant Coral (known as Salamander Coral in the Japanese version) is a playable character from Final Fantasy IX. He is introduced to the player as Red-headed Man');
 
-insert into Matches (id1,id2) values (111111111,222222222);
-insert into Matches (id1,id2) values (222222222,111111111);
-insert into Matches (id1,id2) values (555555555,111111111);
+insert into potentialMatches (id1,id2) values (111111111,222222222);
+insert into potentialMatches (id1,id2) values (222222222,111111111);
+insert into potentialMatches (id1,id2) values (555555555,111111111);

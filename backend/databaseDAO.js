@@ -392,11 +392,11 @@ class API {
 
     // Add a one-sided matches from id1 to id2 (id1 want to match with id2)
     // input: id1, id2
-    static async addMatch(req, res) {
+    static async addPotentialMatch(req, res) {
         try {
             const { id1, id2 } = req.query;
             await pool.query(
-                'INSERT INTO Matches (id1,id2) values (' +
+                'INSERT INTO potentialMatches (id1,id2) values (' +
                     id1 +
                     ',' +
                     id2 +
@@ -410,24 +410,17 @@ class API {
         }
     }
 
-    // Print out the number of 1 sided matches between id1 and id2
+    // Print out the number of 1 sided matches between id1 and id2 (should output either 0 or 1)
     // input: id1, id2
-    static async getMatchOneToTwo(req, res) {
+    static async getPotentialMatch(req, res) {
         try {
             const { id1, id2 } = req.query;
-            const matches = await pool.query(
-                'SELECT * FROM Matches WHERE ((id1=' +
-                    id1 +
-                    ') AND (id2=' +
-                    id2 +
-                    ')) OR ((id1=' +
-                    id2 +
-                    ') AND (id2=' +
-                    id1 +
-                    '));--'
-            );
+            const match = await pool
+                .query
+                // insert query inside parenthesis, delete comment
+                ();
 
-            res.json(matches.rows);
+            res.json(match);
         } catch (err) {
             console.error(err.message);
             res.json({ success: false, error: err.message });
@@ -436,14 +429,12 @@ class API {
 
     // Delete the single Matches between id1 and id2 (due to eiter rejection or a successful 2-sided match)
     // input: id1, id2
-    static async deleteMatch(req, res) {
+    static async deletePotentialMatch(req, res) {
         try {
-            const { id, course } = req.query;
+            const { id1, id2 } = req.query;
 
-            // delete a course taken by a student
-            // input: id, course
             await pool.query(
-                'DELETE FROM Matches WHERE ((id1=' +
+                'DELETE FROM potentialMatches WHERE ((id1=' +
                     id1 +
                     ') AND (id2=' +
                     id2 +
@@ -459,6 +450,75 @@ class API {
             res.json({ success: false, error: err.message });
         }
     }
+
+    // Print out the potential matches for a person with id based on the classes that 2 people TOOK (don't have to exclude any cases, we will do this in matching algorithm)
+    static async getPotentialMatchFromTook(req, res) {
+        try {
+            const { id } = req.query;
+            const potentialMatch = await pool
+                .query
+                // Insert query inside parenthesis, delete comment
+                ();
+
+            res.json(potentialMatch);
+        } catch (err) {
+            console.error(err.message);
+            res.json({ success: false, error: err.message });
+        }
+    }
+
+    // Print out the potential matches for a person with id based on the classes that 2 people are TAKING (don't have to exclude any cases, we will do this in matching algorithm)
+    static async getPotentialMatchFromTaking(req, res) {
+        try {
+            const { id } = req.query;
+            const potentialMatch = await pool
+                .query
+                // Insert query inside parenthesis, delete comment
+                ();
+
+            res.json(potentialMatch);
+        } catch (err) {
+            console.error(err.message);
+            res.json({ success: false, error: err.message });
+        }
+    }
+
+    // Add a successful matches of id1 and id2 (should it be [id1, id2] or [id2, id1]? You decide!)
+    // input: id1, id2
+    static async addSuccessfulMatch(req, res) {
+        try {
+            const { id1, id2 } = req.query;
+            await pool
+                .query
+                // insert inside parenthesis here, delete comment
+                ();
+
+            res.json({ success: true });
+        } catch (err) {
+            console.error(err.message);
+            res.json({ success: false, error: err.message });
+        }
+    }
+
+    // Get all the succesful matches of id
+    // input: id1, id2
+    static async getSuccessfulMatch(req, res) {
+        try {
+            const { id } = req.query;
+            const successfulMatch = await pool
+                .query
+                // insert insdie parenthesis here, delete comment
+                ();
+
+            res.json(successfulMatch);
+        } catch (err) {
+            console.error(err.message);
+            res.json({ success: false, error: err.message });
+        }
+    }
+
+    /* Naht's Legacy Query Code*/
+    /*
 
     // Print out the potential matches for a person with id based on the classes that 2 people took (excluding the matches in FAILED) with the person with highest match first
     // and unadjusted matching score
@@ -506,6 +566,8 @@ class API {
             res.json({ success: false, error: err.message });
         }
     }
+
+    */
 }
 
 module.exports = API;
