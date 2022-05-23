@@ -21,7 +21,11 @@ CREATE TABLE IF NOT EXISTS Taking(
 	course varchar(100) REFERENCES CourseList(Abbreviation) ON UPDATE CASCADE,
 	PRIMARY KEY(id, course)
 );
-CREATE TABLE IF NOT EXISTS Matches(
+CREATE TABLE IF NOT EXISTS potentialMatches(
+	id1 numeric(9,0) REFERENCES Student(id) ON UPDATE CASCADE,
+	id2 numeric(9,0) REFERENCES Student(id) ON UPDATE CASCADE
+	);
+CREATE TABLE IF NOT EXISTS successfulMatches(
 	id1 numeric(9,0) REFERENCES Student(id) ON UPDATE CASCADE,
 	id2 numeric(9,0) REFERENCES Student(id) ON UPDATE CASCADE
 	);
