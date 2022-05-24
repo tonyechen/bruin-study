@@ -9,6 +9,11 @@ async function checkID(id) {
     }
     return null;
 }
+
+function reformatString(string) {
+    // & is a special character for query string, and ' is one for sql
+    return string.replaceAll('&', '%26').replaceAll("'", "''");
+}
 class db {
     /**
      * Get the full profile information associated with the user id
@@ -56,6 +61,9 @@ class db {
         intro = '',
         password
     ) {
+        // ' is a special character in sql
+        intro = reformatString(intro);
+
         let response = await http.post(
             `user?id=${id}&email=${email}&name=${name}&major=${major}&username=${username}&password=${password}`
         );
@@ -94,6 +102,9 @@ class db {
             return error;
         }
 
+        // ' is a special character in sql
+        intro = reformatString(intro);
+        
         // update student table
         let response = await http.put(
             `user?id=${id}&email=${email}&name=${name}&major=${major}&username=${username}&password=${password}`
@@ -145,6 +156,8 @@ class db {
 
         let response;
         for (let course of newCourses) {
+            course = reformatString(course);
+
             response = await http.post(
                 `courseTaking?id=${id}&course=${course}`
             );
@@ -161,6 +174,8 @@ class db {
         console.log('delete:', deletedCourses);
 
         for (let course of deletedCourses) {
+            course = reformatString(course);
+
             response = await http.delete(
                 `courseTaking?id=${id}&course=${course}`
             );
@@ -209,6 +224,8 @@ class db {
 
         let response;
         for (let course of newCourses) {
+            course = reformatString(course);
+
             response = await http.post(`courseTook?id=${id}&course=${course}`);
 
             // error checking
@@ -223,6 +240,8 @@ class db {
         console.log('delete:', deletedCourses);
 
         for (let course of deletedCourses) {
+            course = reformatString(course);
+
             response = await http.delete(
                 `courseTook?id=${id}&course=${course}`
             );
