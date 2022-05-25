@@ -414,6 +414,23 @@ class API {
             res.json({ success: false, error: err.message });
         }
     }
+	
+	// Print out the potential matches for a person with id based on the classes that a person TOOK that the other is TAKING, we have excluded people from successful Matches as well as failed
+    static async getPotentialMatchFromTookTaking(req, res) {
+        try {
+            const { id } = req.query;
+            const potentialMatch = await pool
+                .query
+                (
+				'SELECT id, count FROM (SELECT id, COUNT(C.id) FROM (SELECT B.id AS ID FROM Taking AS A INNER JOIN Took AS B ON (a.course = b.course) AND (A.id = $1) AND (B.id != $1) UNION ALL SELECT A.id AS ID FROM Taking AS A INNER JOIN Took AS B ON (a.course = b.course) AND (A.id != $1) AND (B.id = $1)) AS C GROUP BY c.id) AS D LEFT JOIN (SELECT * FROM Failed UNION SELECT * FROM successfulMatches) AS E ON ((E.id1 = $1) AND (D.id = E.id2)) OR ((E.id2 = $1) AND (D.id = E.id1)) WHERE E.id1 IS NULL ORDER BY count DESC;--',[id]
+				);
+
+            res.json(potentialMatch);
+        } catch (err) {
+            console.error(err.message);
+            res.json({ success: false, error: err.message });
+        }
+    }
 
     // Add a successful matches of id1 and id2 (should it be [id1, id2] or [id2, id1]? You decide!)
     // input: id1, id2
