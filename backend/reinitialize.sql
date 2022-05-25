@@ -45,7 +45,7 @@ CREATE TYPE MajorList AS ENUM (
 'Greek and Latin',
 'Latin',
 'Communication',
-'Communication Studies ',
+'Communication Studies',
 'Comparative Literature',
 'Computational and Systems Biology',
 'Pre-Computational and Systems Biology',
@@ -193,8 +193,7 @@ CREATE TYPE MajorList AS ENUM (
 'Theater',
 'Individual Field of Concentration',
 'Dance',
-'World Arts and Cultures',
-''
+'World Arts and Cultures'
 );
 CREATE TABLE IF NOT EXISTS Student(
 	id numeric(9,0) PRIMARY KEY,
@@ -308,9 +307,10 @@ insert into Taking (id, course) values (444444444, 'COM SCI M152A');
 insert into Taking (id, course) values (555555555, 'COM SCI 97');
 
 insert into FAILED (id1, id2) values (555555555, 111111111);
-insert into FAILED (id1, id2) values (111111111,444444444);
 insert into FAILED (id1, id2) values (555555555,444444444);
 insert into FAILED (id1, id2) values (555555555,222222222);
+
+insert into successfulMatches (id1, id2) values (111111111,444444444);
 
 insert into Introduction (id, Intro) values (111111111,'Zidane Tribal is the main protagonist of Final Fantasy IX. He is a thief who works for the Tantalus Theater Troupe set to kidnap the princess of Alexandria, an event that escalates to a quest to protect the planet of Gaia.');
 insert into Introduction (id, Intro) values (222222222,'Garnet Til Alexandros XVII, alias Dagger and birth name Sarah, is the deuteragonist of Final Fantasy IX, and the heir of Alexandria in the 17th generation. Garnet notices a change in her mother, Queen Brahne, and seeks to escape Alexandria Castle.');
