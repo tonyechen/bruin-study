@@ -2,6 +2,8 @@ import React, { Component, useState } from 'react'
 import * as EmailValidator from 'email-validator';
 import './Profile.css'
 import Classes from '../data/Classes';
+import Majors from '../data/Majors'
+import '../data/dataAccess'
 
 class ClassLine extends Component
 {
@@ -71,6 +73,9 @@ class ClassLine extends Component
     }
 }
 
+
+
+
 let initialState=
 {
 email: '',
@@ -78,12 +83,15 @@ bio:'',
 username: '',
 password: '',
 name: '',
+major: '',
 
 emailError:'',
 usernameError: '',
 bioError: '',
 nameError: '',
 passwordError:'',
+majorError:'',
+MajorSuggestions: [],
 
 CurrentClassList:[
     {id: 1,  cn: "", error: ""},
@@ -100,7 +108,7 @@ PreviousClassList: [
 };
 
 
-
+var majors=Majors;
 class editProfile extends Component
 {
     state=initialState;
@@ -125,6 +133,39 @@ class editProfile extends Component
     handleBioChange = (e) =>
     {
         this.setState({bio: e.target.value});
+    }
+    handleMajorChange  = (e) =>
+    {
+      const value=e.target.value;
+      let suggestions=[];
+      if (value.length>0)
+      {
+          const regex = new RegExp(`^${value}`,'i');
+          suggestions=Majors.sort().filter(v => regex.test(v));
+      }
+      this.setState({
+          MajorSuggestions: suggestions,
+          major: value});
+    }
+    majorSuggestionSelected(value)
+    {
+        this.setState({
+           MajorSuggestions: [],
+           major: value
+            });
+    }
+    renderMajorSuggestions()
+    {
+        const {MajorSuggestions}=this.state
+        if (MajorSuggestions.length === 0)
+        {
+            return null;
+        }
+        return(
+            <ul>
+                {MajorSuggestions.map((item) => <li onClick={() => this.majorSuggestionSelected(item)}>{item}</li>)}
+            </ul>
+        )
     }
     handleCurrentDelete=(whichID)=>
     {
@@ -169,7 +210,18 @@ class editProfile extends Component
     validate = () => 
     {
         var check=true;
-
+        let majorError="";
+        if (!Majors.includes(this.state.major))
+        {
+            majorError="Must enter valid UCLA Major";
+            check =false;
+        }
+        let usernameError="";
+        if (this.state.username=="")
+        {
+            usernameError="Must enter a username";
+            check=false;
+        }
         let passwordError="";
         if (this.state.password=="")
         {
@@ -182,7 +234,6 @@ class editProfile extends Component
             nameError="Must fill in a name";
             check=false;
         }
-        console.log(nameError)
         let bioError="";
         if (this.state.bio=="")
         {
@@ -240,7 +291,8 @@ class editProfile extends Component
             emailError: emailError,
             bioError: bioError,
             nameError: nameError,
-            passwordError: passwordError
+            passwordError: passwordError,
+            majorError: majorError
         });
         return check;
     }
@@ -288,11 +340,18 @@ class editProfile extends Component
 
                     <label className='label_1'>Username: </label>
                     <input type="text" value={this.state.username} onChange={this.handleUsernameChange}/>
+                    <label>{this.state.usernameError}</label>
                     <br/>
 
                     <label className='label_1'>New Password: </label>
                     <input type="password" value={this.state.password} onChange={this.handlePasswordChange}/>
                     <label>{this.state.passwordError}</label>
+                    <br/>
+
+                    <label className='label_1'>Major: </label>
+                    <input type="text" value={this.state.major} onChange={this.handleMajorChange}/>
+                    {this.renderMajorSuggestions()}
+                    <label>{this.state.majorError}</label>
                     <br/>
 
                     <dl className='class_headers'>Current Classes</dl>
