@@ -12,8 +12,9 @@ class API {
             // Fetch all except password from student table
             // input: id
             const student = await pool.query(
-                'SELECT id, email, name, major, username FROM Student WHERE id= $1;--', [id]
-				);
+                'SELECT id, email, name, major, username FROM Student WHERE id= $1;--',
+                [id]
+            );
 
             // make sure the id exists
             if (student.rows[0]) {
@@ -30,13 +31,14 @@ class API {
         }
     }
 
-    // Return the a profile
+    // Return the id if the password and username are both inside the table
     // input: username, password
     static async Authentication(req, res) {
         try {
             const { username, password } = req.query;
             const id = await pool.query(
-                "SELECT id FROM Student WHERE username= $1 AND password = $2;--", [username, password]
+                'SELECT id FROM Student WHERE username= $1 AND password = $2;--',
+                [username, password]
             );
             res.json(courseTaking.rows[0]);
         } catch (err) {
@@ -53,7 +55,8 @@ class API {
             // insert into Student
             // input: id, email, name, major, username, password
             await pool.query(
-                'INSERT INTO Student (id, email, name, major, username, password) VALUES($1, $2, $3, $4, $5, $6);--', [id, email, name, major, username, password] 
+                'INSERT INTO Student (id, email, name, major, username, password) VALUES($1, $2, $3, $4, $5, $6);--',
+                [id, email, name, major, username, password]
             );
 
             res.json({ success: true });
@@ -72,8 +75,9 @@ class API {
             // update existing student:
             // input: id, email, name, major, username, password
             await pool.query(
-				"UPDATE Student SET email= $1 ,name= $2, Major= $3, username= $4, password= $5 WHERE id= $6;--",[email, name, major, username, password, id]
-				);
+                'UPDATE Student SET email= $1 ,name= $2, Major= $3, username= $4, password= $5 WHERE id= $6;--',
+                [email, name, major, username, password, id]
+            );
 
             res.json({ success: true });
         } catch (err) {
@@ -91,7 +95,8 @@ class API {
             // fetch all courses taken by a student
             // input: id
             const courseTook = await pool.query(
-                'SELECT course FROM Took WHERE id= $1;--', [id]
+                'SELECT course FROM Took WHERE id= $1;--',
+                [id]
             );
 
             if (courseTook) {
@@ -121,7 +126,8 @@ class API {
             // add a course taken by a student
             // input: id, course
             await pool.query(
-                'INSERT INTO Took(id, course) values ( $1, $2);--', [id, course]
+                'INSERT INTO Took(id, course) values ( $1, $2);--',
+                [id, course]
             );
 
             res.json({ success: true });
@@ -143,7 +149,8 @@ class API {
             // delete a course taken by a student
             // input: id, course
             await pool.query(
-                'DELETE FROM Took WHERE id= $1 AND course= $2; --', [id, course]
+                'DELETE FROM Took WHERE id= $1 AND course= $2; --',
+                [id, course]
             );
 
             res.json({ success: true });
@@ -162,7 +169,8 @@ class API {
             // fetch all courses a student is taking
             // input: id
             const courseTaking = await pool.query(
-                'SELECT course FROM Taking WHERE id= $1; --', [id]
+                'SELECT course FROM Taking WHERE id= $1; --',
+                [id]
             );
 
             if (courseTaking) {
@@ -192,7 +200,8 @@ class API {
             // Add a course the student is taking
             // input: id, course
             await pool.query(
-                'INSERT INTO Taking(id, course) values ($1, $2);--', [id, course]
+                'INSERT INTO Taking(id, course) values ($1, $2);--',
+                [id, course]
             );
 
             res.json({ success: true });
@@ -214,7 +223,8 @@ class API {
             // delete a course the student is taking
             // input: id, course
             await pool.query(
-                'DELETE FROM Taking WHERE id= $1 AND course= $2;--', [id, course]
+                'DELETE FROM Taking WHERE id= $1 AND course= $2;--',
+                [id, course]
             );
 
             res.json({ success: true });
@@ -233,7 +243,8 @@ class API {
             // get all failed matches of the student
             // input: id
             const failed = await pool.query(
-                'SELECT id2 AS id FROM Failed WHERE id1= $1 UNION SELECT id1 AS id FROM FAILED WHERE id2= $1; --', [id] 
+                'SELECT id2 AS id FROM Failed WHERE id1= $1 UNION SELECT id1 AS id FROM FAILED WHERE id2= $1; --',
+                [id]
             );
 
             if (failed.rows[0]) {
@@ -262,7 +273,8 @@ class API {
             // Insert a failed match of the student(id1)
             // input: id1, id2
             await pool.query(
-                'INSERT INTO Failed (id1,id2) values ( $1, $2);--', [id1, id2]
+                'INSERT INTO Failed (id1,id2) values ( $1, $2);--',
+                [id1, id2]
             );
 
             res.json({ success: true });
@@ -281,7 +293,8 @@ class API {
             // get the introudciont of the student
             // input: id
             const intro = await pool.query(
-                'SELECT Intro FROM Introduction WHERE id= $1;--', [id]
+                'SELECT Intro FROM Introduction WHERE id= $1;--',
+                [id]
             );
 
             if (intro.rows[0]) {
@@ -304,7 +317,8 @@ class API {
             // add the introduction of the student
             // input: id, text
             await pool.query(
-                'INSERT INTO Introduction (id, Intro) values ($1, $2);--', [id, text]
+                'INSERT INTO Introduction (id, Intro) values ($1, $2);--',
+                [id, text]
             );
 
             res.json({ success: true });
@@ -323,7 +337,8 @@ class API {
             // update the intro of the student
             // input: id, text
             await pool.query(
-                "UPDATE Introduction SET Intro= $1 WHERE id= $2;--", [text, id]
+                'UPDATE Introduction SET Intro= $1 WHERE id= $2;--',
+                [text, id]
             );
             res.json({ success: true });
         } catch (err) {
@@ -338,7 +353,8 @@ class API {
         try {
             const { id1, id2 } = req.query;
             await pool.query(
-                'INSERT INTO potentialMatches (id1,id2) values ($1, $2);--', [id1, id2]
+                'INSERT INTO potentialMatches (id1,id2) values ($1, $2);--',
+                [id1, id2]
             );
 
             res.json({ success: true });
@@ -349,16 +365,18 @@ class API {
     }
 
     // Check if [id1,id2] already exist in potential match (i.e: check if id1 already wanted to match with id2)
-	// Return a list whose length is 0 or 1
+    // Return a list whose length is 0 or 1
     // input: id1, id2
     static async getPotentialMatch(req, res) {
         try {
             const { id1, id2 } = req.query;
-            const match = await pool
-                .query
-                ('SELECT 1 FROM potentialMatches WHERE id1= $1 AND id2= $2;--',[id1, id2]);
+            const match = await pool.query(
+                'SELECT 1 FROM potentialMatches WHERE id1= $1 AND id2= $2;--',
+                [id1, id2]
+            );
 
-            res.json(match);
+            const response = match.rows.length ? true : false;
+            res.json({ hasMatch: response });
         } catch (err) {
             console.error(err.message);
             res.json({ success: false, error: err.message });
@@ -372,7 +390,8 @@ class API {
             const { id1, id2 } = req.query;
 
             await pool.query(
-                'DELETE FROM potentialMatches WHERE ((id1= $1) AND (id2= $2)) OR ((id1= $2) AND (id2= $1));--', [id1, id2]
+                'DELETE FROM potentialMatches WHERE ((id1= $1) AND (id2= $2)) OR ((id1= $2) AND (id2= $1));--',
+                [id1, id2]
             );
             res.json({ success: true });
         } catch (err) {
@@ -381,15 +400,15 @@ class API {
         }
     }
 
-    // Print out the potential matches for a person with id based on the classes that 2 people TOOK, we have excluded people from Successful Matches as well as Failed 
+    // Print out the potential matches for a person with id based on the classes that 2 people TOOK,
+    // we have excluded people from Successful Matches as well as Failed
     static async getPotentialMatchFromTook(req, res) {
         try {
             const { id } = req.query;
-            const potentialMatch = await pool
-                .query
-                (
-					'SELECT id, count FROM (SELECT b.id AS ID, COUNT(b.course) FROM Took AS A INNER JOIN Took AS B ON (a.course = b.course) AND (A.id = $1) AND (B.id != $1) GROUP BY b.id) AS C LEFT JOIN (SELECT * FROM Failed UNION SELECT * FROM successfulMatches) AS D ON ((D.id1 = $1) AND (C.id = D.id2)) OR ((D.id2 = $1) AND (C.id = D.id1)) WHERE D.id1 is NULL ORDER BY count DESC; --', [id]
-				);
+            const potentialMatch = await pool.query(
+                'SELECT id, count FROM (SELECT b.id AS ID, COUNT(b.course) FROM Took AS A INNER JOIN Took AS B ON (a.course = b.course) AND (A.id = $1) AND (B.id != $1) GROUP BY b.id) AS C LEFT JOIN (SELECT * FROM Failed UNION SELECT * FROM successfulMatches) AS D ON ((D.id1 = $1) AND (C.id = D.id2)) OR ((D.id2 = $1) AND (C.id = D.id1)) WHERE D.id1 is NULL ORDER BY count DESC; --',
+                [id]
+            );
 
             res.json(potentialMatch);
         } catch (err) {
@@ -402,11 +421,10 @@ class API {
     static async getPotentialMatchFromTaking(req, res) {
         try {
             const { id } = req.query;
-            const potentialMatch = await pool
-                .query
-                (
-				'SELECT id, count FROM (SELECT b.id AS ID, COUNT(b.course) FROM Taking AS A INNER JOIN Taking AS B ON (a.course = b.course) AND (A.id = $1) AND (B.id != $1) GROUP BY b.id) AS C LEFT JOIN (SELECT * FROM Failed UNION SELECT * FROM successfulMatches) AS D ON ((D.id1 = $1) AND (C.id = D.id2)) OR ((D.id2 = $1) AND (C.id = D.id1)) WHERE D.id1 is NULL ORDER BY count DESC; --', [id]
-				);
+            const potentialMatch = await pool.query(
+                'SELECT id, count FROM (SELECT b.id AS ID, COUNT(b.course) FROM Taking AS A INNER JOIN Taking AS B ON (a.course = b.course) AND (A.id = $1) AND (B.id != $1) GROUP BY b.id) AS C LEFT JOIN (SELECT * FROM Failed UNION SELECT * FROM successfulMatches) AS D ON ((D.id1 = $1) AND (C.id = D.id2)) OR ((D.id2 = $1) AND (C.id = D.id1)) WHERE D.id1 is NULL ORDER BY count DESC; --',
+                [id]
+            );
 
             res.json(potentialMatch);
         } catch (err) {
@@ -414,16 +432,16 @@ class API {
             res.json({ success: false, error: err.message });
         }
     }
-	
-	// Print out the potential matches for a person with id based on the classes that a person TOOK that the other is TAKING, we have excluded people from successful Matches as well as failed
+
+    // Print out the potential matches for a person with id based on the classes that a person TOOK that the other is TAKING,
+    // we have excluded people from successful Matches as well as failed
     static async getPotentialMatchFromTookTaking(req, res) {
         try {
             const { id } = req.query;
-            const potentialMatch = await pool
-                .query
-                (
-				'SELECT id, count FROM (SELECT id, COUNT(C.id) FROM (SELECT B.id AS ID FROM Taking AS A INNER JOIN Took AS B ON (a.course = b.course) AND (A.id = $1) AND (B.id != $1) UNION ALL SELECT A.id AS ID FROM Taking AS A INNER JOIN Took AS B ON (a.course = b.course) AND (A.id != $1) AND (B.id = $1)) AS C GROUP BY c.id) AS D LEFT JOIN (SELECT * FROM Failed UNION SELECT * FROM successfulMatches) AS E ON ((E.id1 = $1) AND (D.id = E.id2)) OR ((E.id2 = $1) AND (D.id = E.id1)) WHERE E.id1 IS NULL ORDER BY count DESC;--',[id]
-				);
+            const potentialMatch = await pool.query(
+                'SELECT id, count FROM (SELECT id, COUNT(C.id) FROM (SELECT B.id AS ID FROM Taking AS A INNER JOIN Took AS B ON (a.course = b.course) AND (A.id = $1) AND (B.id != $1) UNION ALL SELECT A.id AS ID FROM Taking AS A INNER JOIN Took AS B ON (a.course = b.course) AND (A.id != $1) AND (B.id = $1)) AS C GROUP BY c.id) AS D LEFT JOIN (SELECT * FROM Failed UNION SELECT * FROM successfulMatches) AS E ON ((E.id1 = $1) AND (D.id = E.id2)) OR ((E.id2 = $1) AND (D.id = E.id1)) WHERE E.id1 IS NULL ORDER BY count DESC;--',
+                [id]
+            );
 
             res.json(potentialMatch);
         } catch (err) {
@@ -437,9 +455,10 @@ class API {
     static async addSuccessfulMatch(req, res) {
         try {
             const { id1, id2 } = req.query;
-            await pool
-                .query
-                ('INSERT INTO successfulMatches (id1, id2) VALUES ($1, $2);--', [id1, id2]);
+            await pool.query(
+                'INSERT INTO successfulMatches (id1, id2) VALUES ($1, $2);--',
+                [id1, id2]
+            );
 
             res.json({ success: true });
         } catch (err) {
@@ -453,9 +472,10 @@ class API {
     static async getSuccessfulMatch(req, res) {
         try {
             const { id } = req.query;
-            const successfulMatch = await pool
-                .query
-                ('SELECT id2 AS id FROM successfulMatches WHERE id1= $1 UNION SELECT id1 AS id FROM successfulMatches WHERE id2= $1; --', [id] );
+            const successfulMatch = await pool.query(
+                'SELECT id2 AS id FROM successfulMatches WHERE id1= $1 UNION SELECT id1 AS id FROM successfulMatches WHERE id2= $1; --',
+                [id]
+            );
 
             res.json(successfulMatch);
         } catch (err) {
@@ -463,7 +483,6 @@ class API {
             res.json({ success: false, error: err.message });
         }
     }
-
 }
 
 module.exports = API;
