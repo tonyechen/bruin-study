@@ -6,6 +6,11 @@
     margin: auto;
 }
 
+.profileBox {
+    font: 15px "Century Gothic", Futura, sans-serif;
+    margin: 4% 26% ;
+}
+
 #Yes, #No {
     display: inline-block;
     width: 300px;
