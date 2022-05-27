@@ -1,9 +1,9 @@
 import React, { Component, useState } from 'react'
 import * as EmailValidator from 'email-validator';
 import './Profile.css'
-import Classes from '../data/Classes';
-import Majors from '../data/Majors'
-import '../data/dataAccess'
+import Classes from '../data/Classes.js';
+import Majors from '../data/Majors.js'
+import db from'../data/dataAccess.js'
 
 class ClassLine extends Component
 {
@@ -29,7 +29,7 @@ class ClassLine extends Component
       this.setState({
           suggestions: suggestions,
           ClassName: value});
-          this.props.setClass(this.props.id,e.target.value); 
+         this.props.setClass(this.props.id,e.target.value); 
     }
     suggestionSelected(value)
     {
@@ -54,6 +54,7 @@ class ClassLine extends Component
     }
     render ()
     {
+    console.log(this.state.ClassName);
     const {ClassName}=this.state
     return(
         <div>
@@ -78,6 +79,7 @@ class ClassLine extends Component
 
 let initialState=
 {
+uid: 111111111,
 email: '',
 bio:'',
 username: '',
@@ -91,27 +93,63 @@ bioError: '',
 nameError: '',
 passwordError:'',
 majorError:'',
+formError:'',
 MajorSuggestions: [],
 
 CurrentClassList:[
-    {id: 1,  cn: "", error: ""},
-    {id: 2, cn: "", error: ""},
-    {id: 3, cn: "", error: ""},
-    {id: 4, cn: "", error: ""}
 ],
 PreviousClassList: [
-    {id: 1,  cn: "", error: ""},
-    {id: 2, cn: "", error: ""},
-    {id: 3, cn: "", error: ""},
-    {id: 4, cn: "", error: ""}
-]
-};
+]};
 
 
 var majors=Majors;
 class editProfile extends Component
 {
     state=initialState;
+
+    async componentDidMount()
+    {
+        const obj = await db.getFullProfile(this.state.uid);
+        var ccl=[{id: 1,  cn: "", error: ""} ];
+        var pcl=[{id: 1,  cn: "", error: ""} ];
+
+        for (var i =0; i<=obj.courseTaking.length; i++)
+        {
+            if (i==0)
+            {
+                ccl[i].cn=obj.courseTaking[i];
+            }
+            else
+            {
+                ccl = ccl.concat({id: i+1, cn:obj.courseTaking[i], error:""});
+            }
+        }
+    
+        for (var i =0; i<=obj.courseTook.length; i++)
+        {
+            if (i==0)
+            {
+                pcl[i].cn=obj.courseTook[i];
+            }
+            else
+            {
+            pcl = pcl.concat({id: i+1, cn:obj.courseTook[i], error:""});
+            }
+        }
+        this.setState(
+            {
+                email: obj.email,
+                bio: obj.introduction,
+                username: obj.username,
+                name: obj.name,
+                major: obj.major,
+                CurrentClassList: ccl,
+                PreviousClassList: pcl
+            }
+        )
+        
+
+}
 
     handleUsernameChange =(e) =>
     {
@@ -169,9 +207,10 @@ class editProfile extends Component
     }
     handleCurrentDelete=(whichID)=>
     {
-        if(this.state.CurrentClassList.length>1)
+        let CurrentClassList=this.state.CurrentClassList;
+        if(CurrentClassList.length>1)
         {
-            let CurrentClassList=this.state.CurrentClassList.filter(c => c.id!== whichID);
+            CurrentClassList=CurrentClassList.filter(c => c.id!== whichID);
             for(var i=0; i<CurrentClassList.length;i++)
             {
                 CurrentClassList[i].id=1+i;
@@ -181,7 +220,7 @@ class editProfile extends Component
     }
     handleCurrentAdd=()=>
     {
-        if (this.state.CurrentClassList.length<10)
+        if (this.state.CurrentClassList.length)
         {
             var x= this.state.CurrentClassList[this.state.CurrentClassList.length-1].id+1;
             let CurrentClassList = this.state.CurrentClassList.concat({id: x, cn:"",error:""});
@@ -190,6 +229,7 @@ class editProfile extends Component
     }
     handlePreviousDelete=(whichID)=>
     {
+        
         if(this.state.PreviousClassList.length>1)
         {
             let PreviousClassList=this.state.PreviousClassList.filter(c => c.id!== whichID);
@@ -261,7 +301,7 @@ class editProfile extends Component
             }
             else if (!Classes.includes(this.state.PreviousClassList[i].cn))
             {
-                this.state.PreviousClassList[i].error="Not a UCLA class";
+                this.state.PreviousClassList[i].error="Class not in list";
                 check=false;
             }
             else
@@ -310,22 +350,47 @@ class editProfile extends Component
         this.setState({PreviousClassList: prevClass});
 
     }
-    handleSubmit= e =>
+    handleSubmit= async e =>
     {
         e.preventDefault();
+
         let validate=this.validate();
-        console.log(this.state);
+        if (validate == false)
+        {
+            return;
+        }
+        else
+        {
+
+            let ensureCorrect= await db.updateProfile(
+                this.state.uid,
+                this.state.email,
+                this.state.username,
+                this.state.name,
+                this.state.major,
+                this.state.bio,
+                this.state.introduction
+            )
+       
+            if  (ensureCorrect.success==='false')
+            {
+                this.setState({formError: ensureCorrect.error});
+                return;
+            }
+
+        }
     };
     render()
     {
         const {ClassName}=this.state;
+        console.log(this.state.CurrentClassList)
         return(
             
             <div className='center'>
             <h1 className='header_1'>Edit Profile</h1>
             <form onSubmit={this.handleSubmit}>
                 <div>
-                    <label className='label_1'>UID: 999999999</label>
+                    <label className='label_1'>UID: {this.state.uid}</label>
                     <br/>
 
                     <label className='label_1'>Name: </label>
@@ -333,7 +398,7 @@ class editProfile extends Component
                     <label>{this.state.nameError}</label>
                     <br/>
 
-                    <label className='label_1'>Email: </label>
+           ż        <label className='label_1'>Email: </label>
                     <input type="text" value={this.state.email} onChange={this.handleEmailChange}/>
                     <label>{this.state.emailError}</label>
                     <br/>
@@ -375,6 +440,7 @@ class editProfile extends Component
 
                     <br/>
                     <button type="submit">Submit </button>
+                    <label>{this.formError}</label>
                 </div>
             </form>
             </div>
