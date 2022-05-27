@@ -1,0 +1,13 @@
+.center {
+    text-align: center;
+    display: block;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+}
+
+#Yes, #No {
+    display: inline-block;
+    width: 300px;
+    height: 40px;
+}
