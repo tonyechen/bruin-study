@@ -104,7 +104,7 @@ class db {
 
         // ' is a special character in sql
         intro = reformatString(intro);
-        
+
         // update student table
         let response = await http.put(
             `user?id=${id}&email=${email}&name=${name}&major=${major}&username=${username}&password=${password}`
@@ -253,6 +253,109 @@ class db {
         if (!response) {
             return { success: true };
         }
+        return response.data;
+    }
+
+    /**
+     * Get potential matches of id based on same courses took
+     * @param {int} id
+     * @returns A list of JSON objects containing the id with and number of same courses took
+     */
+    static async getPotentialMatchFromCourseTook(id) {
+        const error = await checkID(id);
+        if (error) {
+            return error;
+        }
+
+        const response = await http.get(`match/took?id=${id}`);
+        return response.data;
+    }
+
+    /**
+     * Get potential matches of id based on same courses taking
+     * @param {int} id
+     * @returns A list of JSON objects containing the id with and number of same courses taking
+     */
+    static async getPotentialMatchFromCourseTaking(id) {
+        const error = await checkID(id);
+        if (error) {
+            return error;
+        }
+
+        const response = await http.get(`match/taking?id=${id}`);
+        return response.data;
+    }
+
+    /**
+     * Get potential matches of id based on overlapping courses took or taken (i.e one person took the course and another is taking the course)
+     * @param {int} id
+     * @returns A list of JSON objects containing the id with and number of overlapping courses
+     */
+    static async getPotentialMatchFromCourseTookTaking(id) {
+        const error = await checkID(id);
+        if (error) {
+            return error;
+        }
+
+        const response = await http.get(`match/tooktaking?id=${id}`);
+        return response.data;
+    }
+
+    /**
+     * Ultimatically handle matching as a potential match or a successful match, and update the database accordingly
+     * @param {int} id1 
+     * @param {int} id2 
+     * @returns return an object indicating the success of the function
+     */
+    static async addMatch(id1, id2) {
+        if (id1 === id2) return { success: false, error: "An id cannot match with itself" };
+
+        let error = await checkID(id1);
+        if (error) {
+            return error;
+        }
+        error = await checkID(id2);
+        if (error) {
+            return error;
+        }
+
+        // check if id1 and id2 already exist
+        const duplicate = (
+            await http.get(`match/potential?id1=${id1}&id2=${id2}`)
+        ).data.hasMatch;
+        if (duplicate) {
+            return { success: false, error: `[${id1}, ${id2} is already a matching pair` };
+        }
+
+        // check if id2 and id1 exist
+        const hasMatch = (
+            await http.get(`match/potential?id1=${id2}&id2=${id1}`)
+        ).data.hasMatch;
+
+        // if [id2, id1] exists, it means that we have a 2 way match of [id1, id2] and [id2, id1]
+        // this indicates a successful match
+        if (hasMatch) {
+            await http.delete(`match/potential?id1=${id1}&id2=${id2}`);
+            const response = await http.post(
+                `match/success?id1=${id1}&id2=${id2}`
+            );
+            return response.data;
+        } else {
+            // if [id2, id1] doesn't exist, simply add [id1, id2]
+            const response = await http.post(
+                `match/potential?id1=${id1}&id2=${id2}`
+            );
+            return response.data;
+        }
+    }
+
+    static async getSucessfulMatches(id) {
+        let error = await checkID(id);
+        if (error) {
+            return error;
+        }
+
+        const response = await http.get(`match/success?id=${id}`);
         return response.data;
     }
 }
