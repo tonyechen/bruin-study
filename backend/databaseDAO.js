@@ -410,7 +410,7 @@ class API {
                 [id]
             );
 
-            res.json(potentialMatch);
+            res.json(potentialMatch.rows);
         } catch (err) {
             console.error(err.message);
             res.json({ success: false, error: err.message });
@@ -426,7 +426,7 @@ class API {
                 [id]
             );
 
-            res.json(potentialMatch);
+            res.json(potentialMatch.rows);
         } catch (err) {
             console.error(err.message);
             res.json({ success: false, error: err.message });
@@ -443,7 +443,7 @@ class API {
                 [id]
             );
 
-            res.json(potentialMatch);
+            res.json(potentialMatch.rows);
         } catch (err) {
             console.error(err.message);
             res.json({ success: false, error: err.message });
