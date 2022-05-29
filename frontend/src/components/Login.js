@@ -1,7 +1,7 @@
 import react, { useState } from "react";
 import {
     BrowserRouter as Router,
-    Switch,
+    Routes,
     Route,
     Link
   } from "react-router-dom";
