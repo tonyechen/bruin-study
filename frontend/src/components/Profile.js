@@ -7,16 +7,12 @@ import db from'../data/dataAccess.js'
 
 class ClassLine extends Component
 {
-    constructor(props)
-    {
-        super(props)
-        this.items=Classes;
-        this.state=
+        items=Classes;
+        state=
         {
             suggestions: [],
             ClassName: this.props.ClassName
         }
-    }
     handleChange  = (e) =>
     {
       const value=e.target.value;
@@ -54,15 +50,13 @@ class ClassLine extends Component
     }
     render ()
     {
-    console.log(this.state.ClassName);
-    const {ClassName}=this.state
     return(
         <div>
             {this.props.children}
             <input type="text" 
                     name="ClassName"
                     placeholder= "Class Name" 
-                     value={ClassName} 
+                     value={this.props.ClassName} 
                      onChange={this.handleChange}/>
             {this.renderSuggestions()}
             <button onClick={()=>this.props.onDelete(this.props.id)} type="button">
@@ -113,7 +107,7 @@ class editProfile extends Component
         var ccl=[{id: 1,  cn: "", error: ""} ];
         var pcl=[{id: 1,  cn: "", error: ""} ];
 
-        for (var i =0; i<=obj.courseTaking.length; i++)
+        for (var i =0; i<obj.courseTaking.length; i++)
         {
             if (i==0)
             {
@@ -125,7 +119,7 @@ class editProfile extends Component
             }
         }
     
-        for (var i =0; i<=obj.courseTook.length; i++)
+        for (var i =0; i<obj.courseTook.length; i++)
         {
             if (i==0)
             {
@@ -185,6 +179,7 @@ class editProfile extends Component
           MajorSuggestions: suggestions,
           major: value});
     }
+
     majorSuggestionSelected(value)
     {
         this.setState({
@@ -194,14 +189,14 @@ class editProfile extends Component
     }
     renderMajorSuggestions()
     {
-        const {MajorSuggestions}=this.state
-        if (MajorSuggestions.length === 0)
+        
+        if (this.state.MajorSuggestions.length === 0)
         {
             return null;
         }
         return(
             <ul>
-                {MajorSuggestions.map((item) => <li onClick={() => this.majorSuggestionSelected(item)}>{item}</li>)}
+                {this.state.MajorSuggestions.map((item) => <li onClick={() => this.majorSuggestionSelected(item)}>{item}</li>)}
             </ul>
         )
     }
@@ -232,7 +227,7 @@ class editProfile extends Component
         
         if(this.state.PreviousClassList.length>1)
         {
-            let PreviousClassList=this.state.PreviousClassList.filter(c => c.id!== whichID);
+            let PreviousClassList=this.state.PreviousClassList.filter(c => c.id !== whichID);
             for(var i=0; i<PreviousClassList.length;i++)
             {
                 PreviousClassList[i].id=1+i;
@@ -353,16 +348,18 @@ class editProfile extends Component
     handleSubmit= async e =>
     {
         e.preventDefault();
-
         let validate=this.validate();
+        console.log("Submitted");
+        console.log(validate);
         if (validate == false)
         {
+            console.log("Validate Failed");
             return;
         }
         else
         {
 
-            let ensureCorrect= await db.updateProfile(
+            let ensureCorrectProf= await db.updateProfile(
                 this.state.uid,
                 this.state.email,
                 this.state.username,
@@ -372,18 +369,49 @@ class editProfile extends Component
                 this.state.introduction
             )
        
-            if  (ensureCorrect.success==='false')
+            if  (ensureCorrectProf.success==='false')
             {
-                this.setState({formError: ensureCorrect.error});
+                console.log("Profile Wasn't Correct");
+                this.setState({formError: ensureCorrectProf.error});
+                return;
+            }
+            let currCourses=[];
+            for (var i=0; i<this.state.CurrentClassList.length;i++)
+            {
+                currCourses=currCourses.concat(this.state.CurrentClassList[i].cn)
+            }
+            let prevCourses=[];
+            for (var i=0; i<this.state.PreviousClassList.length;i++)
+            {
+                prevCourses=prevCourses.concat(this.state.PreviousClassList[i].cn)
+            }
+            console.log(currCourses);
+            console.log(prevCourses);
+            let ensureCurrClass= await db.updateCourseTaking(currCourses);
+            let ensurePrevClass = await db.updateCourseTook(prevCourses);
+            console.log(ensureCurrClass);
+            console.log(ensurePrevClass);
+            if (ensurePrevClass.success===false)
+            {
+                console.log("PrevClass Wasn't Correct");
+                this.setState({formError: ensurePrevClass.error});
+                return;
+            }
+            if (ensureCurrClass.success===false)
+            {
+                console.log("CurrClass Wasn't Correct");
+                this.setState({formError: ensureCurrClass.error});
                 return;
             }
 
+          
+
         }
-    };
+    }
     render()
     {
-        const {ClassName}=this.state;
-        console.log(this.state.CurrentClassList)
+        
+       
         return(
             
             <div className='center'>
