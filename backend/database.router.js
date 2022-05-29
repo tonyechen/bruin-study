@@ -1,4 +1,5 @@
 const express = require('express');
+const { addPotentialMatch } = require('./databaseDAO');
 const api = require('./databaseDAO');
 
 const router = express.Router();
@@ -33,5 +34,23 @@ router
     .get(api.getIntroduction)
     .post(api.addIntroduction)
     .put(api.updateIntroduction);
+
+// potentialMatch table endpoint
+router
+    .route('/match/potential')
+    .get(api.getPotentialMatch)
+    .post(api.addPotentialMatch)
+    .delete(api.deletePotentialMatch);
+
+// successfulMatch table endpoint
+router
+    .route('/match/success')
+    .get(api.getSuccessfulMatch)
+    .post(api.addSuccessfulMatch);
+
+// generate potential matches from Took Take endpoints
+router.route('/match/took').get(api.getPotentialMatchFromTook);
+router.route('/match/taking').get(api.getPotentialMatchFromTaking);
+router.route('/match/tooktaking').get(api.getPotentialMatchFromTookTaking);
 
 module.exports = router;
