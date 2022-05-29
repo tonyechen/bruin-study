@@ -9,6 +9,9 @@ const Header = (props) => {
             <h1 className="header__logo">Bruin Study</h1>
             <div selection className="header__group">
                 <a className="header__option" href="">
+                    About
+                </a>
+                <a className="header__option" href="">
                     Login
                 </a>
                 <a className="header__option" href="">

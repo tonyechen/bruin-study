@@ -14,7 +14,7 @@ class Home extends React.Component {
             major: null,
             currentClassList: null,
             previousClassList: null,
-            yesSwp: null,
+            yesSwp: [],
             noSwp: null,
             userIds: [111111111, 222222222, 333333333]
         }
@@ -23,7 +23,7 @@ class Home extends React.Component {
     render() {
         return (
             <div className = "center">
-                <h1 className="square">{this.displayStudent(this.state.uid)}</h1>,
+                <h1 className = "square">{this.displayStudent(this.state.uid)}</h1>,
                 <button id = "No" onClick = {() => this.handleClick("No", this.state.uid)} className = "buttons">
                     No
                 </button>
@@ -68,7 +68,7 @@ class Home extends React.Component {
     handleClick(buttonType, id) {
         console.log(buttonType);
         if (buttonType === "Yes") {
-            //this.setState({yesSwp: [yesSwp].concat(id)})
+            //this.setState({yesSwp: yesSwp.push(id)})
             //console.log(this.state.yesSwp);
         }
         else if (buttonType === "Rewind") {
