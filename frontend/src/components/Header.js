@@ -13,7 +13,7 @@ const Header = (props) => {
                     Login
                 </Link>
                 <Link to="/signup">
-                    Logout
+                    Signup
                 </Link>
                 <Link to="/profile">
                     <img

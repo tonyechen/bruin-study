@@ -1,13 +1,19 @@
-import react, { Profiler, useState } from 'react';
-import createProfile from '../data/dataAccess';
+import react, { useState } from 'react';
+import db from '../data/dataAccess';
 import {
-    Redirect
+    Navigate
   } from "react-router-dom";
 
   function Signup() {
     const [errorMessages, setErrorMessages] = useState({});
     const [isSubmitted, setIsSubmitted] = useState(false);
-    
+    const validEmail = new RegExp(
+        '^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$'
+     );
+
+     const validID = new RegExp(
+        '^[0-9]{9}$'
+     );
     function handleSubmit(event) {
         //Prevent page reload
         event.preventDefault();
@@ -19,8 +25,21 @@ import {
             setErrorMessages({name: "confirmpass", message: "Passwords do not match"});
             return;
         }   
+
+        if(!validID.test(id.value)) 
+        {
+            setErrorMessages({name: "id", message: "Invalid ID"});
+            return;
+        }
+
+        if(!validEmail.test(email.value)) 
+        {
+            setErrorMessages({name: "email", message: "Invalid Email"});
+            return;
+        }
+
+        var response = db.createProfile(id.value, email.value, username.value, name.value, major.value, '', pass.value);
         
-        var response = createProfile(id.value, email.value, username.value, name.value, major.value, '', pass.value);
         if(response.success === false)
         {
             setErrorMessages({name: "signupfail", message: "Signup failed, try again or with different values"});
@@ -28,7 +47,6 @@ import {
         else
         {
             setIsSubmitted(true);
-            <Redirect to="/login"/>
         }
     }
 
@@ -44,10 +62,12 @@ import {
               <label>UCLA ID </label>
               <input type="text" name="id" required />
             </div>
+            {renderErrorMessage("id")}
             <div className="input-container">
               <label>Email </label>
               <input type="text" name="email" required />
             </div>
+            {renderErrorMessage("email")}
             <div className="input-container">
               <label>Name </label>
               <input type="text" name="name" required />
@@ -80,7 +100,7 @@ import {
       <div className="app">
         <div className="login-form">
           <div className="title">Sign In</div>
-            {isSubmitted ? <div>User is successfully logged signed up</div> : renderForm}
+            {isSubmitted ? <div>User is successfully signed up</div> : renderForm}
         </div>
       </div>
     );
