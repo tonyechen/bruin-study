@@ -1,8 +1,3 @@
-import {
-    getPotentialMatchFromTaking,
-    getPotentialMatchFromTook,
-    getPotentialMatchFromTookTaking,
-} from '../data/dataAccess';
 import db from '../data/dataAccess';
 
 /*
