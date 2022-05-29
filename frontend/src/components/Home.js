@@ -24,11 +24,14 @@ class Home extends React.Component {
         return (
             <div className = "center">
                 <h1 className="square">{this.displayStudent(this.state.uid)}</h1>,
-                <button id = "Yes" onClick = {() => this.handleClick("Yes", this.state.uid)} className = "buttons">
-                    Yes
-                </button>
                 <button id = "No" onClick = {() => this.handleClick("No", this.state.uid)} className = "buttons">
                     No
+                </button>
+                <button id = "Rewind" onClick = {() => this.handleClick("Rewind", this.state.uid)} className = "buttons">
+                    Rewind
+                </button>
+                <button id = "Yes" onClick = {() => this.handleClick("Yes", this.state.uid)} className = "buttons">
+                    Yes
                 </button>
             </div>
         )
@@ -68,6 +71,9 @@ class Home extends React.Component {
             //this.setState({yesSwp: [yesSwp].concat(id)})
             //console.log(this.state.yesSwp);
         }
+        else if (buttonType === "Rewind") {
+            //Set up pop up notification stuff
+        }
         else if (buttonType === "No") {
             //this.setState({noSwp: [noSwp].concat(id)})
             //console.log(this.state.noSwp);
@@ -85,8 +91,11 @@ class Home extends React.Component {
 
     async componentDidMount() {
         const obj = await db.getFullProfile(this.state.uid);
-        var ccl = obj.courseTaking;
+        var ccl = [];
         var pcl = obj.courseTook;
+
+        ccl = obj.courseTaking.map((courses)=>{return (courses + " || ");});
+        pcl = obj.courseTook.map((courses)=>{return (courses + " || ");});
 
         this.setState(
             {
