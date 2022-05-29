@@ -32,6 +32,7 @@
 
 .header__option:hover {
     background-color: white;
+    color: rgb(39, 116, 174);
 }
 
 .header__user_image {
