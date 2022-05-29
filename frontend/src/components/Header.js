@@ -7,7 +7,7 @@ const Header = (props) => {
     return (
         <section className="header">
             <h1 className="header__logo">Bruin Study</h1>
-            <div className="header__group">
+            <div selection className="header__group">
                 <a className="header__option" href="">
                     Login
                 </a>

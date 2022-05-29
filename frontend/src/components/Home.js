@@ -23,12 +23,11 @@ class Home extends React.Component {
     render() {
         return (
             <div className = "center">
-                <h3>HOME</h3> 
-                {this.displayStudent(this.state.uid)}
-                <button id = "Yes" onClick = {() => this.handleClick("Yes", this.state.uid)} className = "#Yes">
+                <h1 className="square">{this.displayStudent(this.state.uid)}</h1>,
+                <button id = "Yes" onClick = {() => this.handleClick("Yes", this.state.uid)} className = "buttons">
                     Yes
                 </button>
-                <button id = "No" onClick = {() => this.handleClick("No", this.state.uid)} className = "#No">
+                <button id = "No" onClick = {() => this.handleClick("No", this.state.uid)} className = "buttons">
                     No
                 </button>
             </div>
@@ -44,18 +43,22 @@ class Home extends React.Component {
         }*/
         if (this.state.uid !== 0) {
             this.componentDidMount();
-            return( 
+            return(
                 <h4 className = "profileBox">
                     {this.state.name}<br></br><br></br>
+                    <h4>About Me: </h4>
                     {this.state.bio}<br></br><br></br>
+                    <h4>Major: </h4>
                     {this.state.major}<br></br><br></br>
+                    <h4>Current Classes: </h4>
                     {this.state.currentClassList}<br></br><br></br>
+                    <h4>Previous Classes: </h4>
                     {this.state.previousClassList}<br></br><br></br>
                 </h4>
             )
         }
         else {
-            return(<h4>NO MORE USERS!</h4>)
+            return(<h4 className = "profileBox">NO MORE USERS!</h4>)
         }
     }
 
@@ -82,9 +85,9 @@ class Home extends React.Component {
 
     async componentDidMount() {
         const obj = await db.getFullProfile(this.state.uid);
-        var ccl= obj.courseTaking;
-        var pcl= obj.courseTook;
-        
+        var ccl = obj.courseTaking;
+        var pcl = obj.courseTook;
+
         this.setState(
             {
                 email: obj.email,

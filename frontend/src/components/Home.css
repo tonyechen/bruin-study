@@ -3,16 +3,32 @@
     display: block;
     justify-content: center;
     align-items: center;
-    margin: auto;
 }
 
-.profileBox {
-    font: 15px "Century Gothic", Futura, sans-serif;
-    margin: 4% 26% ;
-}
-
-#Yes, #No {
+.buttons {
     display: inline-block;
     width: 300px;
     height: 40px;
+    margin: 20px;
+    font: 18px Arial;
+    font-weight: bold;
+    color: rgb(39, 116, 174);
+}
+
+.square {
+    background: rgb(39, 116, 174);
+    float: center;
+    font-weight: bold;
+    line-height: 500px;
+    height: 550px;
+    margin: auto;
+    margin-top: 5%;
+    padding: 0;
+    width: 500px;
+}
+
+.profileBox {
+    font: 18px Arial;
+    margin: 15%;
+    padding-top: 8%;
 }
