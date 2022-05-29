@@ -387,8 +387,8 @@ class editProfile extends Component
             }
             console.log(currCourses);
             console.log(prevCourses);
-            let ensureCurrClass= await db.updateCourseTaking(currCourses);
-            let ensurePrevClass = await db.updateCourseTook(prevCourses);
+            let ensureCurrClass= await db.updateCourseTaking(this.state.uid,currCourses);
+            let ensurePrevClass = await db.updateCourseTook(this.state.uid,prevCourses);
             console.log(ensureCurrClass);
             console.log(ensurePrevClass);
             if (ensurePrevClass.success===false)
