@@ -206,6 +206,18 @@ class db {
     }
 
     /**
+     * Authenticate the user and return the id
+     * @param {string} username required
+     * @param {string} password required
+     * @returns returns the response token if the user exists, or else returns and error
+     */
+     static async Authenticate(username, password) {
+
+        let response = await http.post(`auth?username=${username}&password=${password}`);
+        return response.data;
+    }
+    
+    /**
      * Take in a list of course that the student TOOK. Add the new courses and remove the deleted courses.
      * @param {int} id
      * @param {string[]} courses

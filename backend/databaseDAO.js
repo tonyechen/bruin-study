@@ -1,6 +1,8 @@
 const express = require('express');
-
+const jwt = require('jsonwebtoken');
 const pool = require('./db');
+
+const SECRET = '26deaa6bef2ed0fe2116bf10b766fc4e15a970e72413185e48b7a2d61f2f07f5e70b2f1f69f6867594743ee7f2d044990b014c8e0f552770c5bbe56e65ee3443';
 
 class API {
     // get student profile
@@ -36,13 +38,21 @@ class API {
     static async Authentication(req, res) {
         try {
             const { username, password } = req.query;
-            const id = await pool.query(
+            const ids = await pool.query(
                 'SELECT id FROM Student WHERE username= $1 AND password = $2;--',
                 [username, password]
             );
-            res.json(courseTaking.rows[0]);
-        } catch (err) {
-            console.error(err.message);
+            var id = ids.rows[0].id;
+
+            if(id) {
+                const token = jwt.sign({id}, SECRET);
+                res.json({ success: true, token: `Bearer ${token}` });
+            } else {
+                res.sendStatus(401);
+            }
+            } catch (err) {
+                res.sendStatus(401);
+                console.error(err.message);
         }
     }
 

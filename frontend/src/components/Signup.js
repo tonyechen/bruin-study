@@ -1,12 +1,11 @@
 import react, { useState } from 'react';
 import db from '../data/dataAccess';
-import {
-    Navigate
-  } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
   function Signup() {
     const [errorMessages, setErrorMessages] = useState({});
     const [isSubmitted, setIsSubmitted] = useState(false);
+    const history = useNavigate();
     const validEmail = new RegExp(
         '^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$'
      );
@@ -14,7 +13,7 @@ import {
      const validID = new RegExp(
         '^[0-9]{9}$'
      );
-    function handleSubmit(event) {
+    async function handleSubmit(event) {
         //Prevent page reload
         event.preventDefault();
 
@@ -38,15 +37,20 @@ import {
             return;
         }
 
-        var response = db.createProfile(id.value, email.value, username.value, name.value, major.value, '', pass.value);
+        var response = await db.createProfile(id.value, email.value, username.value, name.value, major.value, '', pass.value);
         
         if(response.success === false)
         {
             setErrorMessages({name: "signupfail", message: "Signup failed, try again or with different values"});
         }
-        else
+        else if(response.success === true)
         {
             setIsSubmitted(true);
+            history("/");
+        }
+        else
+        {
+          setErrorMessages({name: "signupfail", message: "Unknown error"});
         }
     }
 
