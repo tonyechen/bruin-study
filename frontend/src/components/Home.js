@@ -69,7 +69,7 @@ class Home extends React.Component {
             //Set up pop up notification stuff
         }
         else if (buttonType === "No" && this.state.index !== -1) {
-            //Failed match
+            db.addFailedMatch(this.state.uid, this.state.matches[this.state.index].id);
         }
 
         this.setState({index: (this.state.matches[this.state.index + 1]) ? this.state.index + 1 : -1})

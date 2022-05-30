@@ -28,7 +28,6 @@ class db {
             http.get(`/courseTook?id=${id}`),
             http.get(`/courseTaking?id=${id}`),
         ]);
-        console.log(data);
         for (let item of data) {
             if (item.data == null) continue;
             if (item.data.error) {

@@ -12,12 +12,12 @@
     margin: 20px;
     font: 18px Arial;
     font-weight: bold;
-    color: rgb(39, 116, 174);
-    border-color: darkgray;
+    color: white;
+    border-color: gray;
+    background-color: rgb(39, 116, 174);
 }
 
 .square {
-    background: rgb(39, 116, 174);
     float: center;
     font-weight: bold;
     line-height: 500px;
@@ -26,10 +26,14 @@
     margin-top: 5%;
     padding: 0;
     width: 500px;
+    border-style: solid;
+    border-color: gray;
+    border-width: 2.5px;
 }
 
 .profileBox {
     font: 18px Arial;
+    color: rgb(39, 116, 174);
     margin: 10%;
     padding-top: 8%;
     text-align: left;
