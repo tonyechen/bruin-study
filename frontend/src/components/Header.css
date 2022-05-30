@@ -1,13 +1,15 @@
 .header {
     display: flex;
     justify-content: space-between;
-    min-height: 40px;
+    min-height: 55px;
     text-align: center;
-    background-color: #FAC898;
+    background-color: rgb(39, 116, 174);
 }
 
 .header__logo {
     margin: auto 0;
+    color: white;
+    margin-left: 2%;
 }
 
 .header__group {
@@ -21,10 +23,15 @@
     display: flex;
     align-items: center;
     padding: 0 15px;
+    font: 18px Arial;
+    font-weight: bold;
+    text-decoration: none;
+    color: white;
 }
 
 .header__option:hover {
     background-color: white;
+    color: rgb(39, 116, 174);
 }
 
 .header__user_image {

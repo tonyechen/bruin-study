@@ -29,6 +29,7 @@ class db {
             http.get(`/courseTaking?id=${id}`),
         ]);
         for (let item of data) {
+            if (item.data == null) continue;
             if (item.data.error) {
                 return item.data;
             }
@@ -79,25 +80,16 @@ class db {
     }
 
     /**
-     * Update the profile information associated with the student.This function only updates id, email, username, name, major, intro, and password
+     * Update the profile information associated with the student.This function only updates id, email, username, name, major, intro
      * @param {int} id required
      * @param {string} email required
      * @param {string} username required
      * @param {string} name required
      * @param {string} major required
      * @param {string} intro required
-     * @param {string} password required
-     * @returns A JS Object indicating the status of the post request. This function only updates id, email, username, name, major, intro, and password
+     * @returns A JS Object indicating the status of the post request. This function only updates id, email, username, name, major, intro
      */
-    static async updateProfile(
-        id,
-        email,
-        username,
-        name,
-        major,
-        intro,
-        password
-    ) {
+    static async updateProfile(id, email, username, name, major, intro) {
         const error = await checkID(id);
         if (error) {
             return error;
@@ -105,7 +97,7 @@ class db {
 
         // ' is a special character in sql
         intro = reformatString(intro);
-        
+
         // update student table
         let response = await http.put(
             `user?id=${id}&email=${email}&name=${name}&major=${major}&username=${username}&password=${password}`,
@@ -122,6 +114,21 @@ class db {
         {Headers: {"authorization" : localStorage.getItem("token")}});
 
         // auto error checking here
+        return response.data;
+    }
+
+    static async updatePassword(id, password) {
+        const error = await checkID(id);
+        if (error) {
+            return error;
+        }
+
+        password = reformatString(password);
+
+        let response = await http.put(
+            `password?id=${id}&password=${password}`
+        );
+
         return response.data;
     }
 
@@ -272,6 +279,131 @@ class db {
         if (!response) {
             return { success: true };
         }
+        return response.data;
+    }
+
+    /**
+     * Get potential matches of id based on same courses took
+     * @param {int} id
+     * @returns A list of JSON objects containing the id with and number of same courses took
+     */
+    static async getPotentialMatchFromCourseTook(id) {
+        const error = await checkID(id);
+        if (error) {
+            return error;
+        }
+
+        const response = await http.get(`match/took?id=${id}`);
+        return response.data;
+    }
+
+    /**
+     * Get potential matches of id based on same courses taking
+     * @param {int} id
+     * @returns A list of JSON objects containing the id with and number of same courses taking
+     */
+    static async getPotentialMatchFromCourseTaking(id) {
+        const error = await checkID(id);
+        if (error) {
+            return error;
+        }
+
+        const response = await http.get(`match/taking?id=${id}`);
+        return response.data;
+    }
+
+    /**
+     * Get potential matches of id based on overlapping courses took or taken (i.e one person took the course and another is taking the course)
+     * @param {int} id
+     * @returns A list of JSON objects containing the id with and number of overlapping courses
+     */
+    static async getPotentialMatchFromCourseTookTaking(id) {
+        const error = await checkID(id);
+        if (error) {
+            return error;
+        }
+
+        const response = await http.get(`match/tooktaking?id=${id}`);
+        return response.data;
+    }
+
+    /**
+     * Automatically handle matching as a potential match or a successful match, and update the database accordingly
+     * @param {int} id1
+     * @param {int} id2
+     * @returns return an object indicating the success of the function
+     */
+    static async addMatch(id1, id2) {
+        if (id1 === id2)
+            return { success: false, error: 'An id cannot match with itself' };
+
+        let error = await checkID(id1);
+        if (error) {
+            return error;
+        }
+        error = await checkID(id2);
+        if (error) {
+            return error;
+        }
+
+        // check if id2 and id1 exist
+        const pmatchList = (await http.get(`match/potential?id=${id2}`)).data;
+        const hasMatch = pmatchList.includes(id1.toString());
+
+        // if [id2, id1] exists, it means that we have a 2 way match of [id1, id2] and [id2, id1]
+        // this indicates a successful match
+        if (hasMatch) {
+            await http.delete(`match/potential?id1=${id1}&id2=${id2}`);
+            const response = await http.post(
+                `match/success?id1=${id1}&id2=${id2}`
+            );
+            return response.data;
+        } else {
+            // if [id2, id1] doesn't exist, simply add [id1, id2]
+            const response = await http.post(
+                `match/potential?id1=${id1}&id2=${id2}`
+            );
+            return response.data;
+        }
+    }
+
+    /**
+     * Add [id1, id2] as a failed matching pair into the Database
+     * @param {int} id1
+     * @param {int} id2
+     * @returns a JSON object indicating success or failure
+     */
+    static async addFailedMatch(id1, id2) {
+        let error = await checkID(id1);
+        if (error) {
+            return error;
+        }
+        error = await checkID(id2);
+        if (error) {
+            return error;
+        }
+
+        const response = await http.post(`failed?id1=${id1}&id2=${id2}`);
+        return response.data;
+    }
+
+    static async getSucessfulMatches(id) {
+        let error = await checkID(id);
+        if (error) {
+            return error;
+        }
+
+        const response = await http.get(`match/success?id=${id}`);
+        return response.data;
+    }
+
+    static async getPotentialMatches(id) {
+        let error = await checkID(id);
+        if (error) {
+            return error;
+        }
+
+        const response = await http.get(`match/potential?id=${id}`);
         return response.data;
     }
 }

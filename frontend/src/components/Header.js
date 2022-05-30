@@ -1,27 +1,29 @@
 import React from 'react';
 
 import './Header.css';
-import {Link} from 'react-router-dom';
 
 // Header for the entire App
 const Header = (props) => {
     return (
         <section className="header">
-            <Link className="header__logo" to="/">Bruin Study</Link>
-            <div className="header__group">
-                <Link  to="/login">
+            <h1 className="header__logo">Bruin Study</h1>
+            <div selection className="header__group">
+                <a className="header__option" href="">
+                    About
+                </a>
+                <a className="header__option" href="">
                     Login
-                </Link>
-                <Link to="/signup">
-                    Signup
-                </Link>
-                <Link to="/profile">
+                </a>
+                <a className="header__option" href="">
+                    Logout
+                </a>
+                <a className="header__option" href="">
                     <img
                         className="header__user_image"
                         src="https://cdn1.iconfinder.com/data/icons/user-pictures/100/unknown-512.png"
                         alt="user_icon"
                     />
-                </Link>
+                </a>
             </div>
         </section>
     );

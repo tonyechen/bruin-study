@@ -1,4 +1,5 @@
 import React from "react";
+<<<<<<< HEAD
 import { BrowserRouter as Router, Route, Routes, useNavigate } from "react-router-dom";
 import Header from "./components/Header";
 import Login from "./components/Login";
@@ -25,6 +26,20 @@ const App = () => {
       </div>
     </Router>
   )
+=======
+import Header from "./components/Header";
+//import Login from "./components/Login";
+import Home from "./components/Home";
+import About from "./components/About";
+import Profile from './components/Profile';
+
+
+const App = () => {
+  return <div>
+      <Header />
+      <Profile />
+  </div>;
+>>>>>>> main
 };
 
 export default App;

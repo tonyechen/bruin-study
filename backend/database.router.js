@@ -14,6 +14,10 @@ router
 router
     .route('/auth')
     .post(api.Authentication);
+
+// password endpoint
+router.route('/password').put(api.updatePassword);
+
 // cousre took table endpoint
 router
     .route('/courseTook')
