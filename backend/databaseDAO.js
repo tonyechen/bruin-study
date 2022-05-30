@@ -67,16 +67,34 @@ class API {
     }
 
     // update Student Profile;
-    // input: id, email, name, major, username, password
+    // input: id, email, name, major, username
     static async updateStudent(req, res) {
         try {
-            const { id, email, name, major, username, password } = req.query;
+            const { id, email, name, major, username } = req.query;
 
             // update existing student:
             // input: id, email, name, major, username, password
             await pool.query(
-                'UPDATE Student SET email= $1 ,name= $2, Major= $3, username= $4, password= $5 WHERE id= $6;--',
-                [email, name, major, username, password, id]
+                'UPDATE Student SET email= $1 ,name= $2, Major= $3, username= $4 WHERE id= $5;--',
+                [email, name, major, username, id]
+            );
+
+            res.json({ success: true });
+        } catch (err) {
+            console.error(err.message);
+            res.json({ success: false, error: err.message });
+        }
+    }
+
+    // update student password, separate from profile information
+    static async updatePassword(req, res) {
+        try {
+            const { id, password } = req.query;
+
+            // update password of a student
+            await pool.query(
+                'UPDATE Student SET password= $2 WHERE id= $1;--',
+                [id, password]
             );
 
             res.json({ success: true });
@@ -364,19 +382,19 @@ class API {
         }
     }
 
-    // Check if [id1,id2] already exist in potential match (i.e: check if id1 already wanted to match with id2)
-    // Return a list whose length is 0 or 1
+    // Return a list of id that the user wants to match with
     // input: id1, id2
     static async getPotentialMatch(req, res) {
         try {
-            const { id1, id2 } = req.query;
-            const match = await pool.query(
-                'SELECT 1 FROM potentialMatches WHERE id1= $1 AND id2= $2;--',
-                [id1, id2]
+            const { id } = req.query;
+            const response = await pool.query(
+                'SELECT id2 FROM potentialMatches WHERE id1= $1;--',
+                [id]
             );
-
-            const response = match.rows.length ? true : false;
-            res.json({ hasMatch: response });
+            const potential = response.rows.map((item) => {
+                return item.id2;
+            });
+            res.json(potential);
         } catch (err) {
             console.error(err.message);
             res.json({ success: false, error: err.message });
@@ -472,11 +490,14 @@ class API {
     static async getSuccessfulMatch(req, res) {
         try {
             const { id } = req.query;
-            const successfulMatch = await pool.query(
+            let successfulMatch = await pool.query(
                 'SELECT id2 AS id FROM successfulMatches WHERE id1= $1 UNION SELECT id1 AS id FROM successfulMatches WHERE id2= $1; --',
                 [id]
             );
 
+            successfulMatch = successfulMatch.rows.map((item) => {
+                return item.id;
+            });
             res.json(successfulMatch);
         } catch (err) {
             console.error(err.message);
