@@ -16,6 +16,9 @@ class Home extends React.Component {
             currentClassList: null,
             previousClassList: null,
             pmatches: [],
+            cmpScore: null,
+            smCls: null,
+            smTook: null,
             index: 1
         }
     }
@@ -23,7 +26,7 @@ class Home extends React.Component {
     render() {
         return (
             <div className = "center">
-                <h1 className = "square">{this.displayStudent()}</h1>,
+                <h1 className = "square">{this.displayStudent()}</h1>
                 <button id = "No" onClick = {() => this.handleClick("No", this.state.uid)} className = "buttons">
                     No
                 </button>
@@ -42,14 +45,15 @@ class Home extends React.Component {
             this.componentDidMount();
             return(
                 <h4 className = "profileBox">
-                    {this.state.name}<br></br><br></br>
+                    {this.state.name}<br></br>
+                    {this.state.cmpScore}<br></br><br></br>
                     <h4>About Me: </h4>
                     {this.state.bio}<br></br><br></br>
                     <h4>Major: </h4>
                     {this.state.major}<br></br><br></br>
-                    <h4>Current Classes: </h4>
+                    <h4>Current Classes: ({this.state.smCls})</h4>
                     {this.state.currentClassList}<br></br><br></br>
-                    <h4>Previous Classes: </h4>
+                    <h4>Previous Classes: ({this.state.smTook})</h4>
                     {this.state.previousClassList}<br></br><br></br>
                 </h4>
             )
@@ -78,9 +82,9 @@ class Home extends React.Component {
     async componentDidMount() {
         var matchesL = await getMatches(this.state.uid); 
         const obj = await db.getFullProfile(matchesL[this.state.index].id);
-        
+        console.log(matchesL[this.state.index]);
         var ccl = [];
-        var pcl = obj.courseTook;
+        var pcl = [];
 
         ccl = obj.courseTaking.map((courses)=>{return (courses + " || ");});
         pcl = obj.courseTook.map((courses)=>{return (courses + " || ");});
@@ -94,6 +98,9 @@ class Home extends React.Component {
                 major: obj.major,
                 currentClassList: ccl,
                 previousClassList: pcl,
+                cmpScore: "Compatability: " + matchesL[this.state.index].compatability,
+                smCls: "Same Classes: " + matchesL[this.state.index].sameTaking,
+                smTook: "Same Classes Taken: " + matchesL[this.state.index].sameTook,
                 matches: matchesL 
             }
         )
