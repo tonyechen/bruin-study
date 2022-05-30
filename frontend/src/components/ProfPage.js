@@ -1,20 +1,20 @@
 import React, { Component, useState } from 'react'
 import db from'../data/dataAccess.js'
 
-
 class ClassLine extends Component
 {
-    state=
+        state=
+        {
+            ClassName: this.props.ClassName
+        }
+    render ()
     {
-        ClassName: this.props.ClassName
-    }
-    render()
-    {
-        return(
-            <div>
-            <label>{this.props.ClassName}</label>
+    return(
+        <div>
+            {this.props.children}
+            <label type="text">{this.props.ClassName}</label> 
         </div>
-        )
+    )
     }
 }
 let initialState=
@@ -23,19 +23,56 @@ uid: 111111111,
 email: '',
 bio:'',
 username: '',
+password: '',
 name: '',
 major: '',
+
+emailError:'',
+usernameError: '',
+bioError: '',
+nameError: '',
+passwordError:'',
+majorError:'',
+formError:'',
+MajorSuggestions: [],
 
 CurrentClassList:[
 ],
 PreviousClassList: [
 ]};
-class Profile extends Component
+class editProfile extends Component
 {
     state=initialState;
+
     async componentDidMount()
     {
         const obj = await db.getFullProfile(this.state.uid);
+        var ccl=[{id: 1,  cn: ""} ];
+        var pcl=[{id: 1,  cn: ""} ];
+
+        for (var i =0; i<obj.courseTaking.length; i++)
+        {
+            if (i==0)
+            {
+                ccl[i].cn=obj.courseTaking[i];
+            }
+            else
+            {
+                ccl = ccl.concat({id: i+1, cn:obj.courseTaking[i], error:""});
+            }
+        }
+    
+        for (var i =0; i<obj.courseTook.length; i++)
+        {
+            if (i==0)
+            {
+                pcl[i].cn=obj.courseTook[i];
+            }
+            else
+            {
+            pcl = pcl.concat({id: i+1, cn:obj.courseTook[i], error:""});
+            }
+        }
         this.setState(
             {
                 email: obj.email,
@@ -43,11 +80,15 @@ class Profile extends Component
                 username: obj.username,
                 name: obj.name,
                 major: obj.major,
-                CurrentClassList: obj.courseTaking,
-                PreviousClassList: obj.CourseTook
+                CurrentClassList: ccl,
+                PreviousClassList: pcl
             }
         )
-    }
+        
+
+}
+
+
     render()
     {
         
@@ -55,43 +96,47 @@ class Profile extends Component
         return(
             
             <div className='center'>
-            <h1 className='header_1'>Edit Profile</h1>
+            <h1 className='header_1'>User Profile</h1>
+            <div>
                 <div>
-                    <label className='label_1'>UID: {this.state.uid}</label>
+
+                    <label className='label_1'>Name: </label>
+                    <label>{this.state.name}</label>
                     <br/>
 
-                    <label className='label_1'>Name: {this.state.name}</label>
+                    <label className='label_1'>Email: </label>
+                    <text >{this.state.email}</text>
                     <br/>
 
-           ż        <label className='label_1'>Email: {this.state.email}</label>
+                    <label className='label_1'>Username: </label>
+                    <text>{this.state.username}</text>
                     <br/>
 
-                    <label className='label_1'>Username: {this.state.username}</label>
-                    <br/>
 
-
-                    <label className='label_1'>Major: {this.state.major}</label>
+                    <label className='label_1'>Major: </label>
+                    <text>{this.state.major}</text>
                     <br/>
 
                     <dl className='class_headers'>Current Classes</dl>
-                    {this.state.CurrentClassList.map(cl => <ClassLine key={cl.id} id={cl.id} onDelete={this.handleCurrentDelete} ClassName={cl.cn} error={cl.error} setClass={this.setCurrClass}>
+                    {this.state.CurrentClassList.map(cl => <ClassLine key={cl.id} id={cl.id} ClassName={cl.cn}>
                     <label className='label_1'>Class {cl.id}: </label> </ClassLine>)}
-                    <button className='add_button' onClick={this.handleCurrentAdd} type="button">Add Another Class</button>
                     <br/>
 
                     <dl className='class_headers'>Previous Classes</dl>   
+
                     {this.state.PreviousClassList.map(cl => <ClassLine key={cl.id} id={cl.id} ClassName={cl.cn}>
                     <label className='label_1'>Class {cl.id}: </label> </ClassLine>)}
                     <br/>
 
                     <label className='label_1'>Bio: </label>
-                    <p value={this.state.bio}/>
-
+                    <p>{this.state.bio}</p>
                     <br/>
+
                     <button>Edit Profile</button>
                 </div>
+            </div>
             </div>
         );
     }
 }
-export default Profile;
+export default editProfile;

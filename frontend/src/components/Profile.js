@@ -416,7 +416,7 @@ class editProfile extends Component
             
             <div className='center'>
             <h1 className='header_1'>Edit Profile</h1>
-            <form onSubmit={this.handleSubmit}>
+            <div onSubmit={this.handleSubmit}>
                 <div>
                     <label className='label_1'>UID: {this.state.uid}</label>
                     <br/>
@@ -426,7 +426,7 @@ class editProfile extends Component
                     <label>{this.state.nameError}</label>
                     <br/>
 
-           ż        <label className='label_1'>Email: </label>
+                    <label className='label_1'>Email: </label>
                     <input type="text" value={this.state.email} onChange={this.handleEmailChange}/>
                     <label>{this.state.emailError}</label>
                     <br/>
@@ -470,7 +470,7 @@ class editProfile extends Component
                     <button type="submit">Submit </button>
                     <label>{this.formError}</label>
                 </div>
-            </form>
+            </div>
             </div>
         );
     }
