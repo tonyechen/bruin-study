@@ -28,7 +28,9 @@ class db {
             http.get(`/courseTook?id=${id}`),
             http.get(`/courseTaking?id=${id}`),
         ]);
+        console.log(data);
         for (let item of data) {
+            if (item.data == null) continue;
             if (item.data.error) {
                 return item.data;
             }
@@ -302,13 +304,14 @@ class db {
     }
 
     /**
-     * Ultimatically handle matching as a potential match or a successful match, and update the database accordingly
-     * @param {int} id1 
-     * @param {int} id2 
+     * Automatically handle matching as a potential match or a successful match, and update the database accordingly
+     * @param {int} id1
+     * @param {int} id2
      * @returns return an object indicating the success of the function
      */
     static async addMatch(id1, id2) {
-        if (id1 === id2) return { success: false, error: "An id cannot match with itself" };
+        if (id1 === id2)
+            return { success: false, error: 'An id cannot match with itself' };
 
         let error = await checkID(id1);
         if (error) {
@@ -324,7 +327,10 @@ class db {
             await http.get(`match/potential?id1=${id1}&id2=${id2}`)
         ).data.hasMatch;
         if (duplicate) {
-            return { success: false, error: `[${id1}, ${id2} is already a matching pair` };
+            return {
+                success: false,
+                error: `[${id1}, ${id2} is already a matching pair`,
+            };
         }
 
         // check if id2 and id1 exist
@@ -347,6 +353,28 @@ class db {
             );
             return response.data;
         }
+    }
+
+    /**
+     * Add [id1, id2] as a failed matching pair into the Database
+     * @param {int} id1 
+     * @param {int} id2 
+     * @returns a JSON object indicating success or failure
+     */
+    static async addFailedMatch(id1, id2) {
+        let error = await checkID(id1);
+        if (error) {
+            return error;
+        }
+        error = await checkID(id2);
+        if (error) {
+            return error;
+        }
+
+        const response = await http.delete(
+            `failed?id1=${id1}&id2=${id2}`
+        );
+        return response.data;
     }
 
     static async getSucessfulMatches(id) {
