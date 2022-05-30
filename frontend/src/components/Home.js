@@ -1,14 +1,13 @@
-import React, { useState } from "react";
-import db from "../data/dataAccess";
-import getMatches from "../func/matching";
 import "./Home.css"
+import db from "../data/dataAccess";
+import React, { useState } from "react";
+import getMatches from "../func/matching";
 
 class Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             uid: 222222222,
-            email: null,
             bio: null,
             username: null,
             name: null,
@@ -30,9 +29,6 @@ class Home extends React.Component {
                 <button id = "No" onClick = {() => this.handleClick("No", this.state.uid)} className = "buttons">
                     No
                 </button>
-                <button id = "Rewind" onClick = {() => this.handleClick("Rewind")} className = "buttons">
-                    Rewind
-                </button>
                 <button id = "Yes" onClick = {() => this.handleClick("Yes")} className = "buttons">
                     Yes
                 </button>
@@ -46,20 +42,20 @@ class Home extends React.Component {
             return(
                 <h4 className = "profileBox">
                     {this.state.name}<br></br>
-                    {this.state.cmpScore}<br></br><br></br>
-                    <h4>About Me: </h4>
+                    <b>{this.state.cmpScore}<br></br><br></br>
+                    About Me:</b><br></br>
                     {this.state.bio}<br></br><br></br>
-                    <h4>Major: </h4>
+                    <b>Major:<br></br></b>
                     {this.state.major}<br></br><br></br>
-                    <h4>Current Classes: ({this.state.smCls})</h4>
+                    <b>Current Classes: ({this.state.smCls})<br></br></b>
                     {this.state.currentClassList}<br></br><br></br>
-                    <h4>Previous Classes: ({this.state.smTook})</h4>
+                    <b>Previous Classes: ({this.state.smTook})<br></br></b>
                     {this.state.previousClassList}<br></br><br></br>
                 </h4>
             )
         }
         else {
-            return(<h4 className = "profileBox">NO MORE USERS!</h4>)
+            return(<h4 className = "profileBox"><b>NO MORE POTENTIAL USERS!</b></h4>)
         }
     }
 
@@ -69,9 +65,6 @@ class Home extends React.Component {
         if (buttonType === "Yes" && this.state.index !== -1) {
             db.addMatch(this.state.uid, this.state.matches[this.state.index].id);
         }
-        else if (buttonType === "Rewind") {
-            //Set up pop up notification stuff
-        }
         else if (buttonType === "No" && this.state.index !== -1) {
             db.addFailedMatch(this.state.uid, this.state.matches[this.state.index].id);
         }
@@ -80,18 +73,16 @@ class Home extends React.Component {
     }
 
     async componentDidMount() {
+        var ccl = [];
+        var pcl = [];
         var matchesL = await getMatches(this.state.uid); 
         const obj = await db.getFullProfile(matchesL[this.state.index].id);
         console.log(matchesL[this.state.index]);
-        var ccl = [];
-        var pcl = [];
 
         ccl = obj.courseTaking.map((courses)=>{return (courses + " || ");});
         pcl = obj.courseTook.map((courses)=>{return (courses + " || ");});
 
-        this.setState(
-            {
-                email: obj.email,
+        this.setState({
                 bio: obj.introduction,
                 username: obj.username,
                 name: obj.name,

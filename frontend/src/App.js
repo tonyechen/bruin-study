@@ -8,7 +8,7 @@ import Welcome from "./components/Welcome"
 const App = () => {
   return <div>
       <Header />
-      <Welcome />
+      <Home />
   </div>;
 };
 
