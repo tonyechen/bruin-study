@@ -19,20 +19,15 @@ function Login() {
 
     var response = await db.Authenticate(uname.value, pass.value);
 
-
     if(response.success === true) 
     {
       window.localStorage.setItem("token", response.token);
       setIsSubmitted(true);
       history("/");
     }
-    else if(response.success === false)
-    {
-      setErrorMessages({name: "login", message: "Login failed, check the username or password"});
-    }
     else
     {
-      setErrorMessages({name: "login", message: "Unknown error"});
+      setErrorMessages({name: "login", message: "Login failed, check the username or password"});
     }
   };
 

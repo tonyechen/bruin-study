@@ -1,8 +1,9 @@
 import React from "react";
-
+import {decodeToken} from "react-jwt";
 function Home() {
+    const mytoken = decodeToken(window.localStorage.getItem("token"));
     return (
-        <p> Home </p>
+        <div>{mytoken ? <div>{mytoken.id}</div> : <div>Home</div>}</div>
     )
 }
 
