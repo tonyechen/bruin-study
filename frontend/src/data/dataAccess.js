@@ -29,6 +29,7 @@ class db {
             http.get(`/courseTaking?id=${id}`),
         ]);
         for (let item of data) {
+            if (item.data == null) continue;
             if (item.data.error) {
                 return item.data;
             }
@@ -302,13 +303,14 @@ class db {
     }
 
     /**
-     * Ultimatically handle matching as a potential match or a successful match, and update the database accordingly
-     * @param {int} id1 
-     * @param {int} id2 
+     * Automatically handle matching as a potential match or a successful match, and update the database accordingly
+     * @param {int} id1
+     * @param {int} id2
      * @returns return an object indicating the success of the function
      */
     static async addMatch(id1, id2) {
-        if (id1 === id2) return { success: false, error: "An id cannot match with itself" };
+        if (id1 === id2)
+            return { success: false, error: 'An id cannot match with itself' };
 
         let error = await checkID(id1);
         if (error) {
@@ -319,18 +321,9 @@ class db {
             return error;
         }
 
-        // check if id1 and id2 already exist
-        const duplicate = (
-            await http.get(`match/potential?id1=${id1}&id2=${id2}`)
-        ).data.hasMatch;
-        if (duplicate) {
-            return { success: false, error: `[${id1}, ${id2} is already a matching pair` };
-        }
-
         // check if id2 and id1 exist
-        const hasMatch = (
-            await http.get(`match/potential?id1=${id2}&id2=${id1}`)
-        ).data.hasMatch;
+        const pmatchList = (await http.get(`match/potential?id=${id2}`)).data;
+        const hasMatch = pmatchList.includes(id1.toString());
 
         // if [id2, id1] exists, it means that we have a 2 way match of [id1, id2] and [id2, id1]
         // this indicates a successful match
@@ -349,6 +342,26 @@ class db {
         }
     }
 
+    /**
+     * Add [id1, id2] as a failed matching pair into the Database
+     * @param {int} id1
+     * @param {int} id2
+     * @returns a JSON object indicating success or failure
+     */
+    static async addFailedMatch(id1, id2) {
+        let error = await checkID(id1);
+        if (error) {
+            return error;
+        }
+        error = await checkID(id2);
+        if (error) {
+            return error;
+        }
+
+        const response = await http.post(`failed?id1=${id1}&id2=${id2}`);
+        return response.data;
+    }
+
     static async getSucessfulMatches(id) {
         let error = await checkID(id);
         if (error) {
@@ -356,6 +369,16 @@ class db {
         }
 
         const response = await http.get(`match/success?id=${id}`);
+        return response.data;
+    }
+
+    static async getPotentialMatches(id) {
+        let error = await checkID(id);
+        if (error) {
+            return error;
+        }
+
+        const response = await http.get(`match/potential?id=${id}`);
         return response.data;
     }
 }

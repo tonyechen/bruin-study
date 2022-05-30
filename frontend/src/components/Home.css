@@ -1,0 +1,40 @@
+.center {
+    text-align: center;
+    display: block;
+    justify-content: center;
+    align-items: center;
+}
+
+.buttons {
+    display: inline-block;
+    width: 300px;
+    height: 40px;
+    margin: 20px;
+    font: 18px Arial;
+    font-weight: bold;
+    color: white;
+    border-color: gray;
+    background-color: rgb(39, 116, 174);
+}
+
+.square {
+    float: center;
+    font-weight: bold;
+    line-height: 500px;
+    height: 550px;
+    margin: auto;
+    margin-top: 5%;
+    padding: 0;
+    width: 500px;
+    border-style: solid;
+    border-color: gray;
+    border-width: 2.5px;
+}
+
+.profileBox {
+    font: 18px Arial;
+    color: rgb(39, 116, 174);
+    margin: 10%;
+    padding-top: 5%;
+    text-align: left;
+}
