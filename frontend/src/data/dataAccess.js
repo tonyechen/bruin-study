@@ -322,21 +322,9 @@ class db {
             return error;
         }
 
-        // check if id1 and id2 already exist
-        const duplicate = (
-            await http.get(`match/potential?id1=${id1}&id2=${id2}`)
-        ).data.hasMatch;
-        if (duplicate) {
-            return {
-                success: false,
-                error: `[${id1}, ${id2} is already a matching pair`,
-            };
-        }
-
         // check if id2 and id1 exist
-        const hasMatch = (
-            await http.get(`match/potential?id1=${id2}&id2=${id1}`)
-        ).data.hasMatch;
+        const pmatchList = (await http.get(`match/potential?id=${id2}`)).data;
+        const hasMatch = pmatchList.includes(id1.toString());
 
         // if [id2, id1] exists, it means that we have a 2 way match of [id1, id2] and [id2, id1]
         // this indicates a successful match
@@ -357,8 +345,8 @@ class db {
 
     /**
      * Add [id1, id2] as a failed matching pair into the Database
-     * @param {int} id1 
-     * @param {int} id2 
+     * @param {int} id1
+     * @param {int} id2
      * @returns a JSON object indicating success or failure
      */
     static async addFailedMatch(id1, id2) {
@@ -371,9 +359,7 @@ class db {
             return error;
         }
 
-        const response = await http.post(
-            `failed?id1=${id1}&id2=${id2}`
-        );
+        const response = await http.post(`failed?id1=${id1}&id2=${id2}`);
         return response.data;
     }
 
@@ -384,6 +370,16 @@ class db {
         }
 
         const response = await http.get(`match/success?id=${id}`);
+        return response.data;
+    }
+
+    static async getPotentialMatches(id) {
+        let error = await checkID(id);
+        if (error) {
+            return error;
+        }
+
+        const response = await http.get(`match/potential?id=${id}`);
         return response.data;
     }
 }
