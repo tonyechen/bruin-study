@@ -1,6 +1,7 @@
 import React from "react";
 import "./Welcome.css";
 
+//MOVE FETCH OUTSIDE OF DISPLAY STUDENT TO PREVENT CONSTANT FETCHES
 class Welcome extends React.Component {
     render() {
         return(
