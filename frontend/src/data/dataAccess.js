@@ -370,7 +370,7 @@ class db {
             return error;
         }
 
-        const response = await http.delete(
+        const response = await http.post(
             `failed?id1=${id1}&id2=${id2}`
         );
         return response.data;
