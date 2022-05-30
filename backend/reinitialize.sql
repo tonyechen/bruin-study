@@ -241,6 +241,10 @@ insert into Student (id,email, name, major, username, password) values (22222222
 insert into Student (id,email, name, major, username, password) values (333333333,'steiner@g.ucla.edu', 'Adelbert Steiner','Mechanical Engineering','Adelbert', '123456');
 insert into Student (id,email, name, major, username, password) values (444444444,'freya@g.ucla.edu', 'Freya Crescent','Computer Science','Freya','123456');
 insert into Student (id,email, name, major, username, password) values (555555555,'armarant@g.ucla.edu', 'Amarant Coral',NULL,'armarant', '123456');
+insert into Student (id,email, name, major, username, password) values (666666666,'eiko@g.ucla.edu', 'Eiko Carol','Anthropology','Eiko', '654321');
+insert into Student (id,email, name, major, username, password) values (777777777,'quina@g.ucla.edu', 'Quina Quen','History','Quina', '8765421');
+insert into Student (id,email, name, major, username, password) values (888888888,'beatrix@g.ucla.edu', 'Beatrix','Biology','Beatrix', 'GodSaveTheQueen');
+insert into Student (id,email, name, major, username, password) values (999999999,'barhne@g.ucla.edu', 'Brahne Raza Alexandros XVI','African American Studies','Barhne', '139496849');
 
 \copy CourseList FROM 'ucla-course-list.txt';
 
@@ -274,6 +278,15 @@ insert into Took (id, course) values (111111111,'MATH 95');
 insert into Took (id, course) values (444444444, 'MATH 110B');
 insert into Took (id, course) values (444444444, 'COM SCI M152A');
 insert into Took (id, course) values (555555555, 'COM SCI 97');
+insert into Took (id, course) values (777777777, 'HIST 1A');
+insert into Took (id, course) values (777777777, 'HIST 13B');
+insert into Took (id, course) values (777777777, 'HIST 130');
+insert into Took (id, course) values (777777777, 'HIST 161');
+insert into Took (id, course) values (777777777, 'HIST 19');
+insert into Took (id, course) values (777777777, 'HIST 146B');
+insert into Took (id, course) values (888888888, 'MATH 1');
+insert into Took (id, course) values (888888888, 'ANTHRO 4');
+insert into Took (id, course) values (888888888, 'ANTHRO 1');
 
 insert into Taking (id, course) values (111111111,'COM SCI M148');
 insert into Taking (id, course) values (111111111,'COM SCI 152B');
@@ -305,19 +318,34 @@ insert into Taking (id, course) values (111111111,'MATH 95');
 insert into Taking (id, course) values (444444444, 'MATH 110B');
 insert into Taking (id, course) values (444444444, 'COM SCI M152A');
 insert into Taking (id, course) values (555555555, 'COM SCI 97');
+insert into Taking (id, course) values (666666666, 'ANTHRO 1');
+insert into Taking (id, course) values (666666666, 'ANTHRO 3');
+insert into Taking (id, course) values (666666666, 'SOCIOL 1');
+insert into Taking (id, course) values (666666666, 'HIST 1A');
+insert into Taking (id, course) values (888888888, 'MATH 31A');
+insert into Taking (id, course) values (888888888, 'MATH 31AL');
+insert into Taking (id, course) values (888888888, 'ANTHRO 3');
+insert into Taking (id, course) values (999999999, 'AF AMER 1');
+insert into Taking (id, course) values (999999999, 'PSYCH 10');
+insert into Taking (id, course) values (999999999, 'PSYCH 15');
 
 insert into FAILED (id1, id2) values (555555555, 111111111);
 insert into FAILED (id1, id2) values (555555555,444444444);
 insert into FAILED (id1, id2) values (555555555,222222222);
 
 insert into successfulMatches (id1, id2) values (111111111,444444444);
+insert into successfulMatches (id1, id2) values (888888888,333333333);
 
 insert into Introduction (id, Intro) values (111111111,'Zidane Tribal is the main protagonist of Final Fantasy IX. He is a thief who works for the Tantalus Theater Troupe set to kidnap the princess of Alexandria, an event that escalates to a quest to protect the planet of Gaia.');
 insert into Introduction (id, Intro) values (222222222,'Garnet Til Alexandros XVII, alias Dagger and birth name Sarah, is the deuteragonist of Final Fantasy IX, and the heir of Alexandria in the 17th generation. Garnet notices a change in her mother, Queen Brahne, and seeks to escape Alexandria Castle.');
 insert into Introduction (id, Intro) values (333333333,'Captain Adelbert Steiner is a playable character in Final Fantasy IX. He leads the Knights of Pluto and is assigned to protect Princess Garnet.');
 insert into Introduction (id, Intro) values (444444444, NULL);
 insert into Introduction (id, Intro) values (555555555, 'Amarant Coral (known as Salamander Coral in the Japanese version) is a playable character from Final Fantasy IX. He is introduced to the player as Red-headed Man');
+insert into Introduction (id, Intro) values (666666666, 'Eiko Carol, known as Little Girl for the short period before a name is selected, is a playable character in Final Fantasy IX. She hails from Madain Sari on the Outer Continent. She has a horn on her forehead and can summon eidolons.');
+insert into Introduction (id, Intro) values (777777777, 'Quina Quen is a playable character in Final Fantasy IX. S/he is apparently a genderless Qu who specializes in blue magic, and loves eating frogs. Quina serves as comic relief, often failing in their eternal quest to consume new cuisine. They speak in broken English, as all Qu do, and will often eat anything they see. Quina\'s eating habits are one of their greatest skills, as Quina learns Blu Mag by consuming an enemy.');
+insert into Introduction (id, Intro) values (888888888, 'Beatrix is a temporary player character and boss in Final Fantasy IX. She is the top general and most trusted warrior of the all-female army of Alexandria.');
+insert into Introduction (id, Intro) values (999999999, 'Brahne Raza Alexandros XVI is Alexandria\'s ruler and mother of Princess Garnet in Final Fantasy IX. Though she ends up causing much death and destruction, Garnet testifies she had once been a kind and well-liked monarch and not the power-hungry villain she became after her husband passed away and the mysterious Kuja started to show his face within Alexandria Castle.');
 
 insert into potentialMatches (id1,id2) values (111111111,222222222);
-insert into potentialMatches (id1,id2) values (222222222,111111111);
 insert into potentialMatches (id1,id2) values (555555555,111111111);
+insert into potentialMatches (id1,id2) values (666666666,111111111);
