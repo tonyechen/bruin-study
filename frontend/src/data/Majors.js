@@ -15,7 +15,7 @@ export default [
     'Southeast Asian Studies',
     'Atmospheric and Oceanic Sciences',
     'Atmospheric and Oceanic Sciences/Mathematics',
-    'Atmospheric, Oceanic, and Environmental Sciences ',
+    'Atmospheric, Oceanic, and Environmental Sciences',
     'Climate Science',
     'Bioengineering',
     'Chemical Engineering',

@@ -5,21 +5,22 @@ import Login from "./components/Login";
 import Home from "./components/Home";
 import Profile from "./components/Profile"
 import Signup from "./components/Signup"
+import Welcome from "./components/Welcome"
+import About from "./components/About"
+
 const App = () => {
   return ( 
     <Router>
       <div className="App">
-        <div className="navbad">
-          <Header />
-        </div>
-        <div className="content">
+        <Header />
           <Routes>
-            <Route exact path="/" element={<Home/>}/>
+            <Route exact path="/" element={<Welcome/>}/>
+            <Route exact path="/home" element={<Home/>}/>
+            <Route exact path="/about" element={<About/>}/>
             <Route exact path="/login" element={<Login/>}/> 
             <Route exact path="/signup" element={<Signup/>}/> 
             <Route exact path="/profile" element={<Profile/>}/>
           </Routes>
-        </div>
       </div>
     </Router>
   )
