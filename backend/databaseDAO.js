@@ -67,16 +67,34 @@ class API {
     }
 
     // update Student Profile;
-    // input: id, email, name, major, username, password
+    // input: id, email, name, major, username
     static async updateStudent(req, res) {
         try {
-            const { id, email, name, major, username, password } = req.query;
+            const { id, email, name, major, username } = req.query;
 
             // update existing student:
             // input: id, email, name, major, username, password
             await pool.query(
-                'UPDATE Student SET email= $1 ,name= $2, Major= $3, username= $4, password= $5 WHERE id= $6;--',
-                [email, name, major, username, password, id]
+                'UPDATE Student SET email= $1 ,name= $2, Major= $3, username= $4 WHERE id= $5;--',
+                [email, name, major, username, id]
+            );
+
+            res.json({ success: true });
+        } catch (err) {
+            console.error(err.message);
+            res.json({ success: false, error: err.message });
+        }
+    }
+
+    // update student password, separate from profile information
+    static async updatePassword(req, res) {
+        try {
+            const { id, password } = req.query;
+
+            // update password of a student
+            await pool.query(
+                'UPDATE Student SET password= $2 WHERE id= $1;--',
+                [id, password]
             );
 
             res.json({ success: true });

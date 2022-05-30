@@ -11,6 +11,9 @@ router
     .post(api.createStudent)
     .put(api.updateStudent);
 
+// password endpoint
+router.route('/password').put(api.updatePassword);
+
 // cousre took table endpoint
 router
     .route('/courseTook')
