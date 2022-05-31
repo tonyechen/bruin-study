@@ -1,63 +1,122 @@
 .profile {
-  text-align: center;
+    text-align: center;
 }
 
 .header_1 {
-  padding: 2rem 1rem;
+    padding: 2rem 1rem;
 }
 
 .profile__form {
-  color: #2774AE;
-  text-align: left;
-  margin-left: 23%;
-  margin-right: 23%;
+    color: #2774ae;
+    text-align: left;
+    margin-left: 23%;
+    margin-right: 23%;
 }
 
 .profile__form .label_1 {
-  width: 50%;
-  font-weight: 700;
-  margin: 1rem 2rem 1rem 0;
+    width: 50%;
+    font-weight: 700;
+    margin: 1rem 2rem 1rem 0;
 }
 
 .profile__form .class_headers {
-  font-size: 1.5rem;
-  margin-top: 1rem;
+    font-size: 1.5rem;
+    margin-top: 1rem;
 }
 
 .profile__form input {
-  width: 100%;
+    width: 100%;
+    margin-bottom: 1rem;
 }
 
 .profile__form div div input {
-  width: min-content;
+    width: min-content;
 }
 
 .error {
-  color: red;
-  width: min-content;
+    color: red;
+    width: min-content;
+}
+
+.class {
+    width: 100%;
 }
 
 .class label.label_1 {
-  width: 20%;
+    padding-right: 10%;
 }
 
 .class input {
-  width: 50%;
-  margin-right: .1rem;
+    width: 65%;
+    padding: 0.25rem 0.5rem;
 }
 
 .class button {
-  background-color: red; /* Green */
-  border: none;
-  color: white;
-  text-align: center;
-  text-decoration: none;
-  font-size: 10px;
-  padding: 5px;
-  border-radius: 5px;
+    background-color: rgb(249, 63, 63); /* Green */
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    font-size: 10px;
+    padding: 0.25rem 1rem;
+    border-radius: 0.75rem;
+    font-size: 1rem;
+}
+
+.class button:hover {
+    background-color: rgb(251, 115, 115); /* Green */
+    cursor: pointer;
 }
 
 .classList {
-  overflow-y: scroll;
-  height: 5rem;
+    overflow-y: scroll;
+    height: 5rem;
+}
+
+.classList li:hover {
+    color: lightblue;
+    cursor: pointer;
+}
+
+.bio__text {
+    width: 100%;
+    height: 10rem;
+}
+
+.add_button {
+    background-color: rgb(19, 184, 19); /* Green */
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    font-size: 10px;
+    padding: 0.25rem 1rem;
+    border-radius: 0.75rem;
+    font-size: 1rem;
+    margin-top: 1rem;
+}
+
+.add_button:hover {
+    background-color: lightgreen; /* Green */
+    cursor: pointer;
+}
+
+.submit_button {
+    background-color: #2774ae; /* Green */
+    margin-bottom: 10rem;
+    width: 100%;
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    font-size: 10px;
+    padding: 1rem 2rem;
+    border-radius: 0.75rem;
+    font-size: 1rem;
+    margin-top: 1rem;
+}
+
+.submit_button:hover {
+    background-color: #3d7fb2; /* Green */
+    cursor: pointer;
 }

@@ -2,9 +2,9 @@
     top: 0%;
     display: flex;
     justify-content: space-between;
-    height: 10%;
+    height: 8%;
     width: 100%;
-    position: fixed;
+    position: sticky;
     z-index: 45;
     background-color: rgb(39, 116, 174);
 }
