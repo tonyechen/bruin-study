@@ -1,27 +1,31 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Routes, useNavigate } from "react-router-dom";
+
+import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import Header from "./components/Header";
 import Login from "./components/Login";
 import Home from "./components/Home";
-import Profile from "./components/Profile"
+import editfile from "./components/Profile"
+import Profile from "./components/ProfPage"
 import Signup from "./components/Signup"
+import Welcome from "./components/Welcome"
+import About from "./components/About"
 
 const App = () => {
-  // const history = useNavigate();
+  const shouldRedirect = true;
+
   return ( 
     <Router>
       <div className="App">
-        <div className="navbad">
-          <Header />
-        </div>
-        <div className="content">
+        <Header />
           <Routes>
-            <Route exact path="/" element={<Home/>}/>
-            <Route exact path="/login" element={<Login/>}/> 
-            <Route exact path="/signup" element={<Signup/>}/> 
-            <Route exact path="/profile" element={<Profile/>}/>
+            <Route path="/" element={shouldRedirect ? (<Navigate to="/welcome" />) : <Home />}/>
+            <Route path="/welcome" element={<Welcome/>}/>
+            <Route path="/home" element={<Home/>}/>
+            <Route path="/about" element={<About/>}/>
+            <Route path="/login" element={<Login/>}/> 
+            <Route path="/signup" element={<Signup/>}/> 
+            <Route path="/profile" element={<Profile/>}/>
           </Routes>
-        </div>
       </div>
     </Router>
   )
