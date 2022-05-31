@@ -1,4 +1,5 @@
 import React, { Component, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import db from'../data/dataAccess.js'
 
 class ClassLine extends Component
@@ -42,6 +43,7 @@ PreviousClassList: [
 ]};
 class editProfile extends Component
 {
+    navigate = useNavigate();
     state=initialState;
 
     async componentDidMount()
@@ -84,9 +86,11 @@ class editProfile extends Component
                 PreviousClassList: pcl
             }
         )
-        
-
 }
+  handleClick=()=>
+  {
+    this.navigate("/editfile")
+  }
 
 
     render()
@@ -132,7 +136,7 @@ class editProfile extends Component
                     <p>{this.state.bio}</p>
                     <br/>
 
-                    <button>Edit Profile</button>
+                    <button onClick={this.handleClick}>Edit Profile</button>
                 </div>
             </div>
             </div>
