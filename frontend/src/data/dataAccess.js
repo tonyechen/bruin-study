@@ -100,7 +100,7 @@ class db {
 
         // update student table
         let response = await http.put(
-            `user?id=${id}&email=${email}&name=${name}&major=${major}&username=${username}&password=${password}`,
+            `user?id=${id}&email=${email}&name=${name}&major=${major}&username=${username}`,
             {Headers: {"authorization" : localStorage.getItem("token")}}
         );
 
