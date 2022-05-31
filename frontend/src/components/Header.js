@@ -5,6 +5,7 @@ import {Link} from 'react-router-dom';
 // Header for the entire App
 const Header = (props) => {
     return (
+
         <header className="header">
             <Link className="header__logo" to="/">
                 Bruin Study

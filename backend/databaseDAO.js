@@ -1,6 +1,8 @@
 const express = require('express');
-
+const jwt = require('jsonwebtoken');
 const pool = require('./db');
+
+const SECRET = '26deaa6bef2ed0fe2116bf10b766fc4e15a970e72413185e48b7a2d61f2f07f5e70b2f1f69f6867594743ee7f2d044990b014c8e0f552770c5bbe56e65ee3443';
 
 class API {
     // get student profile
@@ -36,13 +38,22 @@ class API {
     static async Authentication(req, res) {
         try {
             const { username, password } = req.query;
-            const id = await pool.query(
+            const ids = await pool.query(
                 'SELECT id FROM Student WHERE username= $1 AND password = $2;--',
                 [username, password]
             );
-            res.json(courseTaking.rows[0]);
-        } catch (err) {
-            console.error(err.message);
+
+            var id = ids.rows[0].id;
+
+            if(id) {
+                const token = jwt.sign({id}, SECRET);
+                res.json({ success: true, token: `Bearer ${token}` });
+            } else {
+                res.json({success:false});
+            }
+            } catch (err) {
+                res.json({success:false});
+                console.error(err.message);
         }
     }
 
@@ -72,6 +83,18 @@ class API {
         try {
             const { id, email, name, major, username } = req.query;
 
+            const auth = req.headers["authorization"];
+            
+            const token = authHeader && authHeader.split(" ")[1];
+
+            if (token == null) return res.sendStatus(401);
+
+            jwt.verify(token, SECRET, (err, decoded) => {
+                if(err) return res.sendStatus(403);
+                var data = decoded;
+            });
+
+            if (id !== decoded.id) return res.sendStatus(401);
             // update existing student:
             // input: id, email, name, major, username, password
             await pool.query(
@@ -90,6 +113,17 @@ class API {
     static async updatePassword(req, res) {
         try {
             const { id, password } = req.query;
+
+            const auth = req.headers["authorization"];
+            
+            const token = authHeader && authHeader.split(" ")[1];
+
+            if (token == null) return res.sendStatus(401);
+
+            jwt.verify(token, SECRET, (err, decoded) => {
+                if(err) return res.sendStatus(403);
+                var data = decoded;
+            });
 
             // update password of a student
             await pool.query(
@@ -164,6 +198,19 @@ class API {
         try {
             const { id, course } = req.query;
 
+            const auth = req.headers["authorization"];
+            
+            const token = authHeader && authHeader.split(" ")[1];
+
+            if (token == null) return res.sendStatus(401);
+
+            jwt.verify(token, SECRET, (err, decoded) => {
+                if(err) return res.sendStatus(403);
+                var data = decoded;
+            });
+
+            if (id !== decoded.id) return res.sendStatus(401);
+
             // delete a course taken by a student
             // input: id, course
             await pool.query(
@@ -215,6 +262,19 @@ class API {
         try {
             const { id, course } = req.query;
 
+            const auth = req.headers["authorization"];
+            
+            const token = authHeader && authHeader.split(" ")[1];
+
+            if (token == null) return res.sendStatus(401);
+
+            jwt.verify(token, SECRET, (err, decoded) => {
+                if(err) return res.sendStatus(403);
+                var data = decoded;
+            });
+
+            if (id !== decoded.id) return res.sendStatus(401);
+
             // Add a course the student is taking
             // input: id, course
             await pool.query(
@@ -237,6 +297,19 @@ class API {
     static async deleteCourseTaking(req, res) {
         try {
             const { id, course } = req.query;
+
+            const auth = req.headers["authorization"];
+            
+            const token = authHeader && authHeader.split(" ")[1];
+
+            if (token == null) return res.sendStatus(401);
+
+            jwt.verify(token, SECRET, (err, decoded) => {
+                if(err) return res.sendStatus(403);
+                var data = decoded;
+            });
+
+            if (id !== decoded.id) return res.sendStatus(401);
 
             // delete a course the student is taking
             // input: id, course
@@ -332,7 +405,20 @@ class API {
         try {
             const { id, text } = req.query;
 
-            // add the introduction of the student
+            const auth = req.headers["authorization"];
+            
+            const token = authHeader && authHeader.split(" ")[1];
+
+            if (token == null) return res.sendStatus(401);
+
+            jwt.verify(token, SECRET, (err, decoded) => {
+                if(err) return res.sendStatus(403);
+                var data = decoded;
+            });
+
+            if (id !== decoded.id) return res.sendStatus(401);
+
+            // add the introduction of the studentauth
             // input: id, text
             await pool.query(
                 'INSERT INTO Introduction (id, Intro) values ($1, $2);--',
@@ -351,6 +437,19 @@ class API {
     static async updateIntroduction(req, res) {
         try {
             const { id, text } = req.query;
+
+            const auth = req.headers["authorization"];
+            
+            const token = authHeader && authHeader.split(" ")[1];
+
+            if (token == null) return res.sendStatus(401);
+
+            jwt.verify(token, SECRET, (err, decoded) => {
+                if(err) return res.sendStatus(403);
+                var data = decoded;
+            });
+
+            if (id !== decoded.id) return res.sendStatus(401);
 
             // update the intro of the student
             // input: id, text
