@@ -16,7 +16,7 @@ const Header = (props) => {
                 <Link className = "header__option" to="/login">
                     Login
                 </Link>
-                <Link className = "header__option" to="/signup">
+                <Link className = "header__option" to="/">
                     Logout
                 </Link>
                 <Link className = "header__option" to="/profile">
