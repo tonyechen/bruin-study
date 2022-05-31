@@ -43,7 +43,7 @@ PreviousClassList: [
 ]};
 class editProfile extends Component
 {
-    navigate = useNavigate();
+
     state=initialState;
 
     async componentDidMount()
@@ -87,10 +87,6 @@ class editProfile extends Component
             }
         )
 }
-  handleClick=()=>
-  {
-    this.navigate("/editfile")
-  }
 
 
     render()
