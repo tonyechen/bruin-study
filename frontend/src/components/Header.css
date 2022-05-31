@@ -1,16 +1,17 @@
 .header {
+    top: 0%;
     display: flex;
     justify-content: space-between;
-    min-height: 55px;
-    height: 30%;
+    height: 10%;
     width: 100%;
-    text-align: center;
+    position: fixed;
+    z-index: 45;
     background-color: rgb(39, 116, 174);
 }
 
 .header__logo {
-    margin: auto 0;
     color: white;
+    margin: auto;
     margin-left: 2%;
     text-decoration: none;
     font: 24px Arial;

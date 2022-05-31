@@ -1,5 +1,6 @@
 .imgStyle {
-    height: 120%;
+    top: 10%;
+    height: 150%;
     width: 100%;
     display: block;
     margin: 0;
@@ -8,9 +9,7 @@
 .container .getStarted {
     position: absolute;
     top: 40%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
+    left: 44%;
     background-color: rgb(39, 116, 174);
     color: white;
     font: 24px Arial;
@@ -19,17 +18,16 @@
     height: 60px;
     border: none;
     border-width: 0.5px;
-    cursor: pointer;
     border-radius: 5px;
     display: inline-block;
+    text-align: center;
+    text-decoration: none;
 }
 
 .container .login {
     position: absolute;
     top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
+    left: 44%;
     background-color: rgb(39, 116, 174);
     color: white;
     font: 24px Arial;
@@ -38,9 +36,10 @@
     height: 60px;
     border: none;
     border-width: 0.5px;
-    cursor: pointer;
     border-radius: 5px;
     display: inline-block;
+    text-align: center;
+    text-decoration: none;
 }
 
 .container .txtStyle {
