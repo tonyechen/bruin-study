@@ -114,6 +114,17 @@ class API {
         try {
             const { id, password } = req.query;
 
+            const auth = req.headers["authorization"];
+            
+            const token = authHeader && authHeader.split(" ")[1];
+
+            if (token == null) return res.sendStatus(401);
+
+            jwt.verify(token, SECRET, (err, decoded) => {
+                if(err) return res.sendStatus(403);
+                var data = decoded;
+            });
+
             // update password of a student
             await pool.query(
                 'UPDATE Student SET password= $2 WHERE id= $1;--',

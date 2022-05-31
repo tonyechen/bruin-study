@@ -126,7 +126,8 @@ class db {
         password = reformatString(password);
 
         let response = await http.put(
-            `password?id=${id}&password=${password}`
+            `password?id=${id}&password=${password}`,
+            {Headers: {"authorization" : localStorage.getItem("token")}}
         );
 
         return response.data;
