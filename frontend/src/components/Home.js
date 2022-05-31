@@ -18,7 +18,14 @@ class Home extends React.Component {
             cmpScore: null,
             smCls: null,
             smTook: null,
-            index: 1
+            index: 0
+        }
+    }
+
+    initialize(index) {
+        if (index === 0) {
+            this.setState({index: index + 1});
+            this.componentDidMount();
         }
     }
 
@@ -38,7 +45,6 @@ class Home extends React.Component {
 
     displayStudent() {
         if (this.state.index !== -1 && this.state.index !== this.state.matches) {
-            this.componentDidMount();
             return(
                 <h4 className = "profileBox">
                     {this.state.name}<br></br>
@@ -70,6 +76,7 @@ class Home extends React.Component {
         }
 
         this.setState({index: (this.state.matches[this.state.index + 1]) ? this.state.index + 1 : -1})
+        this.componentDidMount();
     }
 
     async componentDidMount() {
