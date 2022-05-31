@@ -1,11 +1,15 @@
 import './Header.css';
 import React from 'react';
-import {Link} from 'react-router-dom';
+import {Link, Navigate} from 'react-router-dom';
 
 // Header for the entire App
 const Header = (props) => {
-    return (
+    function handleClick() {
+        window.localStorage.removeItem("token");
+        <Navigate to="/home"></Navigate>    
+    }
 
+    return (
         <header className="header">
             <Link className="header__logo" to="/">
                 Bruin Study
@@ -17,7 +21,7 @@ const Header = (props) => {
                 <Link className = "header__option" to="/login">
                     Login
                 </Link>
-                <Link className = "header__option" to="/">
+                <Link className = "header__option" onClick = {handleClick()} to = "/">
                     Logout
                 </Link>
                 <Link className = "header__option" to="/profile">

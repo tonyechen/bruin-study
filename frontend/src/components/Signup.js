@@ -1,6 +1,6 @@
 import react, { useState } from 'react';
 import db from '../data/dataAccess';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
   function Signup() {
     const [errorMessages, setErrorMessages] = useState({});
@@ -106,6 +106,9 @@ import { useNavigate } from "react-router-dom";
           <div className="title">Sign In</div>
             {isSubmitted ? <div>User is successfully signed up</div> : renderForm}
         </div>
+        <Link to="/login">
+            Login
+        </Link>
       </div>
     );
   }
