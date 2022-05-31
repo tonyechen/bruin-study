@@ -9,8 +9,6 @@ import Signup from "./components/Signup"
 import Welcome from "./components/Welcome"
 import About from "./components/About"
 
-
-
 const App = () => {
   const loggedIn = (window.localStorage.getItem("token")) ? true : false;
 

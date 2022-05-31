@@ -6,7 +6,7 @@ import {Link, Navigate} from 'react-router-dom';
 const Header = (props) => {
     function handleClick() {
         window.localStorage.removeItem("token");
-        <Navigate to="/home"></Navigate>    
+        <Navigate to="/welcome"></Navigate>    
     }
 
     return (
