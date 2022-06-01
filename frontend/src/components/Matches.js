@@ -1,19 +1,17 @@
-import React, { Component, useState } from 'react';
+import React, { Component } from 'react';
 import db from '../data/dataAccess.js';
 import { decodeToken } from 'react-jwt';
 import './Matches.css';
+import { Link } from 'react-router-dom';
 class UserLine extends Component {
-    handleClick() {
-        console.log('bro');
-    }
-
     render() {
+        console.log(this);
         return (
-            <div className="matchElement" onClick={this.handleClick.bind(this)}>
+            <Link className="matchElement" to={`/profile/${this.props.uid}`}>
                 <p>{this.props.username}</p>
                 <h3>{this.props.name}</h3>
                 <hr />
-            </div>
+            </Link>
         );
     }
 }
@@ -59,10 +57,15 @@ class MatchList extends Component {
             <div className="matchBox">
                 <div>
                     <h2>Successful Matches</h2>
-                    <button className="updateButton" onClick={this.updateComponent.bind(this)}>update</button>
+                    <button
+                        className="updateButton"
+                        onClick={this.updateComponent.bind(this)}
+                    >
+                        update
+                    </button>
                 </div>
                 {this.state.Matches.map((ul) => (
-                    <UserLine key={ul.uid} username={ul.uname} name={ul.name} />
+                    <UserLine key={ul.uid} uid={ul.uid} username={ul.uname} name={ul.name} />
                 ))}
             </div>
         );

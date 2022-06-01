@@ -3,9 +3,11 @@
     flex-direction: column;
     width: 30vw;
     top: 0;
-    margin: 2% 0% 20% 35%;
+    margin: 2% 0% 10% 35%;
     bottom: 0;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    padding-left: 4%;
+    padding-right: 4%;
 }
 
 .profBox .profileHeader {
@@ -25,7 +27,6 @@
 .profBox .infoLabel {
     display: inline-block;
     text-align: left;
-    margin-left: 15%;
     color: rgb(39, 116, 174);
     font: 22px Arial;
     font-weight: bold;
@@ -39,13 +40,10 @@
 
 .profBox .bioStyle {
     font: 18px Arial;
-    padding-left: 15%;
-    padding-right: 15%;
 }
 
 .course {
-    display: inline-flex;
-    padding: 0.25rem 0.5rem;
+    display: inline-block;
     margin: 0.25rem;
     border-radius: 1rem;
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2), 0 2px 20px 0 rgba(0, 0, 0, 0.10);
@@ -54,8 +52,10 @@
 .btnStyle {
     display: block;
     font: 30px Arial;
+    margin-top: 5%;
     margin-left: auto;
     margin-right: auto;
+    cursor: pointer;
     margin-bottom: 5%;
     text-decoration: none;
     padding: 1rem 2rem;
@@ -67,5 +67,5 @@
 .btnStyle:hover {
     background-color: rgb(255, 209, 0);
     color: black;
-    transition: ease-in-out .2s;
+    transition: ease-in-out .2s;   
 }

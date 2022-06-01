@@ -10,10 +10,7 @@ class ClassLine extends Component {
     };
     render() {
         return (
-            <div>
-                {this.props.children}
-                <span className = "course">{this.props.ClassName}</span>
-            </div>
+            <span className = "course">{this.props.ClassName}</span>
         );
     }
 }
@@ -93,7 +90,7 @@ class Profile extends Component {
                     <h1 className="profileHeader">My Profile</h1>
                         <div>
                             <img 
-                                className = "userImage" src
+                                className = "userImage"
                                 src="https://cdn1.iconfinder.com/data/icons/user-pictures/100/unknown-512.png"
                                 alt="user_icon">
                             </img>
@@ -118,6 +115,7 @@ class Profile extends Component {
                             <br />
 
                             <dl className="infoLabel">Current Classes</dl>
+                            <div>
                             {this.state.CurrentClassList.map((cl) => (
                                 <ClassLine
                                     key={cl.id}
@@ -129,10 +127,12 @@ class Profile extends Component {
                                     </label>{' '}
                                 </ClassLine>
                             ))}
+                            </div>
                             <br /><br />
 
                             <dl className="infoLabel">Previous Classes</dl>
 
+                            <div>
                             {this.state.PreviousClassList.map((cl) => (
                                 <ClassLine
                                     key={cl.id}
@@ -144,7 +144,7 @@ class Profile extends Component {
                                     </label>{' '}
                                 </ClassLine>
                             ))}
-                            <br />
+                            </div>
 
                             <button className = "btnStyle" onClick={this.handleClick}>
                                 Edit Profile
