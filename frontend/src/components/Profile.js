@@ -4,6 +4,7 @@ import './Profile.css';
 import Classes from '../data/Classes.js';
 import Majors from '../data/Majors.js';
 import db from '../data/dataAccess.js';
+import { useNavigate } from 'react-router-dom'
 import { decodeToken } from 'react-jwt';
 
 class ClassLine extends Component {
@@ -98,7 +99,7 @@ let initialState = {
 };
 
 var majors = Majors;
-class editProfile extends Component {
+class EditProfile extends Component {
     state = initialState;
 
     async componentDidMount() {
@@ -312,7 +313,7 @@ class editProfile extends Component {
         this.setState({ PreviousClassList: prevClass });
     };
     handleSubmit = async (e) => {
-        e.preventDefault();
+       e.preventDefault();
         let validate = this.validate();
         console.log('Submitted');
         console.log(validate);
@@ -355,8 +356,6 @@ class editProfile extends Component {
                     this.state.PreviousClassList[i].cn
                 );
             }
-            console.log(currCourses);
-            console.log(prevCourses);
             let ensureCurrClass = await db.updateCourseTaking(
                 this.state.uid,
                 currCourses
@@ -365,8 +364,6 @@ class editProfile extends Component {
                 this.state.uid,
                 prevCourses
             );
-            console.log(ensureCurrClass);
-            console.log(ensurePrevClass);
             if (ensurePrevClass.success === false) {
                 console.log("PrevClass Wasn't Correct");
                 this.setState({ formError: ensurePrevClass.error });
@@ -378,6 +375,9 @@ class editProfile extends Component {
                 return;
             }
         }
+        let navigate= this.props.navigate;
+        navigate('/profile');
+
     };
     render() {
         return (
@@ -476,8 +476,7 @@ class editProfile extends Component {
                                 onDelete={this.handlePreviousDelete}
                                 ClassName={cl.cn}
                                 error={cl.error}
-                                setClass={this.setPrevClass}
-                            >
+                                setClass={this.setPrevClass}>
                                 <label className="label_1">
                                     Class {cl.id}:{' '}
                                 </label>{' '}
@@ -504,4 +503,8 @@ class editProfile extends Component {
         );
     }
 }
-export default editProfile;
+export default function(props)
+{
+    const navigate=useNavigate();
+    return <EditProfile navigate={navigate}/>
+};
