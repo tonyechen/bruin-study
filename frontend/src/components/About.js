@@ -3,16 +3,16 @@ import React from "react";
 class About extends React.Component {
     render() {
         return (
-            <div>
-                <h1 className = 'center'>
+            <div className = "center">
+                <h1>
                     <br></br>
                     ABOUT
                 </h1>
                 <br></br>
-                <h1 className = 'center'>
-                    This is a project developed for CS35L at UCLA 
+                <text>
+                    This is a full-stack web app developed for Computer Science 35L at University of California, Los Angeles 
                     <br></br>by Anthony Chen, Aditya Mehta, Ryan Man, Nhat Nguyen, Gary Song
-                </h1>
+                </text>
             </div>
         )
     }
