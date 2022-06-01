@@ -1,11 +1,11 @@
-import React, { Component, useState } from 'react';
-import * as EmailValidator from 'email-validator';
 import './Profile.css';
-import Classes from '../data/Classes.js';
 import Majors from '../data/Majors.js';
 import db from '../data/dataAccess.js';
-import { useNavigate } from 'react-router-dom';
 import { decodeToken } from 'react-jwt';
+import Classes from '../data/Classes.js';
+import React, { Component} from 'react';
+import { useNavigate } from 'react-router-dom'
+import * as EmailValidator from 'email-validator';
 
 class ClassLine extends Component {
     items = Classes;

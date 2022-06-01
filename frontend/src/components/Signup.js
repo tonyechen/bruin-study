@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
 import db from '../data/dataAccess';
 import Majors from '../data/Majors.js';
+import React, { useState } from 'react';
 import { useNavigate, Link } from "react-router-dom";
 
   function Signup() {

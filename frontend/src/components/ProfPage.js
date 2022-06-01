@@ -1,8 +1,8 @@
-import React, { Component, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { decodeToken } from 'react-jwt';
-import db from '../data/dataAccess.js';
 import "./ProfPage.css"
+import db from '../data/dataAccess.js';
+import { decodeToken } from 'react-jwt';
+import React, { Component } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 class ClassLine extends Component {
     state = {
