@@ -20,9 +20,10 @@ class ClassLine extends Component
     }
 }
 const mytoken = decodeToken(window.localStorage.getItem("token"));
+
 let initialState=
 {
-uid: mytoken.id,
+uid: mytoken ? mytoken.id : '',
 email: '',
 bio:'',
 username: '',
