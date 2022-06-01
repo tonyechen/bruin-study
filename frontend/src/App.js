@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import Header from "./components/Header";
 import Login from "./components/Login";
@@ -10,7 +10,12 @@ import Welcome from "./components/Welcome"
 import About from "./components/About"
 
 const App = () => {
-  const loggedIn = (window.localStorage.getItem("token")) ? true : false;
+  var loggedIn;
+
+  useEffect(() => {
+    loggedIn = (window.localStorage.getItem("token")) ? true : false;
+    console.log(loggedIn);
+  });
 
   return ( 
     <Router>

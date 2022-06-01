@@ -5,7 +5,7 @@ import {Link, Navigate} from 'react-router-dom';
 // Header for the entire App
 const Header = (props) => {
     function handleClick() {
-        window.localStorage.removeItem("token");
+        //window.localStorage.removeItem("token");
         <Navigate to="/welcome"></Navigate>    
     }
 
@@ -21,7 +21,7 @@ const Header = (props) => {
                 <Link className = "header__option" to="/login">
                     Login
                 </Link>
-                <Link className = "header__option" onClick = {handleClick()} to = "/">
+                <Link className = "header__option" onClick = {handleClick()} to ="/">
                     Logout
                 </Link>
                 <Link className = "header__option" to="/profile">
