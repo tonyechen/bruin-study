@@ -107,7 +107,7 @@ class EditProfile extends Component {
 
         var ccl = [{ id: 1, cn: '', error: '' }];
         var pcl = [{ id: 1, cn: '', error: '' }];
-
+        
         for (var i = 0; i < obj.courseTaking.length; i++) {
             if (i == 0) {
                 ccl[i].cn = obj.courseTaking[i];
@@ -384,6 +384,7 @@ class EditProfile extends Component {
 
     };
     render() {
+        if(window.localStorage.getItem("token")) {
         return (
             <div className="profile">
                 <h1 className="header_1">Edit Profile</h1>
@@ -505,6 +506,11 @@ class EditProfile extends Component {
                 </form>
             </div>
         );
+        } else {
+            return (
+                <p>You are not signed in</p>
+            );
+        }
     }
 }
 export default function(props)
