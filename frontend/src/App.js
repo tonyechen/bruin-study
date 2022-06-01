@@ -10,10 +10,11 @@ import Welcome from "./components/Welcome"
 import About from "./components/About"
 
 const App = () => {
-  var loggedIn;
+  const [loggedIn, setLoggedin] = useState(false);
 
   useEffect(() => {
-    loggedIn = (window.localStorage.getItem("token")) ? true : false;
+    setLoggedin((window.localStorage.getItem("token")) ? true : false);
+    console.log("test");
     console.log(loggedIn);
   });
 
@@ -22,9 +23,7 @@ const App = () => {
       <div className="App">
         <Header />
           <Routes>
-            <Route path="/" element={loggedIn ? (<Navigate to="/home" />) : (<Navigate to="/welcome" />)}/>
-            <Route path="/welcome" element={<Welcome/>}/>
-            <Route path="/home" element={<Home/>}/>
+            <Route path="/" element={window.localStorage.getItem("token") ? (<Home/>) : (<Welcome/>)}/>
             <Route path="/about" element={<About/>}/>
             <Route path="/login" element={<Login/>}/> 
             <Route path="/signup" element={<Signup/>}/> 
