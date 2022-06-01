@@ -50,21 +50,29 @@ class ClassLine extends Component
     }
     render ()
     {
-    return(
-        <div>
+    return (
+        <div class="class">
             {this.props.children}
-            <input type="text" 
-                    name="ClassName"
-                    placeholder= "Class Name" 
-                     value={this.props.ClassName} 
-                     onChange={this.handleChange}/>
-            {this.renderSuggestions()}
-            <button onClick={()=>this.props.onDelete(this.props.id)} type="button">
-                   Delete Class
-               </button>
-               <label>{this.props.error}</label>
+            <input
+                type="text"
+                name="ClassName"
+                placeholder="Class Name"
+                value={this.props.ClassName}
+                onChange={this.handleChange}
+            />
+            <button
+                onClick={() => this.props.onDelete(this.props.id)}
+                type="button"
+            >
+                Delete
+            </button>
+            {this.state.suggestions.length > 0 && (
+                <div className="classList">{this.renderSuggestions()}</div>
+            )}
+
+            <label>{this.props.error}</label>
         </div>
-    )
+    );
     }
 }
 
@@ -414,43 +422,47 @@ class editProfile extends Component
        
         return(
             
-            <div className='center'>
+            <div className='profile'>
             <h1 className='header_1'>Edit Profile</h1>
-            <div onSubmit={this.handleSubmit}>
-                <div>
+            <form onSubmit={this.handleSubmit}>
+                <div className="profile__form">
                     <label className='label_1'>UID: {this.state.uid}</label>
                     <br/>
 
                     <label className='label_1'>Name: </label>
                     <input type="text" value={this.state.name} onChange={this.handleNameChange}/>
-                    <label>{this.state.nameError}</label>
+                    <label class="error">{this.state.nameError}</label>
                     <br/>
 
                     <label className='label_1'>Email: </label>
                     <input type="text" value={this.state.email} onChange={this.handleEmailChange}/>
-                    <label>{this.state.emailError}</label>
+                    <label class="error">{this.state.emailError}</label>
                     <br/>
 
                     <label className='label_1'>Username: </label>
                     <input type="text" value={this.state.username} onChange={this.handleUsernameChange}/>
-                    <label>{this.state.usernameError}</label>
-                    <br/>
-
-                    <label className='label_1'>New Password: </label>
-                    <input type="password" value={this.state.password} onChange={this.handlePasswordChange}/>
-                    <label>{this.state.passwordError}</label>
+                    <label class="error">{this.state.usernameError}</label>
                     <br/>
 
                     <label className='label_1'>Major: </label>
                     <input type="text" value={this.state.major} onChange={this.handleMajorChange}/>
                     {this.renderMajorSuggestions()}
-                    <label>{this.state.majorError}</label>
+                    <label class="error">{this.state.majorError}</label>
                     <br/>
+
+                    <label className='label_1'>New Password (optional): </label>
+                    <input type="password" value={this.state.password} onChange={this.handlePasswordChange}/>
+                    <label class="error">{this.state.passwordError}</label>
+                    <br/>
+
+                    <label className='label_1'>Bio: </label>
+                    <textarea className="bio__text" value={this.state.bio} onChange={this.handleBioChange}/>
+                    <label class="error">{this.state.bioError}</label>
 
                     <dl className='class_headers'>Current Classes</dl>
                     {this.state.CurrentClassList.map(cl => <ClassLine key={cl.id} id={cl.id} onDelete={this.handleCurrentDelete} ClassName={cl.cn} error={cl.error} setClass={this.setCurrClass}>
                     <label className='label_1'>Class {cl.id}: </label> </ClassLine>)}
-                    <button className='add_button' onClick={this.handleCurrentAdd} type="button">Add Another Class</button>
+                    <button className='add_button' onClick={this.handleCurrentAdd} type="button">+ Add Another Class</button>
                     <br/>
 
                     <dl className='class_headers'>Previous Classes</dl>   
@@ -462,15 +474,11 @@ class editProfile extends Component
                     <button className='add_button'onClick={this.handlePreviousAdd} type="button">Add Another Class</button>
                     <br/>
 
-                    <label className='label_1'>Bio: </label>
-                    <textarea  value={this.state.bio} onChange={this.handleBioChange}/>
-                    <label>{this.state.bioError}</label>
-
                     <br/>
-                    <button type="submit">Submit </button>
-                    <label>{this.formError}</label>
+                    <button className="submit_button" type="submit">Submit </button>
+                    <label class="error">{this.formError}</label>
                 </div>
-            </div>
+            </form>
             </div>
         );
     }

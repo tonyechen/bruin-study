@@ -13,7 +13,8 @@
     font: 18px Arial;
     font-weight: bold;
     color: white;
-    border-color: gray;
+    border: solid;
+    cursor: pointer;
     background-color: rgb(39, 116, 174);
 }
 

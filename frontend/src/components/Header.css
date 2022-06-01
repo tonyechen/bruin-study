@@ -1,16 +1,21 @@
 .header {
+    top: 0%;
     display: flex;
     justify-content: space-between;
-    min-height: 55px;
-    text-align: center;
+    height: 8%;
+    width: 100%;
+    position: sticky;
+    z-index: 45;
     background-color: rgb(39, 116, 174);
 }
 
 .header__logo {
-    margin: auto 0;
     color: white;
-    font-family: Arial, Helvetica, sans-serif;
+    margin: auto;
     margin-left: 2%;
+    text-decoration: none;
+    font: 24px Arial;
+    font-weight: bold;
 }
 
 .header__group {

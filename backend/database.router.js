@@ -10,6 +10,10 @@ router
     .get(api.getStudent)
     .post(api.createStudent)
     .put(api.updateStudent);
+// login endpoint
+router
+    .route('/auth')
+    .post(api.Authentication);
 
 // password endpoint
 router.route('/password').put(api.updatePassword);
