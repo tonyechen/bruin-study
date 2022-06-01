@@ -90,7 +90,7 @@ class Profile extends Component {
                     <h1 className="profileHeader">My Profile</h1>
                         <div>
                             <img 
-                                className = "userImage" src
+                                className = "userImage"
                                 src="https://cdn1.iconfinder.com/data/icons/user-pictures/100/unknown-512.png"
                                 alt="user_icon">
                             </img>
