@@ -1,9 +1,9 @@
 import './Home.css';
-import db from '../data/dataAccess';
 import React from 'react';
-import getMatches from '../func/matching';
-import { decodeToken } from 'react-jwt';
 import MatchList from './Matches';
+import db from '../data/dataAccess';
+import { decodeToken } from 'react-jwt';
+import getMatches from '../func/matching';
 
 class Home extends React.Component {
     constructor(props) {
@@ -14,7 +14,6 @@ class Home extends React.Component {
         this.state = {
             uid: token ? token.id : '',
             bio: null,
-            username: null,
             name: null,
             major: null,
             currentClassList: null,
@@ -163,7 +162,6 @@ class Home extends React.Component {
             });
             this.setState({
                 bio: obj.introduction,
-                username: obj.username,
                 name: obj.name,
                 major: obj.major,
                 currentClassList: ccl,
