@@ -8,6 +8,7 @@ class UserLine extends Component {
         console.log(this);
         return (
             <Link className="matchElement" to={`/profile/${this.props.uid}`}>
+                <br />
                 <p>{this.props.username}</p>
                 <h3>{this.props.name}</h3>
                 <hr />

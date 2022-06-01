@@ -70,6 +70,7 @@ import { useNavigate, Link } from "react-router-dom";
             window.localStorage.setItem("token", response.token);
             setIsSubmitted(true);
             history("/editProfile");
+            window.location.reload();
           }
           else
           {
@@ -93,11 +94,11 @@ import { useNavigate, Link } from "react-router-dom";
           return null;
       }
       return (
-          <ul className="majors">
+          <ul className="majorList">
               {suggestions2.map((item) => (
-                  <li onClick={() => suggestionSelected(item)}>
+                  <div onClick={() => suggestionSelected(item)}>
                       {item}
-                  </li>
+                  </div>
               ))}
           </ul>
       );
