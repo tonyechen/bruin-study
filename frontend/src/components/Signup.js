@@ -93,7 +93,7 @@ import { useNavigate, Link } from "react-router-dom";
           return null;
       }
       return (
-          <ul>
+          <ul className="majors">
               {suggestions2.map((item) => (
                   <li onClick={() => suggestionSelected(item)}>
                       {item}

@@ -40,14 +40,11 @@
 
 .class {
     width: 100%;
-}
-
-.class label.label_1 {
-    padding-right: 10%;
+    margin-bottom: 1rem;
 }
 
 .class input {
-    width: 65%;
+    width: 70%;
     padding: 0.25rem 0.5rem;
 }
 
@@ -61,6 +58,7 @@
     padding: 0.25rem 1rem;
     border-radius: 0.75rem;
     font-size: 1rem;
+    margin-left: 1%;
 }
 
 .class button:hover {

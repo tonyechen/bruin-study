@@ -1,40 +1,52 @@
 .center {
     text-align: center;
-    display: block;
+    display: flex;
+    flex-direction: column;
+    width: 60vw;
+    top: 0;
+    margin: 2% 20%;
+    bottom: 0;
     justify-content: center;
     align-items: center;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .buttons {
-    display: inline-block;
-    width: 300px;
-    height: 40px;
     margin: 20px;
-    font: 18px Arial;
     font-weight: bold;
-    color: white;
-    border: solid;
+    font-size: 60px;
+    background-color: white;
     cursor: pointer;
-    background-color: rgb(39, 116, 174);
+    border: none;
+}
+
+.buttons:hover {
+    opacity: 0.7;
 }
 
 .square {
-    float: center;
     font-weight: bold;
-    line-height: 500px;
-    height: 550px;
-    margin: auto;
-    margin-top: 5%;
-    padding: 0;
-    width: 500px;
-    border-style: solid;
-    border-color: gray;
-    border-width: 2.5px;
+}
+
+.profileButtons {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
 }
 
 .profileBox {
+    width: 50vw;
     font: 18px Arial;
     color: rgb(39, 116, 174);
-    margin: 10%;
+    padding: 5% 20% 0% 10%;
+    padding-right: auto;
     text-align: left;
+}
+
+.course {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    margin: 0.25rem;
+    border-radius: 1rem;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2), 0 2px 20px 0 rgba(0, 0, 0, 0.10);
 }

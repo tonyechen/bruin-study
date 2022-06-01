@@ -37,8 +37,7 @@
   .login-form {
     background-color: white;
     padding: 2rem;
-    border: 1px solid  rgb(17, 23, 27);
-    /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); */
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   }
   
   .list-container {

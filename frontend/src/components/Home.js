@@ -21,6 +21,7 @@ class Home extends React.Component {
             cmpScore: null,
             smCls: null,
             smTook: null,
+            overlap: null,
             matches: [],
             index: 0,
             hasMatches: false,
@@ -49,21 +50,23 @@ class Home extends React.Component {
 
         return (
             <div className="center">
-                <h1 className="square">{this.displayStudent()}</h1>
-                <button
-                    id="No"
-                    onClick={() => this.handleClick('No')}
-                    className="buttons"
-                >
-                    No
-                </button>
-                <button
-                    id="Yes"
-                    onClick={() => this.handleClick('Yes')}
-                    className="buttons"
-                >
-                    Yes
-                </button>
+                <div className="square">{this.displayStudent()}</div>
+                <div className="profileButtons">
+                    <button
+                        id="No"
+                        onClick={() => this.handleClick('No')}
+                        className="buttons"
+                    >
+                        &#10060;
+                    </button>
+                    <button
+                        id="Yes"
+                        onClick={() => this.handleClick('Yes')}
+                        className="buttons"
+                    >
+                        &#9989;
+                    </button>
+                </div>
             </div>
         );
     }
@@ -72,8 +75,8 @@ class Home extends React.Component {
         if (this.state.hasMatches) {
             if (this.state.index <= this.state.matches.length) {
                 return (
-                    <h4 className="profileBox">
-                        {this.state.name}
+                    <div className="profileBox">
+                        <h1>{this.state.name}</h1>
                         <br></br>
                         <b>
                             {this.state.cmpScore}
@@ -103,7 +106,8 @@ class Home extends React.Component {
                         {this.state.previousClassList}
                         <br></br>
                         <br></br>
-                    </h4>
+                        <p>**Additional overlapping courses: {this.state.overlap}</p>
+                    </div>
                 );
             } else {
                 return (
@@ -150,10 +154,10 @@ class Home extends React.Component {
             const obj = await db.getFullProfile(matchesL[this.state.index].id);
 
             ccl = obj.courseTaking.map((courses) => {
-                return courses + ' || ';
+                return <span className ="course">{courses}</span>;
             });
             pcl = obj.courseTook.map((courses) => {
-                return courses + ' || ';
+                return <span className="course">{courses}</span>;
             });
             console.log('made it here');
             this.setState({
@@ -170,6 +174,7 @@ class Home extends React.Component {
                 smTook:
                     'Same Classes Taken: ' +
                     matchesL[this.state.index].sameTook,
+                overlap: matchesL[this.state.index].additionalMatches,
                 matches: matchesL,
                 index: this.state.index + 1,
             });
