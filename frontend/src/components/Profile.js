@@ -78,11 +78,11 @@ class ClassLine extends Component
 }
 
 
-
+const mytoken = decodeToken(window.localStorage.getItem("token"));
 
 let initialState=
 {
-uid: 111111111,
+uid: mytoken.id,
 email: '',
 bio:'',
 username: '',
@@ -111,7 +111,6 @@ class editProfile extends Component
 
     async componentDidMount()
     {
-        const mytoken = decodeToken(window.localStorage.getItem("token"));
         const obj = await db.getFullProfile(this.state.uid);
 
         var ccl=[{id: 1,  cn: "", error: ""} ];
@@ -142,7 +141,6 @@ class editProfile extends Component
         }
         this.setState(
             {
-                uid: mytoken.id,
                 email: obj.email,
                 bio: obj.introduction,
                 username: obj.username,
