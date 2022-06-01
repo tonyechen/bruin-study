@@ -1,5 +1,6 @@
 import React, { Component, useState } from 'react';
 import db from '../data/dataAccess.js';
+import { decodeToken } from 'react-jwt';
 import './Matches.css';
 class UserLine extends Component {
     handleClick() {
@@ -17,12 +18,20 @@ class UserLine extends Component {
     }
 }
 class MatchList extends Component {
-    state = {
-        uid: 222222222,
-        Matches: [],
-    };
+    constructor(props) {
+        super(props);
+        const token = decodeToken(window.localStorage.getItem('token'));
+        this.state = {
+            uid: token ? token.id : null,
+            currMatches: [],
+            Matches: [],
+        };
+    }
+
     async componentDidMount() {
-        let MatchObject = [111111111, 333333333];
+        if (this.state.uid == null) return;
+        let MatchObject = await db.getSucessfulMatches(this.state.uid);
+        if (this.state.currMatches.length == MatchObject) return;
         let Matches = [];
         for (var i = 0; i < MatchObject.length; i++) {
             let obj = await db.getFullProfile(MatchObject[i]);
@@ -33,15 +42,25 @@ class MatchList extends Component {
             };
             Matches = Matches.concat(MatchElement);
         }
+        console.log(Matches);
         this.setState({
+            currMatches: MatchObject,
             Matches: Matches,
         });
     }
+
+    updateComponent() {
+        this.componentDidMount();
+        window.location.reload();
+    }
+
     render() {
-        console.log(this.state);
         return (
             <div className="matchBox">
-                <div><h2>Successful Matches</h2></div>
+                <div>
+                    <h2>Successful Matches</h2>
+                    <button className="updateButton" onClick={this.updateComponent.bind(this)}>update</button>
+                </div>
                 {this.state.Matches.map((ul) => (
                     <UserLine key={ul.uid} username={ul.uname} name={ul.name} />
                 ))}

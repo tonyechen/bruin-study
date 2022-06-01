@@ -19,3 +19,16 @@
     opacity: .7;
     cursor: pointer;
 }
+
+.updateButton {
+    background-color:rgb(39, 116, 174);
+    color: white;
+    padding: .5rem 1rem;
+    border:none;
+    margin-top: .5rem;
+}
+
+.updateButton:hover {
+    opacity: .8;
+    cursor: pointer;
+}
