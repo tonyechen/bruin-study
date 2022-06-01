@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
 import db from '../data/dataAccess';
+import Majors from '../data/Majors.js';
 import { useNavigate, Link } from "react-router-dom";
 
   function Signup() {
+    const items = Majors;
     const [errorMessages, setErrorMessages] = useState({});
     const [isSubmitted, setIsSubmitted] = useState(false);
     const history = useNavigate();
+    const [suggestions, setSuggestions] = useState([]);
+    const [major, setMajor] = useState('');
     const validEmail = new RegExp(
         '^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$'
      );
@@ -13,6 +17,21 @@ import { useNavigate, Link } from "react-router-dom";
      const validID = new RegExp(
         '^[0-9]{9}$'
      );
+
+     const handleChange = (e) => {
+      const value = e.target.value;
+      let suggestions = [];
+      if (value.length > 0) {
+          const regex = new RegExp(`^${value}`, 'i');
+          suggestions = items.sort().filter((v) => regex.test(v));
+      }
+      setMajor(e.value)
+      setSuggestions(suggestions);
+  };
+  const suggestionSelected = (value) => {
+      setSuggestions([]);
+      setMajor(value);
+  }
     async function handleSubmit(event) {
         //Prevent page reload
         event.preventDefault();
@@ -54,7 +73,7 @@ import { useNavigate, Link } from "react-router-dom";
           }
           else
           {
-            setErrorMessages({name: "login", message: "Login failed, check the username or password"});
+            setErrorMessages({name: "signupfail", message: "Auto-log in failed, try logging in manually"});
           }
         }
         else
@@ -68,6 +87,21 @@ import { useNavigate, Link } from "react-router-dom";
       <div className="error">{errorMessages.message}</div>
     );
 
+    function renderSuggestions() {
+      const suggestions2 = suggestions;
+      if (suggestions2.length === 0) {
+          return null;
+      }
+      return (
+          <ul>
+              {suggestions2.map((item) => (
+                  <li onClick={() => suggestionSelected(item)}>
+                      {item}
+                  </li>
+              ))}
+          </ul>
+      );
+  }
     const renderForm = (
         <div className="form">
           <form onSubmit={handleSubmit}>
@@ -87,7 +121,8 @@ import { useNavigate, Link } from "react-router-dom";
             </div>
             <div className="input-container">
               <label>Major </label>
-              <input type="text" name="major" required />
+              <input type="text" name="major" onChange={handleChange} value={major} required />
+              {renderSuggestions()}
             </div>
             <div className="input-container">
               <label>Username </label>
