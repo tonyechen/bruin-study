@@ -10,7 +10,6 @@ import Welcome from './components/Welcome';
 import About from './components/About';
 
 const App = () => {
-    useEffect(()=>{console.log("here!")})
 
     return (
         <Router>

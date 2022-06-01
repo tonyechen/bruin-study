@@ -493,7 +493,7 @@ class EditProfile extends Component {
                             onClick={this.handlePreviousAdd}
                             type="button"
                         >
-                            Add Another Class
+                            + Add Another Class
                         </button>
                         <br />
 
