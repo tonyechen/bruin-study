@@ -4,6 +4,7 @@ import './Profile.css'
 import Classes from '../data/Classes.js';
 import Majors from '../data/Majors.js'
 import db from'../data/dataAccess.js'
+import {decodeToken} from "react-jwt"
 
 class ClassLine extends Component
 {
@@ -93,7 +94,6 @@ emailError:'',
 usernameError: '',
 bioError: '',
 nameError: '',
-passwordError:'',
 majorError:'',
 formError:'',
 MajorSuggestions: [],
@@ -111,7 +111,9 @@ class editProfile extends Component
 
     async componentDidMount()
     {
+        const mytoken = decodeToken(window.localStorage.getItem("token"));
         const obj = await db.getFullProfile(this.state.uid);
+
         var ccl=[{id: 1,  cn: "", error: ""} ];
         var pcl=[{id: 1,  cn: "", error: ""} ];
 
@@ -140,6 +142,7 @@ class editProfile extends Component
         }
         this.setState(
             {
+                uid: mytoken.id,
                 email: obj.email,
                 bio: obj.introduction,
                 username: obj.username,
@@ -265,12 +268,6 @@ class editProfile extends Component
             usernameError="Must enter a username";
             check=false;
         }
-        let passwordError="";
-        if (this.state.password=="")
-        {
-            passwordError="Must enter a password";
-            check=false;
-        }
         let nameError ="";
         if (this.state.name=="")
         {
@@ -334,7 +331,6 @@ class editProfile extends Component
             emailError: emailError,
             bioError: bioError,
             nameError: nameError,
-            passwordError: passwordError,
             majorError: majorError
         });
         return check;
@@ -376,7 +372,14 @@ class editProfile extends Component
                 this.state.bio,
                 this.state.introduction
             )
-       
+            if (this.state.password!=="")
+            {
+                let ensurePassword=await db.updatePassword(this.state.uid, this.state.password)
+                if (!ensurePassword.success)
+                {
+                    return;
+                }
+            }
             if  (ensureCorrectProf.success==='false')
             {
                 console.log("Profile Wasn't Correct");
@@ -452,7 +455,6 @@ class editProfile extends Component
 
                     <label className='label_1'>New Password (optional): </label>
                     <input type="password" value={this.state.password} onChange={this.handlePasswordChange}/>
-                    <label class="error">{this.state.passwordError}</label>
                     <br/>
 
                     <label className='label_1'>Bio: </label>
