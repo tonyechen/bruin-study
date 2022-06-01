@@ -83,18 +83,18 @@ class API {
         try {
             const { id, email, name, major, username } = req.query;
 
-            const auth = req.headers["authorization"];
+            const authHeader = req.headers["authorization"];
             
             const token = authHeader && authHeader.split(" ")[1];
-
+            var data;
             if (token == null) return res.sendStatus(401);
 
             jwt.verify(token, SECRET, (err, decoded) => {
                 if(err) return res.sendStatus(403);
-                var data = decoded;
+                data = decoded;
             });
 
-            if (id !== decoded.id) return res.sendStatus(401);
+            if (id !== data.id) return res.sendStatus(401);
             // update existing student:
             // input: id, email, name, major, username, password
             await pool.query(
@@ -114,16 +114,17 @@ class API {
         try {
             const { id, password } = req.query;
 
-            const auth = req.headers["authorization"];
+            const authHeader = req.headers["authorization"];
             
             const token = authHeader && authHeader.split(" ")[1];
-
+            var data;
             if (token == null) return res.sendStatus(401);
 
             jwt.verify(token, SECRET, (err, decoded) => {
                 if(err) return res.sendStatus(403);
-                var data = decoded;
+                data = decoded;
             });
+            if (id !== data.id) return res.sendStatus(401);
 
             // update password of a student
             await pool.query(
@@ -198,18 +199,18 @@ class API {
         try {
             const { id, course } = req.query;
 
-            const auth = req.headers["authorization"];
+            const authHeader = req.headers["authorization"];
             
             const token = authHeader && authHeader.split(" ")[1];
 
+            var data;
             if (token == null) return res.sendStatus(401);
 
             jwt.verify(token, SECRET, (err, decoded) => {
                 if(err) return res.sendStatus(403);
-                var data = decoded;
+                data = decoded;
             });
-
-            if (id !== decoded.id) return res.sendStatus(401);
+            if (id !== data.id) return res.sendStatus(401);
 
             // delete a course taken by a student
             // input: id, course
@@ -262,18 +263,20 @@ class API {
         try {
             const { id, course } = req.query;
 
-            const auth = req.headers["authorization"];
+            const authHeader = req.headers["authorization"];
             
             const token = authHeader && authHeader.split(" ")[1];
 
+
+            var data;
             if (token == null) return res.sendStatus(401);
 
             jwt.verify(token, SECRET, (err, decoded) => {
                 if(err) return res.sendStatus(403);
-                var data = decoded;
+                data = decoded;
             });
+            if (id !== data.id) return res.sendStatus(401);
 
-            if (id !== decoded.id) return res.sendStatus(401);
 
             // Add a course the student is taking
             // input: id, course
@@ -298,18 +301,19 @@ class API {
         try {
             const { id, course } = req.query;
 
-            const auth = req.headers["authorization"];
+            const authHeader = req.headers["authorization"];
             
             const token = authHeader && authHeader.split(" ")[1];
 
+            var data;
             if (token == null) return res.sendStatus(401);
 
             jwt.verify(token, SECRET, (err, decoded) => {
                 if(err) return res.sendStatus(403);
-                var data = decoded;
+                data = decoded;
             });
+            if (id !== data.id) return res.sendStatus(401);
 
-            if (id !== decoded.id) return res.sendStatus(401);
 
             // delete a course the student is taking
             // input: id, course
@@ -405,18 +409,19 @@ class API {
         try {
             const { id, text } = req.query;
 
-            const auth = req.headers["authorization"];
+            const authHeader = req.headers["authorization"];
             
             const token = authHeader && authHeader.split(" ")[1];
 
+            var data;
             if (token == null) return res.sendStatus(401);
 
             jwt.verify(token, SECRET, (err, decoded) => {
                 if(err) return res.sendStatus(403);
-                var data = decoded;
+                data = decoded;
             });
+            if (id !== data.id) return res.sendStatus(401);
 
-            if (id !== decoded.id) return res.sendStatus(401);
 
             // add the introduction of the studentauth
             // input: id, text
@@ -438,18 +443,18 @@ class API {
         try {
             const { id, text } = req.query;
 
-            const auth = req.headers["authorization"];
+            const authHeader = req.headers["authorization"];
             
             const token = authHeader && authHeader.split(" ")[1];
 
+            var data;
             if (token == null) return res.sendStatus(401);
 
             jwt.verify(token, SECRET, (err, decoded) => {
                 if(err) return res.sendStatus(403);
-                var data = decoded;
+                data = decoded;
             });
-
-            if (id !== decoded.id) return res.sendStatus(401);
+            if (id !== data.id) return res.sendStatus(401);
 
             // update the intro of the student
             // input: id, text

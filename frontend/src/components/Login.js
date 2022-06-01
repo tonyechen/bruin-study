@@ -1,4 +1,4 @@
-import react, { useState } from "react";
+import React, { useState } from 'react';
 import db from "../data/dataAccess";
 import { useNavigate } from "react-router-dom";
 
@@ -9,7 +9,7 @@ function Login() {
   const [errorMessages, setErrorMessages] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
   const history = useNavigate();
-
+  console.log(window.localStorage);
 
   const handleSubmit = async (event) => {
     //Prevent page reload
@@ -58,7 +58,7 @@ function Login() {
   );
 
   return (
-    <div className="app">
+    <div className="login">
       <div className="login-form">
         <div className="title">Sign In</div>
         {(window.localStorage.getItem("token") || isSubmitted) ? <div>User is already logged in</div> : renderForm}
