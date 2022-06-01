@@ -73,8 +73,7 @@ class db {
         if (response.data.error) {
             return response.data;
         }
-        response = await http.post(`introduction?id=${id}&text=${intro}`,
-        {Headers: {"authorization" : localStorage.getItem("token")}});
+        response = await http.post(`introduction?id=${id}&text=${intro}`);
 
         return response.data;
     }
@@ -100,8 +99,7 @@ class db {
 
         // update student table
         let response = await http.put(
-            `user?id=${id}&email=${email}&name=${name}&major=${major}&username=${username}`,
-            {Headers: {"authorization" : localStorage.getItem("token")}}
+            `user?id=${id}&email=${email}&name=${name}&major=${major}&username=${username}`
         );
 
         // error checking when posting to student table
@@ -111,7 +109,7 @@ class db {
 
         // fetch from intro table
         response = await http.put(`introduction?id=${id}&text=${intro}`,
-        {Headers: {"authorization" : localStorage.getItem("token")}});
+        );
 
         // auto error checking here
         return response.data;
@@ -126,8 +124,7 @@ class db {
         password = reformatString(password);
 
         let response = await http.put(
-            `password?id=${id}&password=${password}`,
-            {Headers: {"authorization" : localStorage.getItem("token")}}
+            `password?id=${id}&password=${password}`
         );
 
         return response.data;
@@ -170,8 +167,7 @@ class db {
             course = reformatString(course);
 
             response = await http.post(
-                `courseTaking?id=${id}&course=${course}`,
-                {Headers: {"authorization" : localStorage.getItem("token")}}
+                `courseTaking?id=${id}&course=${course}`
             );
 
             // error checking
@@ -189,8 +185,7 @@ class db {
             course = reformatString(course);
 
             response = await http.delete(
-                `courseTaking?id=${id}&course=${course}`,
-                {Headers: {"authorization" : localStorage.getItem("token")}}
+                `courseTaking?id=${id}&course=${course}`
             );
 
             if (response.data.error) return response.data;
@@ -251,8 +246,7 @@ class db {
         for (let course of newCourses) {
             course = reformatString(course);
 
-            response = await http.post(`courseTook?id=${id}&course=${course}`,
-            {Headers: {"authorization" : localStorage.getItem("token")}});
+            response = await http.post(`courseTook?id=${id}&course=${course}`);
 
             // error checking
             if (response.data.error) return response.data;
@@ -269,8 +263,7 @@ class db {
             course = reformatString(course);
 
             response = await http.delete(
-                `courseTook?id=${id}&course=${course}`,
-                {Headers: {"authorization" : localStorage.getItem("token")}}
+                `courseTook?id=${id}&course=${course}`
             );
 
             if (response.data.error) return response.data;

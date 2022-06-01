@@ -1,4 +1,4 @@
-import react, { useState } from 'react';
+import React, { useState } from 'react';
 import db from '../data/dataAccess';
 import { useNavigate, Link } from "react-router-dom";
 

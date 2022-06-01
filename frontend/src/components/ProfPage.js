@@ -1,5 +1,6 @@
 import React, { Component, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import {decodeToken} from "react-jwt"
 import db from'../data/dataAccess.js'
 
 class ClassLine extends Component
@@ -18,9 +19,10 @@ class ClassLine extends Component
     )
     }
 }
+const mytoken = decodeToken(window.localStorage.getItem("token"));
 let initialState=
 {
-uid: 111111111,
+uid: mytoken.id,
 email: '',
 bio:'',
 username: '',
@@ -41,7 +43,7 @@ CurrentClassList:[
 ],
 PreviousClassList: [
 ]};
-class editProfile extends Component
+class Profile extends Component
 {
 
     state=initialState;
@@ -88,7 +90,11 @@ class editProfile extends Component
         )
 }
 
-
+handleClick = () =>
+{
+    let navigate= this.props.navigate
+    navigate('/editProfile')
+}
     render()
     {
         
@@ -139,4 +145,8 @@ class editProfile extends Component
         );
     }
 }
-export default editProfile;
+export default function(props)
+{
+    const navigate=useNavigate();
+    return <Profile navigate={navigate}/>
+}
