@@ -83,7 +83,7 @@ class API {
         try {
             const { id, email, name, major, username } = req.query;
 
-            const auth = req.headers["authorization"];
+            const authHeader = req.headers["authorization"];
             
             const token = authHeader && authHeader.split(" ")[1];
 
@@ -94,7 +94,7 @@ class API {
                 var data = decoded;
             });
 
-            if (id !== decoded.id) return res.sendStatus(401);
+            if (id !== data.id) return res.sendStatus(401);
             // update existing student:
             // input: id, email, name, major, username, password
             await pool.query(
@@ -114,7 +114,7 @@ class API {
         try {
             const { id, password } = req.query;
 
-            const auth = req.headers["authorization"];
+            const authHeader = req.headers["authorization"];
             
             const token = authHeader && authHeader.split(" ")[1];
 
@@ -198,7 +198,7 @@ class API {
         try {
             const { id, course } = req.query;
 
-            const auth = req.headers["authorization"];
+            const authHeader = req.headers["authorization"];
             
             const token = authHeader && authHeader.split(" ")[1];
 
@@ -262,7 +262,7 @@ class API {
         try {
             const { id, course } = req.query;
 
-            const auth = req.headers["authorization"];
+            const authHeader = req.headers["authorization"];
             
             const token = authHeader && authHeader.split(" ")[1];
 
@@ -298,7 +298,7 @@ class API {
         try {
             const { id, course } = req.query;
 
-            const auth = req.headers["authorization"];
+            const authHeader = req.headers["authorization"];
             
             const token = authHeader && authHeader.split(" ")[1];
 
@@ -405,19 +405,6 @@ class API {
         try {
             const { id, text } = req.query;
 
-            const auth = req.headers["authorization"];
-            
-            const token = authHeader && authHeader.split(" ")[1];
-
-            if (token == null) return res.sendStatus(401);
-
-            jwt.verify(token, SECRET, (err, decoded) => {
-                if(err) return res.sendStatus(403);
-                var data = decoded;
-            });
-
-            if (id !== decoded.id) return res.sendStatus(401);
-
             // add the introduction of the studentauth
             // input: id, text
             await pool.query(
@@ -438,7 +425,7 @@ class API {
         try {
             const { id, text } = req.query;
 
-            const auth = req.headers["authorization"];
+            const authHeader = req.headers["authorization"];
             
             const token = authHeader && authHeader.split(" ")[1];
 
