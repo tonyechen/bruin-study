@@ -50,7 +50,7 @@ class ClassLine extends Component {
     }
     render() {
         return (
-            <div class="class">
+            <div className="class">
                 {this.props.children}
                 <input
                     type="text"
@@ -107,7 +107,7 @@ class EditProfile extends Component {
 
         var ccl = [{ id: 1, cn: '', error: '' }];
         var pcl = [{ id: 1, cn: '', error: '' }];
-
+        
         for (var i = 0; i < obj.courseTaking.length; i++) {
             if (i == 0) {
                 ccl[i].cn = obj.courseTaking[i];
@@ -330,6 +330,7 @@ class EditProfile extends Component {
                 this.state.bio,
                 this.state.introduction
             );
+
             if (this.state.password !== '') {
                 let ensurePassword = await db.updatePassword(
                     this.state.uid,
@@ -339,9 +340,16 @@ class EditProfile extends Component {
                     return;
                 }
             }
-            if (ensureCorrectProf.success === 'false') {
-                console.log("Profile Wasn't Correct");
-                this.setState({ formError: ensureCorrectProf.error });
+            if (ensureCorrectProf.success === false) {
+
+                if (ensureCorrectProf.error.includes("email"))
+                {
+                    this.setState({ emailError: "Email already in use" });
+                }
+                else
+                {
+                    this.setState({ usernameError: "Username already in use" });
+                }
                 return;
             }
             let currCourses = [];
@@ -365,13 +373,9 @@ class EditProfile extends Component {
                 prevCourses
             );
             if (ensurePrevClass.success === false) {
-                console.log("PrevClass Wasn't Correct");
-                this.setState({ formError: ensurePrevClass.error });
                 return;
             }
             if (ensureCurrClass.success === false) {
-                console.log("CurrClass Wasn't Correct");
-                this.setState({ formError: ensureCurrClass.error });
                 return;
             }
         }
@@ -380,6 +384,7 @@ class EditProfile extends Component {
 
     };
     render() {
+        if(window.localStorage.getItem("token")) {
         return (
             <div className="profile">
                 <h1 className="header_1">Edit Profile</h1>
@@ -488,7 +493,7 @@ class EditProfile extends Component {
                             onClick={this.handlePreviousAdd}
                             type="button"
                         >
-                            Add Another Class
+                            + Add Another Class
                         </button>
                         <br />
 
@@ -501,6 +506,11 @@ class EditProfile extends Component {
                 </form>
             </div>
         );
+        } else {
+            return (
+                <p>You are not signed in</p>
+            );
+        }
     }
 }
 export default function(props)

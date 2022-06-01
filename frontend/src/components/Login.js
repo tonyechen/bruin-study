@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import db from "../data/dataAccess";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom"
 
   import "../login.css";
 
@@ -23,7 +23,8 @@ function Login() {
     {
       window.localStorage.setItem("token", response.token);
       setIsSubmitted(true);
-      history("/");
+      history("/home");
+      window.location.reload();
     }
     else
     {
@@ -63,6 +64,9 @@ function Login() {
         <div className="title">Sign In</div>
         {(window.localStorage.getItem("token") || isSubmitted) ? <div>User is already logged in</div> : renderForm}
       </div>
+        <Link to="/signup">
+            Create an Account
+        </Link>
     </div>
   );
 }
