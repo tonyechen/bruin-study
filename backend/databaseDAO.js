@@ -83,7 +83,7 @@ class API {
         try {
             const { id, email, name, major, username } = req.query;
 
-            const auth = req.headers["authorization"];
+            const authHeader = req.headers["authorization"];
             
             const token = authHeader && authHeader.split(" ")[1];
 
@@ -114,10 +114,9 @@ class API {
         try {
             const { id, password } = req.query;
 
-            const auth = req.headers["authorization"];
+            const authHeader = req.headers["authorization"];
             
             const token = authHeader && authHeader.split(" ")[1];
-
             if (token == null) return res.sendStatus(401);
 
             jwt.verify(token, SECRET, (err, decoded) => {
@@ -198,7 +197,7 @@ class API {
         try {
             const { id, course } = req.query;
 
-            const auth = req.headers["authorization"];
+            const authHeader = req.headers["authorization"];
             
             const token = authHeader && authHeader.split(" ")[1];
 
@@ -262,7 +261,7 @@ class API {
         try {
             const { id, course } = req.query;
 
-            const auth = req.headers["authorization"];
+            const authHeader = req.headers["authorization"];
             
             const token = authHeader && authHeader.split(" ")[1];
 
@@ -298,7 +297,7 @@ class API {
         try {
             const { id, course } = req.query;
 
-            const auth = req.headers["authorization"];
+            const authHeader = req.headers["authorization"];
             
             const token = authHeader && authHeader.split(" ")[1];
 
@@ -405,7 +404,7 @@ class API {
         try {
             const { id, text } = req.query;
 
-            const auth = req.headers["authorization"];
+            const authHeader = req.headers["authorization"];
             
             const token = authHeader && authHeader.split(" ")[1];
 
@@ -438,7 +437,7 @@ class API {
         try {
             const { id, text } = req.query;
 
-            const auth = req.headers["authorization"];
+            const authHeader = req.headers["authorization"];
             
             const token = authHeader && authHeader.split(" ")[1];
 
