@@ -1,0 +1,39 @@
+.container {
+    width: 100%;
+    height: 95vh;
+    display: flex;
+    flex-direction: column;
+    background-image: url('https://s3.amazonaws.com/cms.ipressroom.com/173/files/20198/5d72b4772cfac209ff04c634_Royce+Quad/Royce+Quad_hero.jpg');
+    background-position: center;
+    background-size:cover;
+    justify-content: center;
+    align-items: center;
+}
+
+.container .getStarted, .container .login_button{
+    display: block;
+    text-decoration: none;
+    text-align: center;
+    color: white;
+    background-color: rgb(39, 116, 174);
+    padding: 1rem 2rem;
+    margin: 3rem 0;
+    border-radius: 2rem;
+    box-shadow: 0 5px 0px 0px black;
+}
+
+.container .getStarted:hover, .container .login_button:hover {
+    background-color: rgb(255, 209, 0);
+    color: black;
+    transition: ease-in-out .2s;
+
+}
+
+.container .txtStyle {
+    font-size: 80px;
+    font-family: 'Berkshire Swash', cursive;
+    color: white;
+    text-align: center;
+    text-shadow: 5px 5px 8px black;
+    z-index: 1;
+}

@@ -79,25 +79,16 @@ class db {
     }
 
     /**
-     * Update the profile information associated with the student.This function only updates id, email, username, name, major, intro, and password
+     * Update the profile information associated with the student.This function only updates id, email, username, name, major, intro
      * @param {int} id required
      * @param {string} email required
      * @param {string} username required
      * @param {string} name required
      * @param {string} major required
      * @param {string} intro required
-     * @param {string} password required
-     * @returns A JS Object indicating the status of the post request. This function only updates id, email, username, name, major, intro, and password
+     * @returns A JS Object indicating the status of the post request. This function only updates id, email, username, name, major, intro
      */
-    static async updateProfile(
-        id,
-        email,
-        username,
-        name,
-        major,
-        intro,
-        password
-    ) {
+    static async updateProfile(id, email, username, name, major, intro) {
         const error = await checkID(id);
         if (error) {
             return error;
@@ -108,7 +99,7 @@ class db {
 
         // update student table
         let response = await http.put(
-            `user?id=${id}&email=${email}&name=${name}&major=${major}&username=${username}&password=${password}`
+            `user?id=${id}&email=${email}&name=${name}&major=${major}&username=${username}`
         );
 
         // error checking when posting to student table
@@ -117,9 +108,25 @@ class db {
         }
 
         // fetch from intro table
-        response = await http.put(`introduction?id=${id}&text=${intro}`);
+        response = await http.put(`introduction?id=${id}&text=${intro}`,
+        );
 
         // auto error checking here
+        return response.data;
+    }
+
+    static async updatePassword(id, password) {
+        const error = await checkID(id);
+        if (error) {
+            return error;
+        }
+
+        password = reformatString(password);
+
+        let response = await http.put(
+            `password?id=${id}&password=${password}`
+        );
+
         return response.data;
     }
 
@@ -206,6 +213,18 @@ class db {
         return response.data;
     }
 
+    /**
+     * Authenticate the user and return the id
+     * @param {string} username required
+     * @param {string} password required
+     * @returns returns the response token if the user exists, or else returns and error
+     */
+     static async Authenticate(username, password) {
+
+        let response = await http.post(`auth?username=${username}&password=${password}`);
+        return response.data;
+    }
+    
     /**
      * Take in a list of course that the student TOOK. Add the new courses and remove the deleted courses.
      * @param {int} id
