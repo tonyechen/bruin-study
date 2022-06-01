@@ -64,7 +64,7 @@ class ClassLine extends Component
                 onClick={() => this.props.onDelete(this.props.id)}
                 type="button"
             >
-                X
+                Delete
             </button>
             {this.state.suggestions.length > 0 && (
                 <div className="classList">{this.renderSuggestions()}</div>
@@ -444,21 +444,25 @@ class editProfile extends Component
                     <label class="error">{this.state.usernameError}</label>
                     <br/>
 
-                    <label className='label_1'>New Password: </label>
-                    <input type="password" value={this.state.password} onChange={this.handlePasswordChange}/>
-                    <label class="error">{this.state.passwordError}</label>
-                    <br/>
-
                     <label className='label_1'>Major: </label>
                     <input type="text" value={this.state.major} onChange={this.handleMajorChange}/>
                     {this.renderMajorSuggestions()}
                     <label class="error">{this.state.majorError}</label>
                     <br/>
 
+                    <label className='label_1'>New Password (optional): </label>
+                    <input type="password" value={this.state.password} onChange={this.handlePasswordChange}/>
+                    <label class="error">{this.state.passwordError}</label>
+                    <br/>
+
+                    <label className='label_1'>Bio: </label>
+                    <textarea className="bio__text" value={this.state.bio} onChange={this.handleBioChange}/>
+                    <label class="error">{this.state.bioError}</label>
+
                     <dl className='class_headers'>Current Classes</dl>
                     {this.state.CurrentClassList.map(cl => <ClassLine key={cl.id} id={cl.id} onDelete={this.handleCurrentDelete} ClassName={cl.cn} error={cl.error} setClass={this.setCurrClass}>
                     <label className='label_1'>Class {cl.id}: </label> </ClassLine>)}
-                    <button className='add_button' onClick={this.handleCurrentAdd} type="button">Add Another Class</button>
+                    <button className='add_button' onClick={this.handleCurrentAdd} type="button">+ Add Another Class</button>
                     <br/>
 
                     <dl className='class_headers'>Previous Classes</dl>   
@@ -470,12 +474,8 @@ class editProfile extends Component
                     <button className='add_button'onClick={this.handlePreviousAdd} type="button">Add Another Class</button>
                     <br/>
 
-                    <label className='label_1'>Bio: </label>
-                    <textarea  value={this.state.bio} onChange={this.handleBioChange}/>
-                    <label class="error">{this.state.bioError}</label>
-
                     <br/>
-                    <button type="submit">Submit </button>
+                    <button className="submit_button" type="submit">Submit </button>
                     <label class="error">{this.formError}</label>
                 </div>
             </form>

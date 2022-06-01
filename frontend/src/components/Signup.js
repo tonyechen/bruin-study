@@ -101,7 +101,7 @@ import { useNavigate, Link } from "react-router-dom";
         </div>
       );
     return (
-      <div className="app">
+      <div className="login">
         <div className="login-form">
           <div className="title">Sign Up</div>
             {isSubmitted ? <div>User is successfully signed up</div> : renderForm}

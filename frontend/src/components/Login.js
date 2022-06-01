@@ -58,7 +58,7 @@ function Login() {
   );
 
   return (
-    <div className="app">
+    <div className="login">
       <div className="login-form">
         <div className="title">Sign In</div>
         {(window.localStorage.getItem("token") || isSubmitted) ? <div>User is already logged in</div> : renderForm}

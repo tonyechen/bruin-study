@@ -1,10 +1,10 @@
 .header {
-    top: 0%;
+    top: 0;
     display: flex;
     justify-content: space-between;
-    height: 10%;
+    height: 3rem;
     width: 100%;
-    position: fixed;
+    position: sticky;
     z-index: 45;
     background-color: rgb(39, 116, 174);
 }
@@ -12,10 +12,10 @@
 .header__logo {
     color: white;
     margin: auto;
-    margin-left: 2%;
+    margin-left: 1%;
     text-decoration: none;
-    font: 24px Arial;
-    font-weight: bold;
+    font-size: 2rem;
+    font-family: 'Berkshire Swash', cursive;
 }
 
 .header__group {
