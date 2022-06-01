@@ -1,26 +1,42 @@
 import './Header.css';
 import React from 'react';
-import {Link} from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 // Header for the entire App
 const Header = (props) => {
-    return (
+    const history = useNavigate();
+    const token = window.localStorage.getItem('token');
 
+    function handleClick() {
+        window.localStorage.removeItem('token');
+        history('/');
+        window.location.reload();
+        console.log(window.localStorage);
+    }
+
+    return (
         <header className="header">
-            <Link className="header__logo" to="/">
+            <Link
+                className="header__logo"
+                to={window.localStorage.getItem('token') ? '/home' : '/'}
+            >
                 Bruin Study
             </Link>
             <div className="header__group">
-                <Link className = "header__option" to="/about">
+                <Link className="header__option" to="/about">
                     About
                 </Link>
-                <Link className = "header__option" to="/login">
-                    Login
-                </Link>
-                <Link className = "header__option" to="/signup">
-                    Logout
-                </Link>
-                <Link className = "header__option" to="/profile">
+                {!token && (
+                    <Link className="header__option" to="/login">
+                        Login/Signup
+                    </Link>
+                )}
+                {token && (
+                    <a className="header__option" onClick={handleClick}>
+                        Logout
+                    </a>
+                )}
+                <Link className="header__option" to="/profile">
                     <img
                         className="header__user_image"
                         src="https://cdn1.iconfinder.com/data/icons/user-pictures/100/unknown-512.png"

@@ -4,6 +4,7 @@ import './Profile.css';
 import Classes from '../data/Classes.js';
 import Majors from '../data/Majors.js';
 import db from '../data/dataAccess.js';
+import { useNavigate } from 'react-router-dom'
 import { decodeToken } from 'react-jwt';
 
 class ClassLine extends Component {
@@ -98,7 +99,7 @@ let initialState = {
 };
 
 var majors = Majors;
-class editProfile extends Component {
+class EditProfile extends Component {
     state = initialState;
 
     async componentDidMount() {
@@ -106,7 +107,7 @@ class editProfile extends Component {
 
         var ccl = [{ id: 1, cn: '', error: '' }];
         var pcl = [{ id: 1, cn: '', error: '' }];
-
+        
         for (var i = 0; i < obj.courseTaking.length; i++) {
             if (i == 0) {
                 ccl[i].cn = obj.courseTaking[i];
@@ -312,7 +313,7 @@ class editProfile extends Component {
         this.setState({ PreviousClassList: prevClass });
     };
     handleSubmit = async (e) => {
-        e.preventDefault();
+       e.preventDefault();
         let validate = this.validate();
         console.log('Submitted');
         console.log(validate);
@@ -329,6 +330,7 @@ class editProfile extends Component {
                 this.state.bio,
                 this.state.introduction
             );
+
             if (this.state.password !== '') {
                 let ensurePassword = await db.updatePassword(
                     this.state.uid,
@@ -338,9 +340,16 @@ class editProfile extends Component {
                     return;
                 }
             }
-            if (ensureCorrectProf.success === 'false') {
-                console.log("Profile Wasn't Correct");
-                this.setState({ formError: ensureCorrectProf.error });
+            if (ensureCorrectProf.success === false) {
+
+                if (ensureCorrectProf.error.includes("email"))
+                {
+                    this.setState({ emailError: "Email already in use" });
+                }
+                else
+                {
+                    this.setState({ usernameError: "Username already in use" });
+                }
                 return;
             }
             let currCourses = [];
@@ -355,8 +364,6 @@ class editProfile extends Component {
                     this.state.PreviousClassList[i].cn
                 );
             }
-            console.log(currCourses);
-            console.log(prevCourses);
             let ensureCurrClass = await db.updateCourseTaking(
                 this.state.uid,
                 currCourses
@@ -365,21 +372,19 @@ class editProfile extends Component {
                 this.state.uid,
                 prevCourses
             );
-            console.log(ensureCurrClass);
-            console.log(ensurePrevClass);
             if (ensurePrevClass.success === false) {
-                console.log("PrevClass Wasn't Correct");
-                this.setState({ formError: ensurePrevClass.error });
                 return;
             }
             if (ensureCurrClass.success === false) {
-                console.log("CurrClass Wasn't Correct");
-                this.setState({ formError: ensureCurrClass.error });
                 return;
             }
         }
+        let navigate= this.props.navigate;
+        navigate('/profile');
+
     };
     render() {
+        if(window.localStorage.getItem("token")) {
         return (
             <div className="profile">
                 <h1 className="header_1">Edit Profile</h1>
@@ -476,8 +481,7 @@ class editProfile extends Component {
                                 onDelete={this.handlePreviousDelete}
                                 ClassName={cl.cn}
                                 error={cl.error}
-                                setClass={this.setPrevClass}
-                            >
+                                setClass={this.setPrevClass}>
                                 <label className="label_1">
                                     Class {cl.id}:{' '}
                                 </label>{' '}
@@ -489,7 +493,7 @@ class editProfile extends Component {
                             onClick={this.handlePreviousAdd}
                             type="button"
                         >
-                            Add Another Class
+                            + Add Another Class
                         </button>
                         <br />
 
@@ -502,6 +506,15 @@ class editProfile extends Component {
                 </form>
             </div>
         );
+        } else {
+            return (
+                <p>You are not signed in</p>
+            );
+        }
     }
 }
-export default editProfile;
+export default function(props)
+{
+    const navigate=useNavigate();
+    return <EditProfile navigate={navigate}/>
+};
