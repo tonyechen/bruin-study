@@ -45,8 +45,17 @@ import { useNavigate } from "react-router-dom";
         }
         else if(response.success === true)
         {
+          var response = await db.Authenticate(username.value, pass.value);
+          if(response.success === true) 
+          {
+            window.localStorage.setItem("token", response.token);
             setIsSubmitted(true);
-            history("/");
+            history("/editProfile");
+          }
+          else
+          {
+            setErrorMessages({name: "login", message: "Login failed, check the username or password"});
+          }
         }
         else
         {

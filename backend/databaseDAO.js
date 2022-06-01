@@ -409,20 +409,6 @@ class API {
         try {
             const { id, text } = req.query;
 
-            const authHeader = req.headers["authorization"];
-            
-            const token = authHeader && authHeader.split(" ")[1];
-
-            var data;
-            if (token == null) return res.sendStatus(401);
-
-            jwt.verify(token, SECRET, (err, decoded) => {
-                if(err) return res.sendStatus(403);
-                data = decoded;
-            });
-            if (id !== data.id) return res.sendStatus(401);
-
-
             // add the introduction of the studentauth
             // input: id, text
             await pool.query(
