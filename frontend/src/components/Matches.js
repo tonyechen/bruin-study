@@ -3,6 +3,7 @@ import db from '../data/dataAccess.js';
 import { decodeToken } from 'react-jwt';
 import './Matches.css';
 import { Link } from 'react-router-dom';
+
 class UserLine extends Component {
     render() {
         console.log(this);

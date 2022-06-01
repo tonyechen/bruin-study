@@ -3,7 +3,7 @@ import React from "react";
 class About extends React.Component {
     render() {
         return (
-            <div className = "center">
+            <div className = "profBox">
                 <h1>
                     <br></br>
                     ABOUT
@@ -11,9 +11,11 @@ class About extends React.Component {
                 <br></br>
                 <text>
                     Bruin-Study is a full-stack web app developed for Computer Science 35L at University of California, Los Angeles.
-                    <br></br>It was developed as a social platform to allow for students at UCLA to find and contact fellow students
+                    It was developed as a social platform to allow for students at UCLA to find and contact fellow students
                     that are taking or have taken the same classes as them. In this way students can easily find classmates to form study
                     groups with.
+                    <br></br><br></br>
+                    Technologies: Postgresql, React, Node, Express
                     <br></br><br></br>
                     Created By: Anthony Chen, Aditya Mehta, Ryan Man, Nhat Nguyen, Gary Song
                     <br></br><br></br>

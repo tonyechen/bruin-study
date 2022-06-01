@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
 import db from "../data/dataAccess";
 import { useNavigate, Link } from "react-router-dom"
-
-  import "../login.css";
+import "../login.css";
 
 function Login() {
   // React States
   const [errorMessages, setErrorMessages] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
   const history = useNavigate();
-  console.log(window.localStorage);
 
   const handleSubmit = async (event) => {
     //Prevent page reload
