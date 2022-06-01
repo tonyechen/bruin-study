@@ -3,6 +3,7 @@ import db from '../data/dataAccess';
 import React, { useState } from 'react';
 import getMatches from '../func/matching';
 import { decodeToken } from 'react-jwt';
+import MatchList from './Matches';
 
 class Home extends React.Component {
     constructor(props) {
@@ -49,25 +50,28 @@ class Home extends React.Component {
         }
 
         return (
-            <div className="center">
-                <div className="square">{this.displayStudent()}</div>
-                <div className="profileButtons">
-                    <button
-                        id="No"
-                        onClick={() => this.handleClick('No')}
-                        className="buttons"
-                    >
-                        &#10060;
-                    </button>
-                    <button
-                        id="Yes"
-                        onClick={() => this.handleClick('Yes')}
-                        className="buttons"
-                    >
-                        &#9989;
-                    </button>
+            <>
+                <div className="center">
+                    <div className="square">{this.displayStudent()}</div>
+                    <div className="profileButtons">
+                        <button
+                            id="No"
+                            onClick={() => this.handleClick('No')}
+                            className="buttons"
+                        >
+                            &#10060;
+                        </button>
+                        <button
+                            id="Yes"
+                            onClick={() => this.handleClick('Yes')}
+                            className="buttons"
+                        >
+                            &#9989;
+                        </button>
+                    </div>
                 </div>
-            </div>
+                <MatchList />
+            </>
         );
     }
 
@@ -106,7 +110,10 @@ class Home extends React.Component {
                         {this.state.previousClassList}
                         <br></br>
                         <br></br>
-                        <p>**Additional overlapping courses: {this.state.overlap}</p>
+                        <p>
+                            **Additional overlapping courses:{' '}
+                            {this.state.overlap}
+                        </p>
                     </div>
                 );
             } else {
@@ -154,7 +161,7 @@ class Home extends React.Component {
             const obj = await db.getFullProfile(matchesL[this.state.index].id);
 
             ccl = obj.courseTaking.map((courses) => {
-                return <span className ="course">{courses}</span>;
+                return <span className="course">{courses}</span>;
             });
             pcl = obj.courseTook.map((courses) => {
                 return <span className="course">{courses}</span>;

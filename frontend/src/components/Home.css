@@ -4,7 +4,7 @@
     flex-direction: column;
     width: 60vw;
     top: 0;
-    margin: 2% 20%;
+    margin: 2% 20% 0 10%;
     bottom: 0;
     justify-content: center;
     align-items: center;
@@ -38,7 +38,7 @@
     width: 50vw;
     font: 18px Arial;
     color: rgb(39, 116, 174);
-    padding: 5% 20% 0% 10%;
+    padding: 5% 20% 0% 5%;
     padding-right: auto;
     text-align: left;
 }
