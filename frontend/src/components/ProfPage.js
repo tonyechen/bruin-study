@@ -96,10 +96,10 @@ handleClick = () =>
     let navigate= this.props.navigate
     navigate('/editProfile')
 }
-    render()
+render()
     {
         
-       
+       if (window.localStorage.getItem("token")) {
         return(
             
             <div className='center'>
@@ -144,6 +144,11 @@ handleClick = () =>
             </div>
             </div>
         );
+        } else {
+            return(
+                <p>You are not signed in</p>
+            );
+        }
     }
 }
 export default function(props)
