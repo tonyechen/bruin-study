@@ -330,6 +330,7 @@ class EditProfile extends Component {
                 this.state.bio,
                 this.state.introduction
             );
+
             if (this.state.password !== '') {
                 let ensurePassword = await db.updatePassword(
                     this.state.uid,
@@ -339,9 +340,16 @@ class EditProfile extends Component {
                     return;
                 }
             }
-            if (ensureCorrectProf.success === 'false') {
-                console.log("Profile Wasn't Correct");
-                this.setState({ formError: ensureCorrectProf.error });
+            if (ensureCorrectProf.success === false) {
+
+                if (ensureCorrectProf.error.includes("email"))
+                {
+                    this.setState({ emailError: "Email already in use" });
+                }
+                else
+                {
+                    this.setState({ usernameError: "Username already in use" });
+                }
                 return;
             }
             let currCourses = [];
@@ -365,13 +373,9 @@ class EditProfile extends Component {
                 prevCourses
             );
             if (ensurePrevClass.success === false) {
-                console.log("PrevClass Wasn't Correct");
-                this.setState({ formError: ensurePrevClass.error });
                 return;
             }
             if (ensureCurrClass.success === false) {
-                console.log("CurrClass Wasn't Correct");
-                this.setState({ formError: ensureCurrClass.error });
                 return;
             }
         }
