@@ -2,6 +2,7 @@ import React, { Component, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {decodeToken} from "react-jwt"
 import db from'../data/dataAccess.js'
+import "./ProfPage.css"
 
 class ClassLine extends Component
 {
@@ -101,47 +102,45 @@ handleClick = () =>
         
        
         return(
-            
-            <div className='center'>
-            <h1 className='header_1'>User Profile</h1>
             <div>
-                <div>
+                <img
+                    className = "userImage"
+                    src="https://cdn1.iconfinder.com/data/icons/user-pictures/100/unknown-512.png"
+                    alt="user_icon"
+                />
+                <button className = "buttStyle" onClick={this.handleClick}>Edit Profile</button>
+                <br></br>
+                <h1 className = "infoLabel">Name: </h1>
+                <h1 className = "data_style">{this.state.name}</h1>
+                <br/>
 
-                    <label className='label_1'>Name: </label>
-                    <label>{this.state.name}</label>
-                    <br/>
+                <h1 className = "infoLabel">Email: </h1>
+                <h1 className = "data_style">{this.state.email}</h1>
+                <br/>
 
-                    <label className='label_1'>Email: </label>
-                    <text >{this.state.email}</text>
-                    <br/>
-
-                    <label className='label_1'>Username: </label>
-                    <text>{this.state.username}</text>
-                    <br/>
+                <h1 className = "infoLabel">Username: </h1>
+                <h1 className = "data_style">{this.state.username}</h1>
+                <br/>
 
 
-                    <label className='label_1'>Major: </label>
-                    <text>{this.state.major}</text>
-                    <br/>
+                <h1 className = "infoLabel">Major: </h1>
+                <h1 className = "data_style">{this.state.major}</h1>
+                <br/>
 
-                    <dl className='class_headers'>Current Classes</dl>
-                    {this.state.CurrentClassList.map(cl => <ClassLine key={cl.id} id={cl.id} ClassName={cl.cn}>
-                    <label className='label_1'>Class {cl.id}: </label> </ClassLine>)}
-                    <br/>
+                <h1 className = "infoLabel">Current Classes</h1>
+                {this.state.CurrentClassList.map(cl => <ClassLine key={cl.id} id={cl.id} ClassName={cl.cn}>
+                <h1 className = "data_style">Class {cl.id}: </h1> </ClassLine>)}
+                <br/>
 
-                    <dl className='class_headers'>Previous Classes</dl>   
+                <h1 className = "infoLabel">Previous Classes</h1>   
 
-                    {this.state.PreviousClassList.map(cl => <ClassLine key={cl.id} id={cl.id} ClassName={cl.cn}>
-                    <label className='label_1'>Class {cl.id}: </label> </ClassLine>)}
-                    <br/>
+                {this.state.PreviousClassList.map(cl => <ClassLine key={cl.id} id={cl.id} ClassName={cl.cn}>
+                <h1 className = "data_style">Class {cl.id}: </h1> </ClassLine>)}
+                <br/>
 
-                    <label className='label_1'>Bio: </label>
-                    <p>{this.state.bio}</p>
-                    <br/>
-
-                    <button onClick={this.handleClick}>Edit Profile</button>
-                </div>
-            </div>
+                <h1 className = "infoLabel">Bio: </h1>
+                <h1 className = "data_style">{this.state.bio}</h1>
+                <br/>
             </div>
         );
     }

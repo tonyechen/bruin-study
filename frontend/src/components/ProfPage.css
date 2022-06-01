@@ -1,0 +1,39 @@
+.userImage {
+    margin-top: 10px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    height: 250px;
+}
+
+.infoLabel {
+    text-align: center;
+    color: rgb(39, 116, 174);
+    font: 26px Arial;
+    font-weight: bold;
+}
+
+.data_style {
+    display: block;
+    text-align: center;
+    margin: auto;
+    font: 20px Arial;
+}
+
+.buttStyle {
+    display: block;
+    font: 30px Arial;
+    margin: auto;
+    margin-top: 1%;
+    text-decoration: none;
+    padding: 1rem 2rem;
+    border-radius: 2rem;
+    color: white;
+    background-color: rgb(39, 116, 174);
+}
+
+.buttStyle:hover {
+    background-color: rgb(255, 209, 0);
+    color: black;
+    transition: ease-in-out .2s;
+}

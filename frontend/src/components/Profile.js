@@ -49,7 +49,7 @@ class ClassLine extends Component {
     }
     render() {
         return (
-            <div class="class">
+            <div className="class">
                 {this.props.children}
                 <input
                     type="text"
