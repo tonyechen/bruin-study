@@ -44,7 +44,7 @@ class API {
             );
 
             var id = ids.rows[0].id;
-
+            
             if(id) {
                 const token = jwt.sign({id}, SECRET);
                 res.json({ success: true, token: `Bearer ${token}` });
