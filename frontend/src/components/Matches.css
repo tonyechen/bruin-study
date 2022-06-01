@@ -13,6 +13,7 @@
 .matchElement {
     color: black;
     padding-top: .5rem;
+    text-decoration: none;
 }
 
 .matchElement:hover {
@@ -25,7 +26,7 @@
     color: white;
     padding: .5rem 1rem;
     border:none;
-    margin-top: .5rem;
+    margin: .5rem 0;
 }
 
 .updateButton:hover {
