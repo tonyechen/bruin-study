@@ -19,6 +19,11 @@ Pseuducode:
 */
 
 async function getMatches(id) {
+    if (id === null || id === '') {
+        console.log("The id: " + id + "is invalid");
+        return [];
+    }
+
     let matches = [];
 
     // rank the importance of each factor of picking desired matches
@@ -79,9 +84,9 @@ async function getMatches(id) {
     }
 
     const pmatches = await db.getPotentialMatches(id);
-    matches = matches.filter(match => {
-        return !pmatches.includes(match.id)
-    })
+    matches = matches.filter((match) => {
+        return !pmatches.includes(match.id);
+    });
 
     // sort the final list from most compatible to least compatible
     matches.sort((a, b) => b.compatability - a.compatability);

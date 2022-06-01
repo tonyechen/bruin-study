@@ -2,12 +2,17 @@ import "./Home.css"
 import db from "../data/dataAccess";
 import React, { useState } from "react";
 import getMatches from "../func/matching";
+import {decodeToken} from 'react-jwt';
 
 class Home extends React.Component {
     constructor(props) {
         super(props);
+
+        const token = decodeToken(window.localStorage.getItem('token'));
+        console.log(token);
+
         this.state = {
-            uid: 111111111,
+            uid: token ? token.id : '',
             bio: null,
             username: null,
             name: null,
@@ -83,8 +88,8 @@ class Home extends React.Component {
         var ccl = [];
         var pcl = [];
         var matchesL = await getMatches(this.state.uid);
-        console.log(matchesL[this.state.index]);
-        if (matchesL) { 
+
+        if (matchesL.length != 0) { 
             const obj = await db.getFullProfile(matchesL[this.state.index].id);
             console.log(matchesL[this.state.index]);
 

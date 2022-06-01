@@ -23,7 +23,8 @@ function Login() {
     {
       window.localStorage.setItem("token", response.token);
       setIsSubmitted(true);
-      history("/");
+      history("/home");
+      window.location.reload();
     }
     else
     {
