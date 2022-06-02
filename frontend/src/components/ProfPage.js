@@ -91,7 +91,7 @@ class Profile extends Component {
         if (window.localStorage.getItem('token')) {
             return (
                 <div className="profBox">
-                    <h1 className="profileHeader">My Profile</h1>
+                    <h1 className="profileHeader">{this.state.name}</h1>
                         <div>
                             <img 
                                 className = "userImage" src="https://cdn1.iconfinder.com/data/icons/user-pictures/100/unknown-512.png"

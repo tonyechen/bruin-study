@@ -35,7 +35,11 @@
 
 .error {
     color: red;
-    width: min-content;
+    width: 100%;
+}
+
+label.error {
+    display: block;
 }
 
 .class {
@@ -66,12 +70,12 @@
     cursor: pointer;
 }
 
-.classList {
+.classList, .majorList{
     overflow-y: scroll;
     height: 5rem;
 }
 
-.classList li:hover {
+.classList li:hover, .majorList div:hover {
     color: lightblue;
     cursor: pointer;
 }

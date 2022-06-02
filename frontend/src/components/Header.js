@@ -11,7 +11,6 @@ const Header = (props) => {
         window.localStorage.removeItem('token');
         history('/');
         window.location.reload();
-        console.log(window.localStorage);
     }
 
     return (

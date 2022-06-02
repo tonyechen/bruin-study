@@ -1,9 +1,9 @@
 import './Home.css';
-import db from '../data/dataAccess';
-import React, { useState } from 'react';
-import getMatches from '../func/matching';
-import { decodeToken } from 'react-jwt';
+import React from 'react';
 import MatchList from './Matches';
+import db from '../data/dataAccess';
+import { decodeToken } from 'react-jwt';
+import getMatches from '../func/matching';
 
 class Home extends React.Component {
     constructor(props) {
@@ -14,7 +14,6 @@ class Home extends React.Component {
         this.state = {
             uid: token ? token.id : '',
             bio: null,
-            username: null,
             name: null,
             major: null,
             currentClassList: null,
@@ -30,7 +29,6 @@ class Home extends React.Component {
     }
 
     UNSAFE_componentWillMount() {
-        console.log('mounting');
         if (this.state.index === 0) {
             const token = decodeToken(window.localStorage.getItem('token'));
             if (token != null) {
@@ -45,7 +43,6 @@ class Home extends React.Component {
 
     render() {
         if (this.state.hasMatches && this.state.index === 0) {
-            console.log('how many times?');
             this.updateComponent();
         }
 
@@ -153,9 +150,6 @@ class Home extends React.Component {
         var ccl = [];
         var pcl = [];
 
-        console.log(this.state.index);
-        console.log(this.state.matches.length);
-
         if (this.state.index < this.state.matches.length) {
             let matchesL = this.state.matches;
             const obj = await db.getFullProfile(matchesL[this.state.index].id);
@@ -166,10 +160,8 @@ class Home extends React.Component {
             pcl = obj.courseTook.map((courses) => {
                 return <span className="course">{courses}</span>;
             });
-            console.log('made it here');
             this.setState({
                 bio: obj.introduction,
-                username: obj.username,
                 name: obj.name,
                 major: obj.major,
                 currentClassList: ccl,

@@ -1,11 +1,11 @@
-import React, { Component, useState } from 'react';
-import * as EmailValidator from 'email-validator';
 import './Profile.css';
-import Classes from '../data/Classes.js';
 import Majors from '../data/Majors.js';
 import db from '../data/dataAccess.js';
-import { useNavigate } from 'react-router-dom'
 import { decodeToken } from 'react-jwt';
+import Classes from '../data/Classes.js';
+import React, { Component} from 'react';
+import { useNavigate } from 'react-router-dom'
+import * as EmailValidator from 'email-validator';
 
 class ClassLine extends Component {
     items = Classes;
@@ -69,7 +69,7 @@ class ClassLine extends Component {
                     <div className="classList">{this.renderSuggestions()}</div>
                 )}
 
-                <label>{this.props.error}</label>
+                <label class="error">{this.props.error}</label>
             </div>
         );
     }
@@ -107,7 +107,7 @@ class EditProfile extends Component {
 
         var ccl = [{ id: 1, cn: '', error: '' }];
         var pcl = [{ id: 1, cn: '', error: '' }];
-        
+
         for (var i = 0; i < obj.courseTaking.length; i++) {
             if (i == 0) {
                 ccl[i].cn = obj.courseTaking[i];
@@ -182,13 +182,13 @@ class EditProfile extends Component {
             return null;
         }
         return (
-            <ul>
+            <div className='majorList'>
                 {this.state.MajorSuggestions.map((item) => (
-                    <li onClick={() => this.majorSuggestionSelected(item)}>
+                    <div onClick={() => this.majorSuggestionSelected(item)}>
                         {item}
-                    </li>
+                    </div>
                 ))}
-            </ul>
+            </div>
         );
     }
     handleCurrentDelete = (whichID) => {
@@ -313,7 +313,7 @@ class EditProfile extends Component {
         this.setState({ PreviousClassList: prevClass });
     };
     handleSubmit = async (e) => {
-       e.preventDefault();
+        e.preventDefault();
         let validate = this.validate();
         console.log('Submitted');
         console.log(validate);
@@ -341,14 +341,10 @@ class EditProfile extends Component {
                 }
             }
             if (ensureCorrectProf.success === false) {
-
-                if (ensureCorrectProf.error.includes("email"))
-                {
-                    this.setState({ emailError: "Email already in use" });
-                }
-                else
-                {
-                    this.setState({ usernameError: "Username already in use" });
+                if (ensureCorrectProf.error.includes('email')) {
+                    this.setState({ emailError: 'Email already in use' });
+                } else {
+                    this.setState({ usernameError: 'Username already in use' });
                 }
                 return;
             }
@@ -379,142 +375,143 @@ class EditProfile extends Component {
                 return;
             }
         }
-        let navigate= this.props.navigate;
+        let navigate = this.props.navigate;
         navigate('/profile');
-
     };
     render() {
-        if(window.localStorage.getItem("token")) {
-        return (
-            <div className="profile">
-                <h1 className="header_1">Edit Profile</h1>
-                <form onSubmit={this.handleSubmit}>
-                    <div className="profile__form">
-                        <label className="label_1">UID: {this.state.uid}</label>
-                        <br />
-
-                        <label className="label_1">Name: </label>
-                        <input
-                            type="text"
-                            value={this.state.name}
-                            onChange={this.handleNameChange}
-                        />
-                        <label class="error">{this.state.nameError}</label>
-                        <br />
-
-                        <label className="label_1">Email: </label>
-                        <input
-                            type="text"
-                            value={this.state.email}
-                            onChange={this.handleEmailChange}
-                        />
-                        <label class="error">{this.state.emailError}</label>
-                        <br />
-
-                        <label className="label_1">Username: </label>
-                        <input
-                            type="text"
-                            value={this.state.username}
-                            onChange={this.handleUsernameChange}
-                        />
-                        <label class="error">{this.state.usernameError}</label>
-                        <br />
-
-                        <label className="label_1">Major: </label>
-                        <input
-                            type="text"
-                            value={this.state.major}
-                            onChange={this.handleMajorChange}
-                        />
-                        {this.renderMajorSuggestions()}
-                        <label class="error">{this.state.majorError}</label>
-                        <br />
-
-                        <label className="label_1">
-                            New Password (optional):{' '}
-                        </label>
-                        <input
-                            type="password"
-                            value={this.state.password}
-                            onChange={this.handlePasswordChange}
-                        />
-                        <br />
-
-                        <label className="label_1">Bio: </label>
-                        <textarea
-                            className="bio__text"
-                            value={this.state.bio}
-                            onChange={this.handleBioChange}
-                        />
-                        <label class="error">{this.state.bioError}</label>
-
-                        <dl className="class_headers">Current Classes</dl>
-                        {this.state.CurrentClassList.map((cl) => (
-                            <ClassLine
-                                key={cl.id}
-                                id={cl.id}
-                                onDelete={this.handleCurrentDelete}
-                                ClassName={cl.cn}
-                                error={cl.error}
-                                setClass={this.setCurrClass}
-                            >
-                                <label className="label_1">
-                                    Class {cl.id}:{' '}
-                                </label>{' '}
-                            </ClassLine>
-                        ))}
-                        <button
-                            className="add_button"
-                            onClick={this.handleCurrentAdd}
-                            type="button"
-                        >
-                            + Add Another Class
-                        </button>
-                        <br />
-
-                        <dl className="class_headers">Previous Classes</dl>
-
-                        {this.state.PreviousClassList.map((cl) => (
-                            <ClassLine
-                                key={cl.id}
-                                id={cl.id}
-                                onDelete={this.handlePreviousDelete}
-                                ClassName={cl.cn}
-                                error={cl.error}
-                                setClass={this.setPrevClass}>
-                                <label className="label_1">
-                                    Class {cl.id}:{' '}
-                                </label>{' '}
-                            </ClassLine>
-                        ))}
-
-                        <button
-                            className="add_button"
-                            onClick={this.handlePreviousAdd}
-                            type="button"
-                        >
-                            + Add Another Class
-                        </button>
-                        <br />
-
-                        <br />
-                        <button className="submit_button" type="submit">
-                            Submit{' '}
-                        </button>
-                        <label class="error">{this.formError}</label>
-                    </div>
-                </form>
-            </div>
-        );
-        } else {
+        if (window.localStorage.getItem('token')) {
             return (
-                <p>You are not signed in</p>
+                <div className="profile">
+                    <h1 className="header_1">Edit Profile</h1>
+                    <form onSubmit={this.handleSubmit}>
+                        <div className="profile__form">
+                            <label className="label_1">
+                                UID: {this.state.uid}
+                            </label>
+                            <br />
+
+                            <label className="label_1">Name: </label>
+                            <input
+                                type="text"
+                                value={this.state.name}
+                                onChange={this.handleNameChange}
+                            />
+                            <label class="error">{this.state.nameError}</label>
+                            <br />
+
+                            <label className="label_1">Email: </label>
+                            <input
+                                type="text"
+                                value={this.state.email}
+                                onChange={this.handleEmailChange}
+                            />
+                            <label class="error">{this.state.emailError}</label>
+                            <br />
+
+                            <label className="label_1">Username: </label>
+                            <input
+                                type="text"
+                                value={this.state.username}
+                                onChange={this.handleUsernameChange}
+                            />
+                            <label class="error">
+                                {this.state.usernameError}
+                            </label>
+                            <br />
+
+                            <label className="label_1">Major: </label>
+                            <input
+                                type="text"
+                                value={this.state.major}
+                                onChange={this.handleMajorChange}
+                            />
+                            {this.renderMajorSuggestions()}
+                            <label class="error">{this.state.majorError}</label>
+                            <br />
+
+                            <label className="label_1">
+                                New Password (optional):{' '}
+                            </label>
+                            <input
+                                type="password"
+                                value={this.state.password}
+                                onChange={this.handlePasswordChange}
+                            />
+                            <br />
+
+                            <label className="label_1">Bio: </label>
+                            <textarea
+                                className="bio__text"
+                                value={this.state.bio}
+                                onChange={this.handleBioChange}
+                            />
+                            <label class="error">{this.state.bioError}</label>
+
+                            <dl className="class_headers">Current Classes</dl>
+                            {this.state.CurrentClassList.map((cl) => (
+                                <ClassLine
+                                    key={cl.id}
+                                    id={cl.id}
+                                    onDelete={this.handleCurrentDelete}
+                                    ClassName={cl.cn}
+                                    error={cl.error}
+                                    setClass={this.setCurrClass}
+                                >
+                                    <label className="label_1">
+                                        Class {cl.id}:{' '}
+                                    </label>{' '}
+                                </ClassLine>
+                            ))}
+                            <button
+                                className="add_button"
+                                onClick={this.handleCurrentAdd}
+                                type="button"
+                            >
+                                + Add Another Class
+                            </button>
+                            <br />
+
+                            <dl className="class_headers">Previous Classes</dl>
+
+                            {this.state.PreviousClassList.map((cl) => (
+                                <ClassLine
+                                    key={cl.id}
+                                    id={cl.id}
+                                    onDelete={this.handlePreviousDelete}
+                                    ClassName={cl.cn}
+                                    error={cl.error}
+                                    setClass={this.setPrevClass}
+                                >
+                                    <label className="label_1">
+                                        Class {cl.id}:{' '}
+                                    </label>{' '}
+                                </ClassLine>
+                            ))}
+
+                            <button
+                                className="add_button"
+                                onClick={this.handlePreviousAdd}
+                                type="button"
+                            >
+                                + Add Another Class
+                            </button>
+                            <br />
+
+                            <br />
+                            <button className="submit_button" type="submit">
+                                Submit
+                            </button>
+                            <label class="error">{this.formError}</label>
+                        </div>
+                    </form>
+                </div>
             );
+        } else {
+            return <p>You are not signed in</p>;
         }
     }
 }
-export default function(props)
-{
-    const navigate=useNavigate();
-    return <EditProfile navigate={navigate}/>
-};
+export default function (props) {
+    const navigate = useNavigate();
+    return <EditProfile navigate={navigate} />;
+}
