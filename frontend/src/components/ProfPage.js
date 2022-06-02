@@ -1,7 +1,6 @@
 import React, { Component, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { decodeToken } from 'react-jwt';
-
 import db from '../data/dataAccess.js';
 import "./ProfPage.css"
 
@@ -11,10 +10,7 @@ class ClassLine extends Component {
     };
     render() {
         return (
-            <div>
-                {this.props.children}
-                <span className = "course">{this.props.ClassName}</span>
-            </div>
+            <span className = "course">{this.props.ClassName}</span>
         );
     }
 }
@@ -91,10 +87,11 @@ class Profile extends Component {
         if (window.localStorage.getItem('token')) {
             return (
                 <div className="profBox">
-                    <h1 className="profileHeader">{this.state.name}</h1>
+                    <h1 className="profileHeader">My Profile</h1>
                         <div>
                             <img 
-                                className = "userImage" src="https://cdn1.iconfinder.com/data/icons/user-pictures/100/unknown-512.png"
+                                className = "userImage"
+                                src="https://cdn1.iconfinder.com/data/icons/user-pictures/100/unknown-512.png"
                                 alt="user_icon">
                             </img>
                             <label className="infoLabel">Name: </label>
@@ -118,6 +115,7 @@ class Profile extends Component {
                             <br />
 
                             <dl className="infoLabel">Current Classes</dl>
+                            <div>
                             {this.state.CurrentClassList.map((cl) => (
                                 <ClassLine
                                     key={cl.id}
@@ -129,10 +127,12 @@ class Profile extends Component {
                                     </label>{' '}
                                 </ClassLine>
                             ))}
+                            </div>
                             <br /><br />
 
                             <dl className="infoLabel">Previous Classes</dl>
 
+                            <div>
                             {this.state.PreviousClassList.map((cl) => (
                                 <ClassLine
                                     key={cl.id}
@@ -144,7 +144,7 @@ class Profile extends Component {
                                     </label>{' '}
                                 </ClassLine>
                             ))}
-                            <br />
+                            </div>
 
                             <button className = "btnStyle" onClick={this.handleClick}>
                                 Edit Profile
