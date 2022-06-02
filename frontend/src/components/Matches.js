@@ -5,9 +5,8 @@ import './Matches.css';
 import { Link } from 'react-router-dom';
 class UserLine extends Component {
     render() {
-        console.log(this);
         return (
-            <Link className="matchElement" to={`/profile/${this.props.uid}`}>
+            <Link className="matchElement" to={`/viewProfile/${this.props.uid}`}>
                 <p>{this.props.username}</p>
                 <h3>{this.props.name}</h3>
                 <hr />
@@ -53,6 +52,7 @@ class MatchList extends Component {
     }
 
     render() {
+        console.log(this.state.Matches)
         return (
             <div className="matchBox">
                 <div>

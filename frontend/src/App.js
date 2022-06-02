@@ -5,6 +5,7 @@ import Login from './components/Login';
 import Home from './components/Home';
 import EditProfile from './components/Profile'
 import Profile from './components/ProfPage';
+import ViewProfile from './components/ViewProfile';
 import Signup from './components/Signup';
 import Welcome from './components/Welcome';
 import About from './components/About';
@@ -22,7 +23,7 @@ const App = () => {
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<Signup />} />
                     <Route path="/profile" element={<Profile />} />
-                    <Route path="/profile/:id" element={<Profile />} />
+                    <Route path="/viewProfile/:id" element={<ViewProfile />} />
                     <Route path="/editProfile" element={<EditProfile />} />
                 </Routes>
             </div>
