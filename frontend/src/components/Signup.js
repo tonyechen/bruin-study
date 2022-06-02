@@ -1,3 +1,4 @@
+import "../login.css"
 import db from '../data/dataAccess';
 import Majors from '../data/Majors.js';
 import React, { useState } from 'react';
@@ -93,13 +94,13 @@ import { useNavigate, Link } from "react-router-dom";
           return null;
       }
       return (
-          <ul className="majors">
+          <datalist id = "suggestions" className="suggestList">
               {suggestions2.map((item) => (
-                  <li onClick={() => suggestionSelected(item)}>
+                  <option onClick={() => suggestionSelected(item)}>
                       {item}
-                  </li>
+                  </option>
               ))}
-          </ul>
+          </datalist>
       );
   }
     const renderForm = (
@@ -121,7 +122,7 @@ import { useNavigate, Link } from "react-router-dom";
             </div>
             <div className="input-container">
               <label>Major </label>
-              <input type="text" name="major" onChange={handleChange} value={major} required />
+              <input list = "suggestions" type="text" name="major" onChange={handleChange} value={major} required />
               {renderSuggestions()}
             </div>
             <div className="input-container">
@@ -146,7 +147,7 @@ import { useNavigate, Link } from "react-router-dom";
       );
     return (
       <div className="login">
-        <div className="login-form">
+        <div className="signup-form">
           <div className="title">Sign Up</div>
             {isSubmitted ? <div>User is successfully signed up</div> : renderForm}
         </div>
