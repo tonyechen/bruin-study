@@ -12,10 +12,7 @@ class ClassLine extends Component {
     };
     render() {
         return (
-            <div>
-                {this.props.children}
-                <span className = "course">{this.props.ClassName}</span>
-            </div>
+            <span className = "course">{this.props.ClassName}</span>
         );
     }
 }
@@ -147,6 +144,7 @@ class ViewProfile extends Component {
                             <br />
 
                             <dl className="infoLabel">Current Classes</dl>
+                            <div>
                             {this.state.CurrentClassList.map((cl) => (
                                 <ClassLine
                                     key={cl.id}
@@ -158,10 +156,11 @@ class ViewProfile extends Component {
                                     </label>{' '}
                                 </ClassLine>
                             ))}
+                            </div>
                             <br /><br />
 
                             <dl className="infoLabel">Previous Classes</dl>
-
+                            <div>
                             {this.state.PreviousClassList.map((cl) => (
                                 <ClassLine
                                     key={cl.id}
@@ -173,6 +172,7 @@ class ViewProfile extends Component {
                                     </label>{' '}
                                 </ClassLine>
                             ))}
+                            </div>
                             <br />
                             {this.renderButton}
                         </div>
