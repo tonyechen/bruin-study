@@ -1,5 +1,6 @@
 import React, { Component, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { decodeToken } from 'react-jwt';
 
 import db from '../data/dataAccess.js';
@@ -40,15 +41,29 @@ let initialState = {
 
     CurrentClassList: [],
     PreviousClassList: [],
+    renderEdit: false
 };
-class Profile extends Component {
+class ViewProfile extends Component {
     state = initialState;
 
     async componentDidMount() {
-        const obj = await db.getFullProfile(this.state.uid);
+        var uid;
+        var renderEdit;
+        const {id}=this.props.params;
+        console.log(id)
+        if (id)
+        {
+            uid=id;
+            renderEdit=false;
+        }
+        else
+        {
+            uid= mytoken ? mytoken.id : ''
+            renderEdit=true;
+        }
+        const obj = await db.getFullProfile(uid);
         var ccl = [{ id: 1, cn: '' }];
         var pcl = [{ id: 1, cn: '' }];
-
         for (var i = 0; i < obj.courseTaking.length; i++) {
             if (i == 0) {
                 ccl[i].cn = obj.courseTaking[i];
@@ -73,6 +88,7 @@ class Profile extends Component {
             }
         }
         this.setState({
+            uid: uid,
             email: obj.email,
             bio: obj.introduction,
             username: obj.username,
@@ -80,6 +96,7 @@ class Profile extends Component {
             major: obj.major,
             CurrentClassList: ccl,
             PreviousClassList: pcl,
+            renderEdit: renderEdit
         });
     }
 
@@ -87,11 +104,23 @@ class Profile extends Component {
         let navigate = this.props.navigate;
         navigate('/editProfile');
     };
+    renderButton= () =>
+    {
+        if (this.state.renderEdit)
+        {
+            return(
+                <button className = "btnStyle" onClick={this.handleClick}>
+                                Edit Profile
+                            </button>
+            )
+        }
+        return null;
+    }
     render() {
         if (window.localStorage.getItem('token')) {
             return (
                 <div className="profBox">
-                    <h1 className="profileHeader">{this.state.name}</h1>
+                    <h1 className="profileHeader">My Profile</h1>
                         <div>
                             <img 
                                 className = "userImage" src="https://cdn1.iconfinder.com/data/icons/user-pictures/100/unknown-512.png"
@@ -145,10 +174,7 @@ class Profile extends Component {
                                 </ClassLine>
                             ))}
                             <br />
-
-                            <button className = "btnStyle" onClick={this.handleClick}>
-                                Edit Profile
-                            </button>
+                            {this.renderButton}
                         </div>
                     </div>
             );
@@ -158,6 +184,7 @@ class Profile extends Component {
     }
 }
 export default function (props) {
+    const params = useParams();
     const navigate = useNavigate();
-    return <Profile navigate={navigate} />;
+    return <ViewProfile navigate={navigate} params={params}/>;
 }
